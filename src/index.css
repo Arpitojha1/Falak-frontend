@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight-indigo: #0B0F2B;
+  --color-silver: #C0C0C0;
+  --color-vermillion-red: #D7263D;
+  --color-convergence-magenta: #FF3D7F;
+  --color-cobalt-blue: #0057FF;
+  --color-deep-plum: #1C0B46;
+
+  --font-sans: "Barlow", sans-serif;
+  --font-display: "Anton", sans-serif;
+  --font-accent: "Baloo 2", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-midnight-indigo text-silver font-sans overflow-x-hidden antialiased;
+  }
+
+  /* Custom Scrollbar - Falak Theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--color-midnight-indigo);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(192, 192, 192, 0.2); /* silver with low opacity */
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-convergence-magenta);
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(192, 192, 192, 0.2) var(--color-midnight-indigo);
+  }
+}
+

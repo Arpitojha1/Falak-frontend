@@ -1,0 +1,137 @@
+# Falak 2026 — Landing Page Handoff Doc
+
+Status as of this handoff: landing page look is approved. Animation layer is being rebuilt outside Google AI Studio after it failed to replicate the intended wave/dome treatment. This doc is the single source of truth going forward — supersedes the individual prompt files where they conflict.
+
+---
+
+## 1. Project Scope (Phase 1 — current)
+
+**Building now:** Home/landing page only — hero, nav shell, footer, and the three animation assets described below.
+
+**Explicitly deferred to a later phase:**
+- Sports hero page and Culture hero page (routes can exist as stubs, no content)
+- Mascot characters / mascot-based transitions
+- Admin panel, real auth, real payment, real QR generation, live database wiring
+- Devanagari/multilingual font wiring
+- Full Schedule / Events / Passes / Profile content — stub routes only, enough that nav doesn't 404
+
+---
+
+## 2. Navigation Structure
+
+- **Nav items: Home | Schedule | Profile** — three items only.
+- **Events and Passes are not top-level nav items.** They live as internal tabs/sub-sections inside the Schedule page (segmented control: Schedule / Events / Passes).
+- **Support is not in the nav.** It lives in the site footer only.
+- Bottom tab bar on mobile, collapses to a top nav bar on desktop/tablet — build responsive from the start, not mobile-first-then-patched.
+
+---
+
+## 3. Left/Right Mapping (locked decision)
+
+**Left = Culture (Deep Plum). Right = Sports (Cobalt Blue).**
+
+This matches the original written spec (swipe left → Culture, swipe right → Sports) — NOT the CTA button screenshot from earlier in the process, which had "Enter Sports" on the left and "Enter Culture" on the right (reversed). **Open item: reposition those CTA buttons (Culture left, Sports right) so the buttons, the swipe direction, and the hero dome zones all agree.** This hasn't been confirmed fixed yet — check before wiring click-zone logic.
+
+---
+
+## 4. Design System (corrected)
+
+### Colors — Convergence/Home page only
+
+| Color | Hex | Use |
+|---|---|---|
+| Midnight Indigo | `#0B0F2B` | Base background |
+| Silver | `#C0C0C0` | Utility text, hairlines, hourglass linework |
+| Vermillion Red | `#D7263D` | Accent — usable on any asset |
+| Convergence Magenta | `#FF3D7F` | Unifying accent — reserved for this page and other "both worlds" assets |
+| Cobalt Blue | `#0057FF` | Sports-side accent (also generally shared/secondary) |
+| Deep Plum | `#1C0B46` | Culture-side dusk/backdrop accent |
+
+**Hard rule, unchanged from the full design system:** Electric Orange, Acid Lime (Sports-exclusive) and Aurora Violet, Champagne Pearl, Marigold Gold, Blush Rose, Soft Lilac (Culture-exclusive) never appear on this page. They belong only to their respective hero pages once those are built.
+
+### Typography (this page)
+
+| Context | Font |
+|---|---|
+| "Falak" wordmark | Anton or Druk (bold condensed) |
+| Supporting festival copy | Baloo 2 |
+| Small utility tags (dates, labels) | Space Mono |
+| Body text | Barlow or General Sans |
+
+Fraunces is reserved for future premium moments (e.g. Fashion Show) — not used on Home. Sports/Culture hero pages will diverge into their own full font systems later per the master design reference.
+
+### Motif language (applies to all animation work)
+
+Everything visual on this page should read as **layered, filled, organic dome/lens shapes** — echoing jaali latticework, Ganjifa card framing, and the "sky" (Falak) concept — never a generic sine wave, circle wipe, or button glow effect standing in for the real motif. This was the repeated failure point with the AI Studio build; see Section 6.
+
+---
+
+## 5. Home Page Structure
+
+1. **Hero**: "Falak" wordmark, centered, on Midnight Indigo, minimal.
+2. **Two CTAs**: "Enter Sports" and "Enter Culture" — link to `/sports` and `/culture` stub routes. Positioning must match Section 3's left/right mapping (open item).
+3. **Ambient hero background animation** — layered dome shapes, see Section 6, Asset 1.
+4. **Vertical scroll reveal**: "Last Falak" recap section below the hero, using Ganjifa-style card layout, jaali border linework, truck-art stamp badges, Bollywood poster grain overlay, kite motif linework — see the full Phase 1 prompt for detail if rebuilding this section from scratch.
+5. **Hourglass element**: functions as the scroll transition mechanic between hero and recap section — see Section 6, Asset 3.
+6. **Swipe/click zone transitions**: swiping or clicking left/right on the landing page triggers an expanding wave that transitions into the Sports or Culture stub route — see Section 6, Asset 2.
+7. **Footer**: contains Support (FAQ/contact), not present anywhere in the main nav.
+
+---
+
+## 6. Animation Assets — Status and Specs
+
+### Asset 1 — Ambient hero wave/dome background
+**Status: not yet built correctly.** AI Studio's attempt put a color glow inside the CTA buttons and a thin silver outline ring floating disconnected from them — wrong on both counts. The correct version is large filled dome/lens shapes sitting as hero background art: a Deep Plum cluster on the left (above the Culture CTA), a Cobalt Blue cluster on the right (above the Sports CTA), and a wide low-opacity Silver dome band spanning both as the shared ambient layer. Slow independent breathing motion per layer (translateY + scale pulse), seamless loop.
+
+**Current plan:** generate via Google Flow (Veo) as a background video loop rather than hand-building a Lottie/CSS version, since AI Studio couldn't execute this from a text spec. Flow prompt is ready — see `Falak26_Flow_Prompt_1_HeroWaves.md`.
+
+**Integration once asset exists:** `<video>` background element, `autoplay muted loop playsInline`, `object-fit: cover`, sits behind CTA buttons and wordmark. Respect `prefers-reduced-motion` by freezing on the first frame.
+
+### Asset 2 — Swipe/click expanding wave transition
+**Status: not yet built.** Two variants needed: Culture (left-triggered, Deep Plum, with a Silver hairline leading edge) and Sports (right-triggered, Cobalt Blue) — both using the layered dome expansion language, not a flat wipe, expanding to full-screen coverage in under ~1 second.
+
+**Current plan:** generate both variants via Google Flow — see `Falak26_Flow_Prompt_2_SwipeTransition.md`. These are one-shot clips, not loops; trim to just the expand phase once exported.
+
+**Integration once assets exist:**
+- Axis-locked swipe detection (horizontal drag past threshold; vertical scroll never triggers it) OR click anywhere in the left/right half of the viewport
+- Debounce re-triggering until the previous transition finishes
+- Play the relevant clip once; fire the route change (`/culture` or `/sports`) at the exact timestamp the clip reaches full-screen coverage — that timestamp has to be found manually by scrubbing the exported file, then hardcoded
+
+### Asset 3 — Hourglass scroll-driven timer
+**Status: not yet built.** Sequence: idle hourglass with sand falling continuously (loops while hero is in view) → as the user scrolls down, the hourglass tips over and shatters, scrubbed directly against scroll position (not autoplaying) → fully broken/settled state reveals content underneath (countdown to next Falak, or Last Falak stats). Silver line-art only, no other accent colors.
+
+**Current plan:** generate via Google Flow as a single continuous clip — see `Falak26_Flow_Prompt_3_HourglassTimer.md`.
+
+**Integration once asset exists — this is the trickiest piece:**
+- Load as a plain (non-autoplaying) `<video>` element
+- Manually scrub the exported clip once to find three key timestamps: the idle loop point, the moment the fall/shatter begins, and the moment it's fully settled/revealed
+- While scroll is at the top of the hero, cycle `video.currentTime` through the idle loop range
+- Once the user scrolls past the hero, map scroll progress (0–1) directly to `video.currentTime` across the fall/shatter range — must be reversible (scrolling back up un-shatters it)
+- Once scroll progress hits 1, hold the video at the fully-settled timestamp and let the actual recap section content take over visually
+
+---
+
+## 7. Why We Moved Off Google AI Studio for Animation
+
+AI Studio's Build mode could handle the overall page scaffold and layout fine, but repeatedly failed to translate the "layered dome shapes as hero background art" spec into actual output — it substituted button-internal glow effects and disconnected outline rings instead. Rather than keep iterating blind in Build mode, animation generation moved to Google Flow (Veo) for the wave and hourglass assets, since it produces an actual renderable clip you can inspect directly rather than a text-described implementation that may or may not match intent. Trade-off: Flow output is fixed video, not an editable vector/Lottie file — no built-in frame markers or code-level scrubbing. The hourglass piece still works fine with this constraint via manual `video.currentTime` scrubbing; the wave assets simply become background/overlay video instead of a re-colorable vector loop.
+
+---
+
+## 8. Open Items
+
+- [ ] Confirm CTA button positions match the locked left=Culture/right=Sports mapping (Section 3)
+- [ ] Generate and trim all three Flow clips
+- [ ] Find and hardcode the manual timestamps needed for Asset 2 (full-coverage frame) and Asset 3 (loop point, fall start, shatter complete)
+- [ ] Wire scroll-scrub logic for the hourglass
+- [ ] Wire swipe/click-zone detection with axis lock and debounce
+- [ ] Decide on Sports hero page and Culture hero page scope — deferred, not started
+
+---
+
+## 9. Reference Files (this project)
+
+- `Falak26_Landing_Page_Prompt_v2.md` — full Phase 1 build prompt + both addenda (original AI Studio prompt history)
+- `Falak26_Flow_Prompt_1_HeroWaves.md`
+- `Falak26_Flow_Prompt_2_SwipeTransition.md`
+- `Falak26_Flow_Prompt_3_HourglassTimer.md`
+- Earlier Lottie-format versions of the three animation prompts exist but are superseded by the Flow versions above
