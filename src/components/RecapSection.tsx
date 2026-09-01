@@ -30,7 +30,7 @@ export function RecapSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeSlide = CAROUSEL_SLIDES[activeIndex];
 
-  const sliderItems = CAROUSEL_SLIDES.map(s => ({ image: s.image }));
+  const sliderItems = CAROUSEL_SLIDES.map(s => ({ image: s.image, caption: s.title }));
 
   return (
     <section className="relative min-h-screen py-24 px-6 md:px-12 z-20 flex flex-col justify-center">
@@ -65,12 +65,15 @@ export function RecapSection() {
           <div>
             <div className="flex items-center gap-4 mb-4">
               <div className="h-px w-12 bg-convergence-magenta"></div>
+              {/* Eyebrow label: tag/data-label role — Space Mono */}
               <span className="font-mono text-convergence-magenta uppercase tracking-widest text-sm">Flashback</span>
             </div>
+            {/* Section headline: Sports headline role — Anton */}
             <h2 className="font-display text-5xl md:text-7xl uppercase text-silver">
               Last Falak
             </h2>
           </div>
+          {/* Body copy — Barlow */}
           <p className="font-sans text-silver/70 max-w-sm">
             Glimpses from the previous editions. The convergence of energy, art, and motion.
           </p>
@@ -156,11 +159,12 @@ export function RecapSection() {
             {/* Truck art frame stamp - Top Left */}
             <div className="absolute top-0 left-0 -translate-x-2 -translate-y-2 md:-translate-x-4 md:-translate-y-4 w-12 h-12 md:w-16 md:h-16 bg-midnight-indigo border border-convergence-magenta flex items-center justify-center rotate-3 z-30 shadow-lg transition-all duration-300">
               <div className="border border-silver/30 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transform -rotate-3">
+                {/* Year stamp: data label — Space Mono */}
                 <span className="font-mono text-xs md:text-sm text-convergence-magenta">{activeSlide.year}</span>
               </div>
             </div>
 
-            {/* Truck art frame stamp - Bottom Right */}
+            {/* Category stamp: data label — Space Mono */}
             <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 md:translate-x-4 md:translate-y-4 px-4 py-2 md:px-6 md:py-3 bg-midnight-indigo border border-vermillion-red z-30 shadow-lg transform -rotate-2 transition-all duration-300">
               <span className="font-mono text-xs md:text-sm text-silver uppercase tracking-wider">{activeSlide.category}</span>
             </div>
@@ -198,8 +202,8 @@ export function RecapSection() {
               {/* Bottom Gradient for text readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-midnight-indigo/90 via-midnight-indigo/20 to-transparent pointer-events-none z-10"></div>
               
-              {/* Dynamic Title Caption */}
               <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 z-20 pointer-events-none flex flex-col justify-end h-full">
+                {/* Slide counter: data label — Space Mono */}
                 <motion.span 
                   key={`id-${activeSlide.id}`}
                   initial={{ opacity: 0, y: 10 }}
@@ -209,12 +213,21 @@ export function RecapSection() {
                 >
                   {activeSlide.id} / 03
                 </motion.span>
+                {/*
+                  Event title: role-aware headline.
+                  Sports / Esports category → Anton (--font-headline-sports)
+                  Culture / Music / other  → Baloo 2 (--font-headline-culture)
+                */}
                 <motion.h3 
                   key={`title-${activeSlide.title}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="font-accent text-4xl md:text-6xl text-silver leading-tight drop-shadow-lg"
+                  className={`text-4xl md:text-6xl text-silver leading-tight drop-shadow-lg ${
+                    activeSlide.category === 'Sports' || activeSlide.category === 'Esports'
+                      ? 'font-display uppercase'
+                      : 'font-accent'
+                  }`}
                 >
                   {activeSlide.title}
                 </motion.h3>

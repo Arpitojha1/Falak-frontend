@@ -1,0 +1,100 @@
+7051519 feat(sports): add Archivo fonts and Sports colour tokens to theme
+  
+ index.html    |  6 +++++-
+ src/index.css | 38 +++++++++++++++++++++++++++++++++++---
+ 2 files changed, 40 insertions(+), 4 deletions(-)
+  
+diff --git a/index.html b/index.html
+index 7b4e752..34a6e3a 100644
+--- a/index.html
++++ b/index.html
+@@ -1,20 +1,24 @@
+ <!doctype html>
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Falak | The Convergence Awaits</title>
+     <meta name="description" content="Falak - A cultural convergence festival featuring kites, art, and music." />
++    <!-- Google Fonts: Falak '26 full type system -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Barlow:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
++    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oxanium:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Barlow:wght@400;500;600;700&family=Baloo+2:wght@500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&family=Rajdhani:wght@500;600;700&family=Baloo+Devanagari+2:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500&family=Archivo+Black&family=Archivo:wght@600&display=swap" rel="stylesheet">
++    <!-- Fontshare: General Sans (not available on Google Fonts) -->
++    <link rel="preconnect" href="https://api.fontshare.com">
++    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500&display=swap" rel="stylesheet">
+     <meta property="og:title" content="Falak | The Convergence Awaits" />
+     <meta property="og:description" content="Falak - A cultural convergence festival featuring kites, art, and music." />
+     <meta property="og:type" content="website" />
+     <meta name="twitter:card" content="summary_large_image" />
+   </head>
+   <body>
+     <div id="root"></div>
+     <script type="module" src="/src/main.tsx"></script>
+   </body>
+ </html>
+diff --git a/src/index.css b/src/index.css
+index b9e1666..a49e563 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -1,24 +1,56 @@
+ @import "tailwindcss";
+ 
+ @theme {
+   --color-midnight-indigo: #0B0F2B;
+   --color-silver: #C0C0C0;
+   --color-vermillion-red: #D7263D;
+   --color-convergence-magenta: #FF3D7F;
+   --color-cobalt-blue: #0057FF;
+   --color-deep-plum: #1C0B46;
++  --color-electric-orange: #FF6A00;
++  --color-acid-lime: #C6FF00;
+ 
+-  --font-sans: "Barlow", sans-serif;
++  /* ── Existing Tailwind font utilities (unchanged) ── */
++  --font-sans:    "Barlow", "General Sans", sans-serif;
+   --font-display: "Anton", sans-serif;
+-  --font-accent: "Baloo 2", sans-serif;
+-  --font-mono: "Space Mono", monospace;
++  --font-accent:  "Baloo 2", sans-serif;
++  --font-mono:    "Space Mono", monospace;
++
++  /* ── New Tailwind font utilities for role-specific use ── */
++  --font-oxanium:           "Oxanium", sans-serif;
++  --font-fraunces:          "Fraunces", serif;
++  --font-rajdhani:          "Rajdhani", sans-serif;
++  --font-baloo-devanagari:  "Baloo Devanagari 2", sans-serif;
++  --font-noto-devanagari:   "Noto Sans Devanagari", sans-serif;
++  --font-archivo-black: "Archivo Black", sans-serif;
++  --font-archivo:       "Archivo", sans-serif;
++}
++
++/*
++  ── Falak '26 Role-based Typography Variables ───────────────────────────────
++  Defined in :root so they're accessible as var(--font-x) anywhere in the app,
++  including in inline styles and non-Tailwind CSS. These map directly to the
++  handoff spec roles.
++  ─────────────────────────────────────────────────────────────────────────── */
++:root {
++  --font-headline-sports:   "Anton", sans-serif;
++  --font-accent-esports:    "Oxanium", sans-serif;
++  --font-label-tag:         "Space Mono", monospace;
++  --font-body:              "Barlow", "General Sans", sans-serif;
++  --font-headline-culture:  "Baloo 2", sans-serif;
++  --font-glam-accent:       "Fraunces", serif;
++  --font-hindi-sports:      "Rajdhani", sans-serif;
++  --font-hindi-culture:     "Baloo Devanagari 2", sans-serif;
++  --font-hindi-fallback:    "Noto Sans Devanagari", sans-serif;
++  --font-headline-sports-section: "Archivo Black", sans-serif;
++  --font-label-sports:            "Archivo", sans-serif;
+ }
+ 
+ @layer base {
+   body {
+     @apply bg-midnight-indigo text-silver font-sans overflow-x-hidden antialiased;
+   }
+ 
+   /* Custom Scrollbar - Falak Theme */
+   ::-webkit-scrollbar {
+     width: 8px;

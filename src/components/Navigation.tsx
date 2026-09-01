@@ -46,6 +46,7 @@ export function Navigation() {
               }
             >
               <Icon size={24} strokeWidth={1.5} />
+              {/* Tab label: tag/label role — Space Mono */}
               <span className="font-mono text-[10px] uppercase tracking-wider">
                 {item.name}
               </span>

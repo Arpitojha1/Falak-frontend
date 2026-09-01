@@ -4,75 +4,127 @@ import { LogoImage } from './LogoImage';
 export function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-midnight-indigo pt-16 md:pt-24">
-      {/* Kite Motif Background - Fine animated line-art strings drifting */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0 overflow-hidden">
-        <svg className="absolute w-[200vw] h-[200vh] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30" xmlns="http://www.w3.org/2000/svg">
-          {[...Array(8)].map((_, i) => (
-             <motion.path
-               key={`line-${i}`}
-               d={`M 0 ${400 + i * 200} Q ${800 + i * 100} ${100 - i * 150} 3000 ${300 + i * 100}`}
-               stroke={i % 3 === 0 ? "#FF3D7F" : "#C0C0C0"}
-               strokeWidth={i % 3 === 0 ? "1" : "0.5"}
-               fill="none"
-               strokeDasharray="4 12"
-               initial={{ strokeDashoffset: 0 }}
-               animate={{ strokeDashoffset: -160 }}
-               transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "linear" }}
-             />
-          ))}
-          {[...Array(6)].map((_, i) => (
-             <motion.path
-               key={`line-rev-${i}`}
-               d={`M 3000 ${500 + i * 150} Q ${1500 - i * 100} ${800 + i * 100} 0 ${200 + i * 200}`}
-               stroke="#C0C0C0"
-               strokeWidth="0.5"
-               fill="none"
-               strokeDasharray="2 8"
-               initial={{ strokeDashoffset: 0 }}
-               animate={{ strokeDashoffset: 100 }}
-               transition={{ duration: 15 + i * 2, repeat: Infinity, ease: "linear" }}
-             />
-          ))}
-        </svg>
+      {/*
+        ─── Kite Motif Background ──────────────────────────────────────────────
+        All elements are pointer-events-none / z-0 — they never block the
+        wordmark or CTA layer above (z-10).
+
+        Each motion.div carries the same "breathing" language as the removed
+        inline SVG floaters: slow looping translateY + rotate + opacity pulse.
+
+        prefers-reduced-motion: Motion's built-in reducedMotion="user" prop
+        (set on the provider in main.tsx) will freeze these to their initial
+        snapshot. The static initial values are set so the scene reads fine
+        even without animation.
+
+        Assets used:
+          falak kite.png  — hero kite, large feature element, right-of-centre
+          kite-1.png      — single kite, small bg accent, top-left
+          kite-2.png      — wide multi-kite composition, bottom-left
+          kite-3.png      — tall multi-kite composition, top-right edge
+          kite-4.png      — tall multi-kite composition, bottom-right
+          kite-5.png      — wide multi-kite composition, mid-left
+      ───────────────────────────────────────────────────────────────────────── */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+
+        {/* ── Hero kite: large feature, right-of-centre, slow majestic drift ── */}
+        <motion.div
+          className="absolute"
+          style={{ right: '-5%', top: '5%', width: '55vw', maxWidth: '680px', minWidth: '260px' }}
+          initial={{ y: 0, rotate: -6, opacity: 0 }}
+          animate={{ y: [-18, -48, -18], rotate: [-6, -2, -6], opacity: [0.55, 0.75, 0.55] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
+        >
+          <img
+            src="/assets/kite/falak kite.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain"
+          />
+        </motion.div>
+
+        {/* ── kite-1: small accent, upper-left, quicker bob ── */}
+        <motion.div
+          className="absolute"
+          style={{ left: '2%', top: '8%', width: '22vw', maxWidth: '240px', minWidth: '100px' }}
+          initial={{ y: 0, rotate: 8, opacity: 0 }}
+          animate={{ y: [-10, -38, -10], rotate: [8, 14, 8], opacity: [0.30, 0.50, 0.30] }}
+          transition={{ duration: 17, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        >
+          <img
+            src="/assets/kite/kite-1.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain"
+          />
+        </motion.div>
+
+        {/* ── kite-2: wide multi-kite composition, bottom-left, gentle rise ── */}
+        <motion.div
+          className="absolute"
+          style={{ left: '-8%', bottom: '0%', width: '58vw', maxWidth: '700px', minWidth: '280px' }}
+          initial={{ y: 0, rotate: 4, opacity: 0 }}
+          animate={{ y: [-12, -40, -12], rotate: [4, 8, 4], opacity: [0.35, 0.55, 0.35] }}
+          transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        >
+          <img
+            src="/assets/kite/kite-2.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain"
+          />
+        </motion.div>
+
+        {/* ── kite-3: tall multi-kite, right-edge cluster, slow climb ── */}
+        <motion.div
+          className="absolute hidden md:block"
+          style={{ right: '-4%', bottom: '5%', width: '28vw', maxWidth: '320px' }}
+          initial={{ y: 0, rotate: -10, opacity: 0 }}
+          animate={{ y: [-8, -32, -8], rotate: [-10, -5, -10], opacity: [0.28, 0.45, 0.28] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
+        >
+          <img
+            src="/assets/kite/kite-3.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain"
+          />
+        </motion.div>
+
+        {/* ── kite-4: tall stack, mid-left upper area, drift ── */}
+        <motion.div
+          className="absolute hidden md:block"
+          style={{ left: '28%', top: '3%', width: '22vw', maxWidth: '260px' }}
+          initial={{ y: 0, rotate: 5, opacity: 0 }}
+          animate={{ y: [-14, -44, -14], rotate: [5, 11, 5], opacity: [0.22, 0.38, 0.22] }}
+          transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
+        >
+          <img
+            src="/assets/kite/kite-4.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain"
+          />
+        </motion.div>
+
+        {/* ── kite-5: wide sprawl, far bottom-right, slowest drift ── */}
+        <motion.div
+          className="absolute hidden lg:block"
+          style={{ right: '30%', bottom: '2%', width: '34vw', maxWidth: '420px' }}
+          initial={{ y: 0, rotate: -3, opacity: 0 }}
+          animate={{ y: [-6, -28, -6], rotate: [-3, 2, -3], opacity: [0.20, 0.35, 0.20] }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 12 }}
+        >
+          <img
+            src="/assets/kite/kite-5.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain"
+          />
+        </motion.div>
+
       </div>
 
-      {/* Floating Kites Overlay */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {[
-          { left: '15%', top: '60%', scale: 1.2, delay: 0 },
-          { left: '75%', top: '30%', scale: 0.7, delay: 2 },
-          { left: '35%', top: '85%', scale: 0.9, delay: 5 },
-          { left: '85%', top: '70%', scale: 0.5, delay: 1 },
-          { left: '50%', top: '20%', scale: 0.6, delay: 3 },
-          { left: '10%', top: '15%', scale: 0.4, delay: 4 },
-        ].map((pos, i) => (
-          <motion.div
-            key={`kite-${i}`}
-            className="absolute"
-            style={{ left: pos.left, top: pos.top }}
-            initial={{ y: 0, x: 0, rotate: -15, opacity: 0.05 }}
-            animate={{ 
-              y: [-20, -120, -20],
-              x: [-10, 40, -10],
-              rotate: [-15, 10, -15],
-              opacity: [0.05, 0.25, 0.05]
-            }}
-            transition={{
-              duration: 20 + i * 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: pos.delay
-            }}
-          >
-            <svg width={100 * pos.scale} height={180 * pos.scale} viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 10 L80 60 L50 110 L20 60 Z" stroke={i % 2 === 0 ? "#FF3D7F" : "#C0C0C0"} strokeWidth="1.5" fill="none" />
-              <line x1="50" y1="10" x2="50" y2="110" stroke={i % 2 === 0 ? "#FF3D7F" : "#C0C0C0"} strokeWidth="1" />
-              <line x1="20" y1="60" x2="80" y2="60" stroke={i % 2 === 0 ? "#FF3D7F" : "#C0C0C0"} strokeWidth="1" />
-              <path d="M50 110 Q 70 130 50 150 T 50 180" stroke={i % 2 === 0 ? "#FF3D7F" : "#C0C0C0"} strokeWidth="1" fill="none" strokeDasharray="3 4" />
-            </svg>
-          </motion.div>
-        ))}
-      </div>
       
       {/* Grain overlay for vintage feel */}
       <div 
@@ -98,9 +150,11 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="h-[1px] w-24 bg-vermillion-red/50"></div>
+          {/* Tagline: Culture headline role — Baloo 2 */}
           <p className="font-accent text-2xl md:text-3xl text-silver/90 tracking-wide text-center max-w-lg px-6">
             The Convergence Awaits.
           </p>
+          {/* Data label: tag/timestamp role — Space Mono */}
           <p className="font-mono text-sm text-silver/60 uppercase tracking-[0.3em]">
             Est. 2026
           </p>

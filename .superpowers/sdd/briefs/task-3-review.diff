@@ -1,0 +1,352 @@
+ddcc2ba feat(sports): add expand-in-place event cards and events section
+  
+ src/components/sports/SportsEventCard.tsx | 164 ++++++++++++++++++++++++++++++
+ src/components/sports/SportsEvents.tsx    |  34 +++++++
+ src/components/sports/sportsData.ts       |  80 +++++++++++++++
+ src/index.css                             |   2 +
+ src/pages/Sports.tsx                      |   5 +
+ 5 files changed, 285 insertions(+)
+  
+diff --git a/src/components/sports/SportsEventCard.tsx b/src/components/sports/SportsEventCard.tsx
+new file mode 100644
+index 0000000..409c437
+--- /dev/null
++++ b/src/components/sports/SportsEventCard.tsx
+@@ -0,0 +1,164 @@
++import * as motion from 'motion/react-client';
++import { AnimatePresence } from 'motion/react';
++import type { LucideIcon } from 'lucide-react';
++import {
++  Trophy,
++  Dribbble,
++  Flame,
++  Zap,
++  Goal,
++  Crosshair,
++  Calendar,
++  MapPin,
++  Layers,
++  ChevronDown,
++} from 'lucide-react';
++import type React from 'react';
++import type { SportsEvent } from './sportsData';
++
++interface SportsEventCardProps {
++  key?: React.Key;
++  event: SportsEvent;
++  isExpanded: boolean;
++  onToggle: () => void;
++}
++
++const iconMap: Record<string, LucideIcon> = {
++  Trophy,
++  Dribbble,
++  Flame,
++  Zap,
++  Goal,
++  Crosshair,
++};
++
++export function SportsEventCard({ event, isExpanded, onToggle }: SportsEventCardProps) {
++  const IconComponent = iconMap[event.iconName] || Trophy;
++
++  return (
++    <motion.div
++      layout
++      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
++      onClick={onToggle}
++      onKeyDown={(e) => {
++        if (e.key === 'Enter' || e.key === ' ') {
++          e.preventDefault();
++          onToggle();
++        }
++      }}
++      tabIndex={0}
++      role="button"
++      aria-expanded={isExpanded}
++      className={`relative w-full text-left rounded-xl p-6 md:p-8 cursor-pointer transition-colors duration-300 border-l-4 border-l-electric-orange border-t border-r border-b border-silver/10 ${
++        isExpanded
++          ? 'bg-silver/10 shadow-2xl shadow-midnight-indigo/50 ring-1 ring-electric-orange/30'
++          : 'bg-silver/5 hover:bg-silver/10 hover:border-silver/20'
++      }`}
++    >
++      {/* Header / Summary Bar */}
++      <div className="flex items-start justify-between gap-4">
++        <div className="flex items-start gap-4 md:gap-5">
++          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-electric-orange/15 text-electric-orange">
++            <IconComponent className="h-6 w-6" />
++          </div>
++          <div>
++            <h3 className="font-headline-sports-section text-2xl uppercase tracking-wide text-silver">
++              {event.title}
++            </h3>
++            <p className="font-sans text-sm md:text-base text-silver/60 mt-1">
++              {event.teaser}
++            </p>
++          </div>
++        </div>
++
++        <motion.div
++          animate={{ rotate: isExpanded ? 180 : 0 }}
++          transition={{ duration: 0.3 }}
++          className="shrink-0 p-2 rounded-lg bg-silver/5 text-silver/60 hover:text-electric-orange"
++        >
++          <ChevronDown className="w-5 h-5" />
++        </motion.div>
++      </div>
++
++      {/* Expanded Details Panel */}
++      <AnimatePresence>
++        {isExpanded && (
++          <motion.div
++            initial={{ opacity: 0 }}
++            animate={{ opacity: 1 }}
++            exit={{ opacity: 0 }}
++            transition={{ duration: 0.3 }}
++            className="mt-6 pt-6 border-t border-silver/10"
++          >
++            <p className="font-sans text-sm md:text-base text-silver/80 leading-relaxed mb-6">
++              {event.description}
++            </p>
++
++            {/* Metadata Grid */}
++            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-6">
++              <div className="flex items-center gap-3 bg-midnight-indigo/70 p-3.5 rounded-lg border border-silver/10">
++                <Calendar className="w-5 h-5 text-electric-orange shrink-0" />
++                <div>
++                  <div className="text-[11px] uppercase tracking-wider text-silver/50 font-label-sports">
++                    Date & Time
++                  </div>
++                  <div className="text-sm font-label-sports text-silver font-semibold mt-0.5">
++                    {event.date}
++                  </div>
++                </div>
++              </div>
++
++              <div className="flex items-center gap-3 bg-midnight-indigo/70 p-3.5 rounded-lg border border-silver/10">
++                <MapPin className="w-5 h-5 text-electric-orange shrink-0" />
++                <div>
++                  <div className="text-[11px] uppercase tracking-wider text-silver/50 font-label-sports">
++                    Venue
++                  </div>
++                  <div className="text-sm font-label-sports text-silver font-semibold mt-0.5">
++                    {event.venue}
++                  </div>
++                </div>
++              </div>
++
++              <div className="flex items-center gap-3 bg-midnight-indigo/70 p-3.5 rounded-lg border border-silver/10">
++                <Layers className="w-5 h-5 text-electric-orange shrink-0" />
++                <div>
++                  <div className="text-[11px] uppercase tracking-wider text-silver/50 font-label-sports">
++                    Format
++                  </div>
++                  <div className="text-sm font-label-sports text-silver font-semibold mt-0.5">
++                    {event.format}
++                  </div>
++                </div>
++              </div>
++            </div>
++
++            {/* Actions */}
++            <div className="flex flex-wrap items-center gap-4">
++              <button
++                type="button"
++                onClick={(e) => {
++                  e.stopPropagation();
++                  // No-op placeholder as per specification
++                }}
++                className="inline-flex items-center justify-center bg-electric-orange text-midnight-indigo font-headline-sports-section uppercase text-sm md:text-base px-6 py-3 rounded-lg hover:bg-electric-orange/90 active:scale-95 transition-all cursor-pointer shadow-lg shadow-electric-orange/20"
++              >
++                REGISTER NOW
++              </button>
++
++              {event.rulesLink && (
++                <a
++                  href={event.rulesLink}
++                  onClick={(e) => e.stopPropagation()}
++                  className="inline-flex items-center gap-1.5 font-label-sports text-xs uppercase tracking-wider text-silver/60 hover:text-electric-orange transition-colors px-4 py-3"
++                >
++                  Rulebook & Guidelines →
++                </a>
++              )}
++            </div>
++          </motion.div>
++        )}
++      </AnimatePresence>
++    </motion.div>
++  );
++}
+diff --git a/src/components/sports/SportsEvents.tsx b/src/components/sports/SportsEvents.tsx
+new file mode 100644
+index 0000000..d918af8
+--- /dev/null
++++ b/src/components/sports/SportsEvents.tsx
+@@ -0,0 +1,34 @@
++import { useState } from 'react';
++import { sportsData } from './sportsData';
++import { SportsEventCard } from './SportsEventCard';
++
++export function SportsEvents() {
++  const [expandedId, setExpandedId] = useState<string | null>(null);
++
++  return (
++    <section id="events" className="w-full py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
++      <div className="flex flex-col items-start mb-10 md:mb-14">
++        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-electric-orange/10 border border-electric-orange/20 text-electric-orange text-xs font-label-sports uppercase tracking-widest mb-3">
++          Compete & Conquer
++        </div>
++        <h2 className="font-headline-sports-section text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-silver">
++          THE EVENTS
++        </h2>
++        <p className="font-sans text-silver/60 text-sm sm:text-base mt-2 max-w-xl">
++          Six competitive arenas. Click any tournament card to view match rules, schedule details, and registration information.
++        </p>
++      </div>
++
++      <div className="flex flex-col gap-4 md:gap-5">
++        {sportsData.map((event) => (
++          <SportsEventCard
++            key={event.id}
++            event={event}
++            isExpanded={expandedId === event.id}
++            onToggle={() => setExpandedId(expandedId === event.id ? null : event.id)}
++          />
++        ))}
++      </div>
++    </section>
++  );
++}
+diff --git a/src/components/sports/sportsData.ts b/src/components/sports/sportsData.ts
+new file mode 100644
+index 0000000..d114bec
+--- /dev/null
++++ b/src/components/sports/sportsData.ts
+@@ -0,0 +1,80 @@
++export interface SportsEvent {
++  id: string;
++  title: string;
++  iconName: string;
++  teaser: string;
++  description: string;
++  date: string;
++  venue: string;
++  format: string;
++  rulesLink: string;
++}
++
++export const sportsData: SportsEvent[] = [
++  {
++    id: 'football',
++    title: 'FOOTBALL',
++    iconName: 'Trophy',
++    teaser: 'Dominate the turf in the ultimate 7v7 clash of collegiate champions.',
++    description: 'Step onto the pitch where legends are forged under the stadium floodlights. Teams will battle through high-intensity knockout rounds testing raw endurance, tactical mastery, and clinical finishing. Gather your squad and fight for campus supremacy.',
++    date: 'Oct 15, 2026 | 10:00 AM',
++    venue: 'Main Stadium Turf',
++    format: '7-a-side Knockout',
++    rulesLink: '#',
++  },
++  {
++    id: 'basketball',
++    title: 'BASKETBALL',
++    iconName: 'Dribbble',
++    teaser: 'Fast breaks, clutch three-pointers, and relentless court intensity.',
++    description: 'High-octane full-court action where every single possession swings momentum. Showcase your handles, lockdown perimeter defense, and ice-cold shooting in a grueling tournament bracket designed for true hoopers.',
++    date: 'Oct 15, 2026 | 02:00 PM',
++    venue: 'Indoor Sports Complex - Court A',
++    format: '5v5 Full Court Tournament',
++    rulesLink: '#',
++  },
++  {
++    id: 'box-cricket',
++    title: 'BOX CRICKET',
++    iconName: 'Flame',
++    teaser: 'Fast-paced, high-voltage box cricket under the arena lights.',
++    description: 'The nation’s greatest obsession reimagined into explosive short-format showdowns. Tight line-and-length bowling, lightning agility in the field, and monster hits off the nets will decide who hoists the golden cup.',
++    date: 'Oct 16, 2026 | 09:00 AM',
++    venue: 'Student Activity Arena',
++    format: '6-a-side Super 8s',
++    rulesLink: '#',
++  },
++  {
++    id: 'badminton',
++    title: 'BADMINTON',
++    iconName: 'Zap',
++    teaser: 'Lightning reflexes and explosive smashes slicing across the net.',
++    description: 'Test your agility, explosive footwork, and deceptive racket skills in singles and doubles categories. Survive grueling rallies and execute pinpoint drop shots on championship-grade synthetic courts.',
++    date: 'Oct 16, 2026 | 11:30 AM',
++    venue: 'Badminton Arena - Hall 2',
++    format: 'Singles & Doubles Knockout',
++    rulesLink: '#',
++  },
++  {
++    id: 'volleyball',
++    title: 'VOLLEYBALL',
++    iconName: 'Goal',
++    teaser: 'Sky-scraping spikes, iron wall blocks, and fearless team defense.',
++    description: 'Set, spike, and dominate above the net in this pulse-pounding 6-a-side showdown. Flawless communication, thunderous spikes, and acrobatic digs will determine which college stands tall at the podium.',
++    date: 'Oct 17, 2026 | 01:00 PM',
++    venue: 'Outdoor Sports Grounds',
++    format: '6v6 Best of 3 Sets',
++    rulesLink: '#',
++  },
++  {
++    id: 'table-tennis',
++    title: 'TABLE TENNIS',
++    iconName: 'Crosshair',
++    teaser: 'High-speed topspin rallies, lightning counters, and intense table duels.',
++    description: 'A masterclass in razor-sharp reflexes, wicked spin variations, and mental grit. Compete on international standard tables in blistering knockout brackets where split-second reaction times make all the difference.',
++    date: 'Oct 17, 2026 | 04:00 PM',
++    venue: 'Recreation Center Table Arena',
++    format: 'Individual & Team Knockout',
++    rulesLink: '#',
++  },
++];
+diff --git a/src/index.css b/src/index.css
+index a49e563..4e5fbe1 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -17,20 +17,22 @@
+   --font-mono:    "Space Mono", monospace;
+ 
+   /* ── New Tailwind font utilities for role-specific use ── */
+   --font-oxanium:           "Oxanium", sans-serif;
+   --font-fraunces:          "Fraunces", serif;
+   --font-rajdhani:          "Rajdhani", sans-serif;
+   --font-baloo-devanagari:  "Baloo Devanagari 2", sans-serif;
+   --font-noto-devanagari:   "Noto Sans Devanagari", sans-serif;
+   --font-archivo-black: "Archivo Black", sans-serif;
+   --font-archivo:       "Archivo", sans-serif;
++  --font-headline-sports-section: "Archivo Black", sans-serif;
++  --font-label-sports:            "Archivo", sans-serif;
+ }
+ 
+ /*
+   ── Falak '26 Role-based Typography Variables ───────────────────────────────
+   Defined in :root so they're accessible as var(--font-x) anywhere in the app,
+   including in inline styles and non-Tailwind CSS. These map directly to the
+   handoff spec roles.
+   ─────────────────────────────────────────────────────────────────────────── */
+ :root {
+   --font-headline-sports:   "Anton", sans-serif;
+diff --git a/src/pages/Sports.tsx b/src/pages/Sports.tsx
+index cbd3edb..68c976a 100644
+--- a/src/pages/Sports.tsx
++++ b/src/pages/Sports.tsx
+@@ -1,10 +1,15 @@
++import { SportsEvents } from '../components/sports/SportsEvents';
++
+ export function SportsPage() {
+   return (
+     <main className="w-full min-h-screen bg-midnight-indigo font-sans text-silver selection:bg-electric-orange selection:text-midnight-indigo">
+       {/* We will add Hero, Events, and Footer here in subsequent tasks */}
+       <div className="pt-32 px-6 flex justify-center">
+         <h1 className="font-headline-sports-section text-4xl text-electric-orange">SPORTS HUB COMING SOON</h1>
+       </div>
++
++      <SportsEvents />
+     </main>
+   );
+ }
++

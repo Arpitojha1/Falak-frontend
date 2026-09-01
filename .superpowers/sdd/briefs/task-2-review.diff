@@ -1,0 +1,78 @@
+3efc402 feat(sports): setup isolated routing and scaffold page shell
+  
+ src/App.tsx          | 34 ++++++++++++++++++++++------------
+ src/pages/Sports.tsx | 10 ++++++++++
+ 2 files changed, 32 insertions(+), 12 deletions(-)
+  
+diff --git a/src/App.tsx b/src/App.tsx
+index f1c595d..0652b03 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,29 +1,39 @@
+ /**
+  * @license
+  * SPDX-License-Identifier: Apache-2.0
+  */
+ 
+-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
++import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+ import { Navigation } from './components/Navigation';
+ import { Footer } from './components/Footer';
+ import { Home } from './pages/Home';
+ import { Schedule } from './pages/Schedule';
+ import { Profile } from './pages/Profile';
++import { SportsPage } from './pages/Sports';
++
++function MainLayout() {
++  return (
++    <div className="flex flex-col min-h-screen bg-midnight-indigo selection:bg-convergence-magenta selection:text-white">
++      <Navigation />
++      <div className="flex-grow pb-16 md:pb-0">
++        <Outlet />
++      </div>
++      <Footer />
++    </div>
++  );
++}
+ 
+ export default function App() {
+   return (
+     <Router>
+-      <div className="flex flex-col min-h-screen bg-midnight-indigo selection:bg-convergence-magenta selection:text-white">
+-        <Navigation />
+-        <div className="flex-grow pb-16 md:pb-0"> {/* padding bottom for mobile nav */}
+-          <Routes>
+-            <Route path="/" element={<Home />} />
+-            <Route path="/schedule" element={<Schedule />} />
+-            <Route path="/profile" element={<Profile />} />
+-          </Routes>
+-        </div>
+-        <Footer />
+-      </div>
++      <Routes>
++        <Route element={<MainLayout />}>
++          <Route path="/" element={<Home />} />
++          <Route path="/schedule" element={<Schedule />} />
++          <Route path="/profile" element={<Profile />} />
++        </Route>
++        <Route path="/sports" element={<SportsPage />} />
++      </Routes>
+     </Router>
+   );
+ }
+diff --git a/src/pages/Sports.tsx b/src/pages/Sports.tsx
+new file mode 100644
+index 0000000..cbd3edb
+--- /dev/null
++++ b/src/pages/Sports.tsx
+@@ -0,0 +1,10 @@
++export function SportsPage() {
++  return (
++    <main className="w-full min-h-screen bg-midnight-indigo font-sans text-silver selection:bg-electric-orange selection:text-midnight-indigo">
++      {/* We will add Hero, Events, and Footer here in subsequent tasks */}
++      <div className="pt-32 px-6 flex justify-center">
++        <h1 className="font-headline-sports-section text-4xl text-electric-orange">SPORTS HUB COMING SOON</h1>
++      </div>
++    </main>
++  );
++}

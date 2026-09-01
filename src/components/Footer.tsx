@@ -15,13 +15,16 @@ export function Footer() {
           <div className="opacity-80 mb-6">
             <LogoImage className="h-16 md:h-24" />
           </div>
+          {/* Body copy — Barlow (General Sans fallback) */}
           <p className="font-sans text-silver/60 max-w-sm text-sm">
             The convergence of Sports and Culture. A festival where the sky is not the limit, it's just the beginning.
           </p>
         </div>
         
         <div className="flex flex-col md:items-end gap-4">
-          <h3 className="font-mono text-silver uppercase tracking-widest text-sm mb-2 opacity-80">Support & Info</h3>
+          {/* Section label: tag/label role — Space Mono */}
+          <h3 className="font-mono text-silver uppercase tracking-widest text-sm mb-2 opacity-80">Support &amp; Info</h3>
+          {/* Footer links: body role — Barlow */}
           <Link to="#" className="font-sans text-silver/60 hover:text-convergence-magenta transition-colors">FAQs</Link>
           <Link to="#" className="font-sans text-silver/60 hover:text-convergence-magenta transition-colors">Contact Us</Link>
           <Link to="#" className="font-sans text-silver/60 hover:text-convergence-magenta transition-colors">Code of Conduct</Link>
@@ -30,9 +33,11 @@ export function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-silver/5 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+        {/* Copyright: tag/label role — Space Mono */}
         <p className="font-mono text-silver/40 text-xs">
           © 2026 FALAK FESTIVAL. ALL RIGHTS RESERVED.
         </p>
+        {/* Culture tagline: Culture headline role — Baloo 2 */}
         <div className="font-accent text-silver/40 text-sm">
           Made for the Convergence
         </div>
