@@ -8,6 +8,8 @@ export interface SportsEvent {
   venue: string;
   format: string;
   rulesLink: string;
+  img: string;
+  height: number;
 }
 
 export const sportsData: SportsEvent[] = [
@@ -21,6 +23,8 @@ export const sportsData: SportsEvent[] = [
     venue: 'Main Stadium Turf',
     format: '11v11 Knockout',
     rulesLink: '#',
+    img: '/assets/reference/sports/ref-1.jpg',
+    height: 400,
   },
   {
     id: 'basketball',
@@ -32,6 +36,8 @@ export const sportsData: SportsEvent[] = [
     venue: 'Indoor Sports Complex',
     format: '5v5 Full Court',
     rulesLink: '#',
+    img: '/assets/reference/sports/ref-2.jpg',
+    height: 550,
   },
   {
     id: 'box-cricket',
@@ -43,6 +49,8 @@ export const sportsData: SportsEvent[] = [
     venue: 'Student Activity Arena',
     format: '6v6 Super 8s',
     rulesLink: '#',
+    img: '/assets/reference/sports/ref-3.jpg',
+    height: 450,
   },
   {
     id: 'badminton',
@@ -54,6 +62,8 @@ export const sportsData: SportsEvent[] = [
     venue: 'Hall 2',
     format: 'Singles & Doubles',
     rulesLink: '#',
+    img: '/assets/reference/sports/ref-6.jpg',
+    height: 600,
   },
   {
     id: 'volleyball',
@@ -65,6 +75,8 @@ export const sportsData: SportsEvent[] = [
     venue: 'Outdoor Courts',
     format: '6v6 Best of 3',
     rulesLink: '#',
+    img: '/assets/reference/sports/ref-7.jpg',
+    height: 400,
   },
   {
     id: 'table-tennis',
@@ -76,5 +88,7 @@ export const sportsData: SportsEvent[] = [
     venue: 'Recreation Center',
     format: 'Individual & Team',
     rulesLink: '#',
+    img: '/assets/reference/sports/ref-8.jpg',
+    height: 500,
   },
 ];
