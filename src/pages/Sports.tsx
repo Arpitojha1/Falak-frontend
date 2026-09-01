@@ -1,4 +1,5 @@
 import { SportsEvents } from '../components/sports/SportsEvents';
+import { SportsFooter } from '../components/sports/SportsFooter';
 
 export function SportsPage() {
   return (
@@ -9,6 +10,7 @@ export function SportsPage() {
       </div>
 
       <SportsEvents />
+      <SportsFooter />
     </main>
   );
 }
