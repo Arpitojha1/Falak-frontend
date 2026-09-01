@@ -7,11 +7,43 @@
   --color-convergence-magenta: #FF3D7F;
   --color-cobalt-blue: #0057FF;
   --color-deep-plum: #1C0B46;
+  --color-electric-orange: #FF6A00;
+  --color-acid-lime: #C6FF00;
 
-  --font-sans: "Barlow", sans-serif;
+  /* ── Existing Tailwind font utilities (unchanged) ── */
+  --font-sans:    "Barlow", "General Sans", sans-serif;
   --font-display: "Anton", sans-serif;
-  --font-accent: "Baloo 2", sans-serif;
-  --font-mono: "Space Mono", monospace;
+  --font-accent:  "Baloo 2", sans-serif;
+  --font-mono:    "Space Mono", monospace;
+
+  /* ── New Tailwind font utilities for role-specific use ── */
+  --font-oxanium:           "Oxanium", sans-serif;
+  --font-fraunces:          "Fraunces", serif;
+  --font-rajdhani:          "Rajdhani", sans-serif;
+  --font-baloo-devanagari:  "Baloo Devanagari 2", sans-serif;
+  --font-noto-devanagari:   "Noto Sans Devanagari", sans-serif;
+  --font-archivo-black: "Archivo Black", sans-serif;
+  --font-archivo:       "Archivo", sans-serif;
+}
+
+/*
+  ── Falak '26 Role-based Typography Variables ───────────────────────────────
+  Defined in :root so they're accessible as var(--font-x) anywhere in the app,
+  including in inline styles and non-Tailwind CSS. These map directly to the
+  handoff spec roles.
+  ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --font-headline-sports:   "Anton", sans-serif;
+  --font-accent-esports:    "Oxanium", sans-serif;
+  --font-label-tag:         "Space Mono", monospace;
+  --font-body:              "Barlow", "General Sans", sans-serif;
+  --font-headline-culture:  "Baloo 2", sans-serif;
+  --font-glam-accent:       "Fraunces", serif;
+  --font-hindi-sports:      "Rajdhani", sans-serif;
+  --font-hindi-culture:     "Baloo Devanagari 2", sans-serif;
+  --font-hindi-fallback:    "Noto Sans Devanagari", sans-serif;
+  --font-headline-sports-section: "Archivo Black", sans-serif;
+  --font-label-sports:            "Archivo", sans-serif;
 }
 
 @layer base {
