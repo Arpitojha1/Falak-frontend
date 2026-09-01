@@ -22,8 +22,8 @@
   --font-rajdhani:          "Rajdhani", sans-serif;
   --font-baloo-devanagari:  "Baloo Devanagari 2", sans-serif;
   --font-noto-devanagari:   "Noto Sans Devanagari", sans-serif;
-  --font-archivo-black: "Archivo Black", sans-serif;
-  --font-archivo:       "Archivo", sans-serif;
+  --font-archivo-black:     "Archivo Black", sans-serif;
+  --font-archivo-condensed: "Archivo Condensed", sans-serif;
   --font-headline-sports-section: "Archivo Black", sans-serif;
   --font-label-sports:            "Archivo", sans-serif;
 }
@@ -45,7 +45,7 @@
   --font-hindi-culture:     "Baloo Devanagari 2", sans-serif;
   --font-hindi-fallback:    "Noto Sans Devanagari", sans-serif;
   --font-headline-sports-section: "Archivo Black", sans-serif;
-  --font-label-sports:            "Archivo", sans-serif;
+  --font-label-sports:            "Archivo Condensed", sans-serif;
 }
 
 @layer base {
