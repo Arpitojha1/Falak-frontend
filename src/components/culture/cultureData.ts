@@ -10,7 +10,24 @@ export interface CultureEvent {
   venue: string;
   format: string;
   rulesLink?: string;
+  /** Placeholder image for the StampCTA photo slot.
+   *  TODO: Replace all values with real per-event photography before launch.
+   *  Currently sourced from reference/cultural/ — portrait/scene images only,
+   *  not stamp-format or text-heavy references. */
+  placeholderImg: string;
 }
+
+// Placeholder image pool (photographic/portrait refs only):
+// ref_c-2  — chaiwala duotone (scene)
+// ref_c-4  — Bharatanatyam dancer portrait (classical dance)
+// ref_c-16 — dancer stencil (high-contrast, strong silhouette)
+// ref_c-17 — performer, stage-lit (dramatic, expressive)
+const IMG = {
+  dancer: '/assets/reference/cultural/ref_c-4.jpg',
+  stencil: '/assets/reference/cultural/ref_c-16.jpg',
+  performer: '/assets/reference/cultural/ref_c-17.jpg',
+  chaiwala: '/assets/reference/cultural/ref_c-2.jpg',
+} as const;
 
 export const cultureData: CultureEvent[] = [
   {
@@ -25,6 +42,7 @@ export const cultureData: CultureEvent[] = [
     venue: 'Main Auditorium',
     format: 'Solo & Group',
     rulesLink: '#',
+    placeholderImg: IMG.dancer,
   },
   {
     id: 'folk-fusion',
@@ -38,6 +56,7 @@ export const cultureData: CultureEvent[] = [
     venue: 'Open Air Amphitheatre',
     format: 'Group (6–20)',
     rulesLink: '#',
+    placeholderImg: IMG.performer,
   },
   {
     id: 'music',
@@ -46,11 +65,12 @@ export const cultureData: CultureEvent[] = [
     category: 'Music',
     denomination: '₹20',
     teaser: 'Notes that outlast the night.',
-    description: 'Classical and semi-classical vocal and instrumental competition. Ragas, thumris, ghazals welcome. Judged on sur, taal, and presentation. Accompaniment by Falak\'s own tabla-harmonium ensemble.',
+    description: "Classical and semi-classical vocal and instrumental competition. Ragas, thumris, ghazals welcome. Judged on sur, taal, and presentation. Accompaniment by Falak's own tabla-harmonium ensemble.",
     date: 'Oct 16, 2026 | 04:00 PM',
     venue: 'Music Hall',
     format: 'Solo Performance',
     rulesLink: '#',
+    placeholderImg: IMG.chaiwala,
   },
   {
     id: 'fashion',
@@ -59,11 +79,12 @@ export const cultureData: CultureEvent[] = [
     category: 'Fashion & Art',
     denomination: '₹30',
     teaser: 'Fabric as language.',
-    description: 'India\'s textile traditions take the runway. Teams design and model 3 outfits built around a declared cultural theme — heritage weaves, regional embroidery, or upcycled craft. The ramp is yours.',
+    description: "India's textile traditions take the runway. Teams design and model 3 outfits built around a declared cultural theme — heritage weaves, regional embroidery, or upcycled craft. The ramp is yours.",
     date: 'Oct 16, 2026 | 07:00 PM',
     venue: 'Main Auditorium',
     format: 'Team (3–8)',
     rulesLink: '#',
+    placeholderImg: IMG.stencil,
   },
   {
     id: 'street-play',
@@ -77,6 +98,7 @@ export const cultureData: CultureEvent[] = [
     venue: 'Campus Grounds',
     format: 'Group (8–15)',
     rulesLink: '#',
+    placeholderImg: IMG.performer,
   },
   {
     id: 'fine-arts',
@@ -90,5 +112,6 @@ export const cultureData: CultureEvent[] = [
     venue: 'Arts Courtyard',
     format: 'Individual',
     rulesLink: '#',
+    placeholderImg: IMG.dancer,
   },
 ];
