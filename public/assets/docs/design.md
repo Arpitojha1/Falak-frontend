@@ -1,125 +1,161 @@
-# Design Reference — Falak '26
+# Falak '26 — Full-Site Design Reference
 
-> Source: `Falak26_Design_Reference.pdf`
-> Audience: organizing committee, media, graphic design, and UI/UX teams — **read before starting any asset.**
+> This document reflects the **actual, audited state of the codebase** as of Session 7. It supersedes previous planning documents and serves as the single source of truth for the implemented design system across all tracks.
 
-## The Big Idea
+## 1. Cross-Track Rules (Site-Wide)
 
-Falak has two sides — **Sports** and **Culture**. They share one background color and one font logic, but each has its own energy, palette, and reference pool. This doc defines what each side looks like, where to pull inspiration from, and exactly which colors and fonts to use.
-
----
-
-## 🏆 Sports Side
-
-**Vibe:** Fast, gritty, competitive. Vintage varsity/skatewear energy fused with modern esports polish.
-
-### Design trends to use
-- Vintage varsity / letterman patches
-- Streetwear stamp logos
-- Technical utility labels (Arc'teryx / Nike ACG style tiny tags)
-- F1 broadcast graphics — timing towers, driver cards
-- Player / trading card layouts (FIFA, NBA cards)
-- Brutalist grid posters
-- Stadium signage / scoreboard lettering
-- Esports HUD elements — corner brackets, glitch text, stat blocks
-
-### Inspiration sources
-Nike, Arc'teryx, F1, FIFA Ultimate Team / NBA cards, vintage American varsity culture, skatewear brands, stadium signage, esports broadcast overlays.
-
-### Search keywords (Canva / Cosmos / Pinterest / Behance)
-`varsity patch design` · `streetwear stamp logo` · `esports HUD design` · `broadcast sports graphic` · `player stat card layout` · `brutalist sports poster` · `F1 broadcast graphic design` · `vintage college letterman jacket` · `sports poster grid layout` · `gaming tournament poster`
-
-### Sports colors
-
-| Color | Hex | Use for |
-|---|---|---|
-| Electric Orange | `#FF6A00` | Main pop color — titles, highlights |
-| Acid Lime | `#C6FF00` | Esports / gaming energy only |
-| Cobalt Blue | `#0057FF` | Stats, data, tables |
-| Vermillion Red | `#D7263D` | Accent — varsity/motorsport red, rivalry moments, alerts |
+- **Convergence Magenta is Reserved:** `#FF3D7F` is strictly reserved for merged/shared assets (like the main landing page or shared Navigation). It must never appear inside the isolated Sports or Culture tracks.
+- **Track Colors Never Cross:** Sports colors (Electric Orange, Acid Lime) never appear in Culture. Culture colors (Aurora Violet, Soft Lilac, Deep Plum, etc.) never appear in Sports. Neither track's colors appear on the shared landing page / Navigation.
+- **Commit Granularity:** One file per commit, project-wide, no exceptions.
+- **Mobile Breakpoints Deferred:** The site is currently built and supported only for desktop (`1440px` and up). Responsive mobile passes are deferred site-wide.
+- **Reference as Form Only:** Reference imagery is used strictly for layout, color, and structural guidance, not for literal content replication.
 
 ---
 
-## 🎉 Culture Side — Desi Maximalism
+## 2. Sports Track (Complete & Locked)
 
-**Vibe:** Elegant, vibrant, festival-scale. Desi maximalism filtered through festival polish and dusk-sky gradients — ornate linework meets street-level color and celebration.
+> **Status: Complete/Locked.** This section documents a finished, frozen system. It is isolated in `src/components/sports/` and rendered outside the shared `MainLayout`.
 
-### Design trends to use
-- Jaali work — Mughal/Rajasthani perforated latticework, used as fine linework for dividers/borders/texture
-- Ganjifa card layouts — traditional Indian playing-card format, for illustrated event/artist stat cards
-- Truck art frame stamps — ornate Indian truck/rickshaw art styling, for badge/stamp marks
-- Vintage Bollywood poster grain — hand-painted lettering texture, halftone print grain
-- Kite motif — colorful diamond shapes and string-lines, our direct tie to "Falak" (sky)
-- Gradient-wash dusk backdrops — soft violet-to-plum gradients, festival evening light
+### Palette
+- **Midnight Indigo** (`#0B0F2B`): Base background, heavy borders, text in light surfaces, hard drop shadows.
+- **Electric Orange** (`#FF6A00`): Primary pop — diagonal hero stripe, CTA buttons, highlighted text, top footer border, solid offset shadows.
+- **Acid Lime** (`#C6FF00`): High-energy accent — hero "ON" text, offset shadow plates, badge backgrounds.
+- **Silver** (`#C0C0C0`): Body text, mascot slot backing, overlay backgrounds.
+- **Cobalt Blue** (`#0057FF`): Used dynamically in hover color-cycling arrays.
 
-### Inspiration sources
-Vintage Bollywood hand-painted cinema posters and lobby cards, truck/rickshaw art (India-wide), jaali/latticework from Mughal and Rajasthani architecture, Ganjifa playing cards (Mysore/Odisha tradition), Makar Sankranti kite festival photography, contemporary "desi maximalism" designers on Instagram/Behance.
+### Typography
+- **Headlines:** `Anton` (400 weight condensed) — Massive hero display ("GAME ON").
+- **Section/Component Titles:** `Archivo Black` (900 weight) — Marquees, event titles, CTAs, footer links.
+- **Data/Labels:** `Archivo Condensed` (600 weight) — Badges, metadata headers, copyright.
+- **Body:** `Barlow` (400/500 weight) — Intro paragraphs and event descriptions.
 
-### Search keywords (Canva / Cosmos / Pinterest / Behance)
-`desi maximalism poster design` · `Indian truck art typography` · `Bollywood vintage poster grain` · `jaali pattern design` · `Ganjifa card art` · `kite festival photography sky` · `Indian wedding invitation gold frame` · `vintage Bollywood cinema poster` · `Rajasthani lattice pattern` · `festival poster gradient`
+### Motif Vocabulary
+- **Neobrutalism:** Hard 4px/8px solid borders (`border-midnight-indigo`), heavy solid offset drop shadows without blur (`shadow-[8px_8px_0_0_#FF6A00]`).
+- **Textures:** Halftone dot overlays (SVG radial gradients), torn-paper/diagonal poster strips.
+- **Typography:** Oversized, rotated/tilted text spans, background repeating marquees.
+- **Accents:** Spinning 8-point and 14-point star-burst SVGs, masking tape graphic blocks.
 
-### Culture colors
+### Events System
+- **Grid:** Shortest-column-first Masonry layout engine (adapted from React Bits) handling absolute positioning.
+- **Interaction:** Custom GSAP Flip implementation. Clicking a grid item captures its state, expands it to a fixed full-screen modal (`top: 5vh; left: 5vw; 90vw/90vh`), and morphs it smoothly. 
+- **Hover Effects:** Dynamic color shift overlay (cycles Orange, Lime, Blue), halftone grunge overlay, and scaling.
+- **Background Dimming:** When an event is expanded, the rest of the grid receives a `blur` and `brightness` filter.
 
-| Color | Hex | Use for |
-|---|---|---|
-| Aurora Violet | `#8A5CFF` | Main pop color — titles, highlights |
-| Deep Plum | `#1C0B46` | Darker backdrop layer, dusk gradient base |
-| Soft Lilac | `#E6DFF6` | Light accents, soft highlight text |
-| Champagne Pearl | `#EDE4D3` | Elegant warm neutral — premium surfaces |
-| Marigold Gold | `#FFB627` | Poppy hero accent — festival energy, kite/truck art gold |
-| Blush Rose | `#F4A6C6` | Pastel accent — soft/elegant moments, fashion show |
-| Cobalt Blue | `#0057FF` | Shared secondary — sponsorship-adjacent pages |
-| Vermillion Red | `#D7263D` | Accent — sindoor/bridal red, festival red, Holi |
+### Mascot Placeholder (ZUUM)
+- Located on the left side of `SportsHero.tsx`.
+- Currently a designated fixed-aspect `aspect-[4/5]` box with masking tape accents and dev-only labels (`TODO: Mascot Asset`). It is strictly a structural placeholder waiting for the real ZUUM asset.
 
----
-
-## Shared Colors — Used Everywhere
-
-| Color | Hex | Use for |
-|---|---|---|
-| Midnight Indigo | `#0B0F2B` | Base background — every asset, both sides |
-| Silver | `#C0C0C0` | Utility text, hairlines |
-| Vermillion Red | `#D7263D` | Genuine accent on **both** sides — varsity red on Sports, festival red on Culture |
-| Convergence Magenta | `#FF3D7F` | **Reserved** — only on "both worlds together" assets (main cover, etc.) |
-
-### Color rules
-- **Sports-only** colors (Orange, Lime) and **Culture-only** colors (Violet, Marigold Gold, Blush Rose, Plum, Lilac, Pearl) never cross to the other side.
-- Indigo, Silver, and Vermillion Red can be used on **any** asset, either side.
-- Convergence Magenta is reserved strictly for whole-fest "both worlds" pieces — using it anywhere else breaks the system.
+### Architecture
+- Lives entirely in `src/components/sports/`.
+- The `/sports` route is mounted outside `MainLayout` in `App.tsx`.
+- Has its own `SportsHero`, `SportsEvents`, and a dedicated `SportsFooter` (which links back to other routes). It does **not** render the shared top Navigation.
 
 ---
 
-## Fonts
+## 3. Culture Track (In Progress)
 
-*(Open to change, but direction is shared here.)*
+> **Status: In Progress.** Documenting the currently built state. Like Sports, it is isolated in `src/components/culture/` and rendered outside the shared `MainLayout`.
 
-### Sports side
+### Palette
+- **Deep Plum** (`#1C0B46`) to **Midnight Indigo** (`#0B0F2B`): Base gradient backgrounds.
+- **Aurora Violet** (`#8A5CFF`): Main pop — SVG strokes, Devanagari text, hover washes, category labels, CTA backgrounds.
+- **Soft Lilac** (`#E6DFF6`): Accents, mascot slot borders, hover washes.
+- **Champagne Pearl** (`#EDE4D3`): Warm neutral — typography, photo borders, ticket perforations.
+- **Silver** (`#C0C0C0`): Utility text, chevron borders.
 
-| Role | Font | Notes |
-|---|---|---|
-| Headlines / hero titles | Anton or Druk (paid) | Bold condensed impact |
-| Esports / tech accents | Oxanium | Geometric gaming/futuristic feel |
-| Tag strips / data labels | Space Mono | Monospace technical-label look |
-| Body text | Barlow | Clean workhorse — body copy only, not headlines |
+### Typography
+- **Hero & Primary Titles:** `Baloo 2` (800 weight) — Poppy, rounded festival feel.
+- **Hindi / Devanagari:** `Baloo Devanagari 2` (700 weight) — Used for event translations (e.g. "संस्कृति", "सुर संगम").
+- **Accents:** `Fraunces` (Italic) — Premium moments like the hero tagline and vertical ticket-stub branding.
+- **Data/Labels & Body:** `Barlow` (400/500/600 weight) — Body copy, metadata labels, copyright.
 
-### Culture side
+### Motif Vocabulary
+- **Darbar Carpet & Jaali:** Multi-layered background incorporating micro-weave patterns, truck-art finials, and a dense 24x16 jaali screen arch.
+- **Mandala Medallion:** A central hero backdrop featuring concentric rings, a 16-point star, and a duotone collage inlay.
+- **Dusk Gradient:** Soft vertical gradients evoking festival evening light.
+- **Duotone & Halftone Photography:** Images use heavy CSS filters (`grayscale(1) sepia(0.5) hue-rotate(220deg) contrast(1.4) brightness`) combined with multiply halftone overlays.
 
-| Role | Font | Notes |
-|---|---|---|
-| Headlines / hero titles | Baloo 2 | Rounded, bold, poppy festival feel |
-| Glam accent (Fashion Show / Pro-Show only) | Fraunces | Soft serif, premium moments only |
-| Body text | Barlow or General Sans | Shared with Sports for consistency |
+### Events System (Ticket-Stubs)
+- **Grid:** Standard CSS Grid (3x2 collapsed, morphing to a full-width active row + 5-column dimmed row).
+- **Cards (`EventCard.tsx`):** Built using a high-res `stamp-card.png` background. 
+- **Interaction:** Uses Framer Motion (`layoutId`) for FLIP animation. Clicking expands the ticket frame smoothly while staggering the entrance of the expanded content to prevent visual popping.
+- **Hover Effects:** Lifts on hover (`-translate-y-1`), raises photo contrast, and fades in an Aurora Violet halftone dot pattern over the image slot.
 
-### Multilingual — Hindi / Devanagari
+### CTA & StampBurst
+- **StampCTA:** Aurora Violet button with a perforated SVG border and postmark cancellation overlay.
+- **StampBurst:** Custom HTML5 `<canvas>` particle physics engine. Clicking the CTA spawns 30 scalloped/petal-shaped hexagon particles that explode outward and fade.
 
-| Role | Font | Notes |
-|---|---|---|
-| Sports-leaning Hindi | Rajdhani | Condensed, techy — pairs with Sports |
-| Culture-leaning Hindi | Baloo Devanagari 2 | Direct sibling of Baloo 2 — same poppy energy |
-| Safe fallback (any context) | Noto Sans Devanagari | Always renders correctly, use if short on time |
+### Mascot Placeholder (SWIRLA)
+- Located on the right side of `CultureHero.tsx`.
+- Currently an arched container with a `soft-lilac` gradient wash and dashed border, labeled "SWIRLA".
+
+### Architecture
+- Lives entirely in `src/components/culture/`.
+- The `/cultural` route is mounted outside `MainLayout` in `App.tsx`.
+- Features its own `CultureHero`, `CultureEvents`, and `CultureFooter`. It does **not** render the shared top Navigation.
 
 ---
 
-## Rule to Remember
+## 4. Main Landing Page (`/`)
 
-> **Heavier + tighter = Sports.** **Rounder + poppier = Culture.** **Monospace = shared utility** (tag strips, data) across both.
+> **Status: Pre-Integration / Baseline.** The convergence design is not yet built. The page currently serves as a structural baseline.
+
+### Shared Navigation & Footer
+- **Track-Agnostic:** Both `Navigation.tsx` and `Footer.tsx` strictly adhere to the convergence palette (`Midnight Indigo`, `Silver`, `Convergence Magenta`). They contain zero track-specific colors (no Sports orange, no Culture violet).
+- **Navigation:** Features a desktop top-bar and a mobile bottom tab-bar. Links only to `/`, `/schedule`, and `/profile`. It does **not** link to the `/sports` or `/cultural` routes.
+- **Footer:** Features a Jaali-style dotted radial grid background and placeholder links.
+
+### Home Page (`Home.tsx`) Current State
+- The page currently renders only two components: `<Hero />` and `<RecapSection />`.
+- **Hero:** A track-agnostic setup with a dual-layer logo (Silver fading to Magenta on hover), 6 animated floating kite assets (`motion/react` infinite loops), and SVG noise grain.
+- **RecapSection:** A "Last Falak" flashback block utilizing a WebGL `MorphSlider` (OGL + GSAP) running a 'melt' shader inside a Ganjifa-card frame.
+- **Missing Elements:** The page currently has no CTAs to enter Sports/Culture, no split-track UI, and no convergence wave/hourglass animations.
+
+---
+
+## 5. Implementation Gaps & Deviations
+
+This section documents where the live code differs from previous planning or handoff documents:
+
+- **Missing Landing Page CTAs:** The Handoff Doc specified "Enter Sports" and "Enter Culture" CTAs mapping to the left/right of the hero. These do not exist in the current `Home.tsx`.
+- **Hero Animations Divergence:** The Handoff Doc detailed a transition to Google Flow (Veo) videos for background waves and hourglass scrubbers. The codebase instead implements CSS/Framer Motion floating kites and a WebGL `MorphSlider` for the flashback. The Flow videos are not integrated.
+- **Sports `EventCard.tsx` is an Orphan:** `src/components/sports/SportsEventCard.tsx` contains a complete Framer Motion accordion implementation, but it is entirely unused. The live site uses `Masonry.tsx` to handle the grid, GSAP Flip, and detail rendering internally.
+- **Navigation Links:** The shared `<Navigation />` was documented to handle top-level routing, but it currently has no links to `/sports` or `/cultural`. Users must manually navigate to those URLs or reach them via the standalone footers.
+- **Culture Route Naming:** The file is `Culture.tsx` and component is `CulturePage`, but the route is defined as `/cultural` in `App.tsx`.
+
+---
+
+## 6. Outstanding / Not Yet Done (Site-Wide)
+
+- **Main Landing Convergence Build:** The split-track hero design, swipe/click zone transitions, and unified entry point to the festival are pending.
+- **Real Mascot Assets:** Both ZUUM (Sports) and SWIRLA (Culture) require final graphics to replace the structural placeholders.
+- **Culture Event Photography:** `cultureData.ts` currently references fallback/placeholder duotone images. Real event photography needs to be slotted in.
+- **Culture Footer Confirmation:** Determine if the isolated `CultureFooter` should remain independent or share structural similarities with the global footer.
+- **Mobile Breakpoints:** The site remains locked to desktop layout (`1440px`). A comprehensive mobile responsive pass is required across all tracks.
+- **Schedule/Profile/Passes Sections:** Currently implemented as bare-minimum structural stubs with "Coming Soon" messaging to prevent 404s. These need full implementations.
+
+---
+
+## 7. Full-Site Changelog
+
+**Session 1–5: Sports Track Build**
+- Setup isolated routing and scaffolded page shell for `/sports`.
+- Added Archivo font families and Sports color tokens.
+- Scaffolded Sports Hero with asymmetric layout and mascot placeholder.
+- Created `SportsFooter` with neobrutalist styling, tilted logo, and halftone texture.
+- Implemented `SportsEvents` with React Bits Masonry and GSAP Flip for expand-in-place interactions, including color cycling and grunge hover overlays.
+
+**Session 6: Culture Track Build**
+- Created `/cultural` route and isolated `CulturePage` structure.
+- Added Aurora Violet, Soft Lilac, Champagne Pearl, and Devanagari fonts to theme.
+- Built `CultureHero` featuring Darbar carpet/Jaali background, Mandala medallion, SWIRLA placeholder, and asymmetric layout.
+- Developed `CultureFooter` with carpet-weave texture and spinning rosette.
+- Implemented `CultureEvents` grid.
+- Developed `EventCard` using `stamp-card.png` ticket-stubs, Framer Motion FLIP layout animations, and duotone photo slots.
+- Added custom HTML5 `<canvas>` particle physics (`StampBurst`) and scalloped `StampCTA` for registration buttons.
+- Applied massive anti-slop pass to Culture background textures (micro-weave, finials, noise).
+
+**Session 7: Full-Site Documentation**
+- Audited the entire codebase (Sports, Culture, Main Landing Page).
+- Consolidated site-wide rules, verified implementations against previous planning docs, and produced this unified `design.md` reference.
+- Created status-only `README.md`.
