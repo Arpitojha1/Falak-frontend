@@ -10,6 +10,7 @@ import { Home } from './pages/Home';
 import { Schedule } from './pages/Schedule';
 import { Profile } from './pages/Profile';
 import { SportsPage } from './pages/Sports';
+import { CulturePage } from './pages/Culture';
 
 function MainLayout() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="/sports" element={<SportsPage />} />
+        <Route path="/cultural" element={<CulturePage />} />
       </Routes>
     </Router>
   );
