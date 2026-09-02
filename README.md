@@ -1,17 +1,25 @@
-## Run Locally
+# Falak '26
 
-**Prerequisites:**  Node.js
+Falak '26 is the official MIT Bengaluru festival website, a React SPA featuring separate, distinct Sports and Culture track identities.
 
+## Stack
 
-1. Install dependencies:
-   `npm install`
-2. Run the app:
-   `npm run dev`
+React 19, Vite, React Router v7, Tailwind CSS v4, Framer Motion v12, GSAP.
 
+## Route Status
 
-## What is done yet 
-the skeleton of the landing page is done now the logic for the sports and cultural design is remaining 
-i need to add assests for kite,motif and much more plus the bg to bring out the maximalsim side out of it
-as far as with the colour pallete looks it is vibe coded in plain text and need to add texture and assets with 
-animations so that will be done after i am done with hero page for sports and cultural side of it
-then bring the other two in action 
+| Route | Status | What's built |
+|---|---|---|
+| `/sports` | Complete | Asymmetric Hero, Masonry event grid with GSAP Flip expand, neobrutalist styling, isolated footer. Mascot slot is a placeholder (ZUUM pending). |
+| `/cultural` | In progress | Hero (jaali/carpet background, SWIRLA placeholder), event card system (ticket-stub cards, Framer Motion layout expand, Register CTA with particle burst). Real mascot and event photography pending. |
+| `/` (main landing) | Baseline / pre-integration | Shared track-agnostic Navigation and Footer, Kite motif hero, and WebGL flashback slider. Convergence split-track hero not yet built. |
+
+## Design System
+
+Full design system, motif rationale, and decision history documented in `public/assets/docs/design.md`.
+
+## Setup
+
+```bash
+npm install && npm run dev
+```
