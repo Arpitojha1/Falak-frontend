@@ -198,7 +198,7 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
 
             {/* Actions row — distinct Stamp CTA (not tile-as-button) */}
             <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-aurora-violet/20 relative z-10">
-              <StampCTA label="REGISTER NOW" href="#" />
+              <StampCTA label="REGISTER NOW" href="#" placeholderImg={event.placeholderImg} />
 
               {event.rulesLink && (
                 <a
