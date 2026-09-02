@@ -50,7 +50,7 @@ export function SportsEvents() {
             const event = sportsData.find(e => e.id === item.id);
             if (!event) return null;
             return (
-              <div className="w-full h-full bg-silver/95 backdrop-blur-md p-8 md:p-12 relative z-20 flex flex-col justify-center border-4 border-midnight-indigo overflow-y-auto">
+              <div className="w-full h-full bg-silver/80 backdrop-blur-md p-8 md:p-12 relative z-20 flex flex-col justify-center border-4 border-midnight-indigo overflow-y-auto">
                 {/* Background grain inside overlay */}
                 <div 
                   className="absolute inset-0 pointer-events-none opacity-20 mix-blend-multiply"
