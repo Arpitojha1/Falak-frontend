@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
-import * as motion from 'motion/react-client';
 import { cultureData } from './cultureData';
 import { EventCard } from './EventCard';
 
@@ -99,27 +98,22 @@ export function CultureEvents() {
           {expandedId ? (
             /* Expanded state — show expanded card full-width + rest dimmed below */
             <div className="space-y-6">
-              {/* Expanded card — spans full width */}
-              <motion.div
-                key={`expanded-${expandedId}`}
-                layout
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.3 }}
-              >
-                {(() => {
-                  const event = cultureData.find((e) => e.id === expandedId);
-                  return event ? (
-                    <EventCard
-                      event={event}
-                      isExpanded={true}
-                      onToggle={() => toggleEvent(event.id)}
-                      isDimmed={false}
-                    />
-                  ) : null;
-                })()}
-              </motion.div>
+              {/* Expanded card — spans full width.
+                  key={expandedId} matches key={event.id} in the collapsed grid so Framer
+                  Motion can track the layoutId across the DOM position change.
+                  No wrapping motion.div — EventCard's internal layoutId on the PNG handles the FLIP. */}
+              {(() => {
+                const event = cultureData.find((e) => e.id === expandedId);
+                return event ? (
+                  <EventCard
+                    key={expandedId}
+                    event={event}
+                    isExpanded={true}
+                    onToggle={() => toggleEvent(event.id)}
+                    isDimmed={false}
+                  />
+                ) : null;
+              })()}
 
               {/* Remaining dimmed tiles in 3-column row below */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
