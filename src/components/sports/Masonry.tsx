@@ -158,7 +158,7 @@ const Masonry: React.FC<MasonryProps> = ({
   }, [columns, items, width]);
 
   const [internalExpandedId, setInternalExpandedId] = useState(expandedId);
-  const flipState = useRef<Flip.State | null>(null);
+  const flipState = useRef<any>(null);
 
   if (expandedId !== internalExpandedId) {
     // Capture state before React renders the new class or we change inline styles
