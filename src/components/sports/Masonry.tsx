@@ -1,5 +1,8 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { Flip } from 'gsap/Flip';
+
+gsap.registerPlugin(Flip);
 
 import './Masonry.css';
 
@@ -75,6 +78,8 @@ interface MasonryProps {
   blurToFocus?: boolean;
   colorShiftOnHover?: boolean;
   onItemClick?: (item: Item) => void;
+  expandedId?: string | null;
+  renderDetails?: (item: Item) => React.ReactNode;
 }
 
 const Masonry: React.FC<MasonryProps> = ({
@@ -87,7 +92,9 @@ const Masonry: React.FC<MasonryProps> = ({
   hoverScale = 0.95,
   blurToFocus = true,
   colorShiftOnHover = false,
-  onItemClick
+  onItemClick,
+  expandedId = null,
+  renderDetails
 }) => {
   const columns = useMedia(
     ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'],
@@ -150,6 +157,19 @@ const Masonry: React.FC<MasonryProps> = ({
     });
   }, [columns, items, width]);
 
+  const [internalExpandedId, setInternalExpandedId] = useState(expandedId);
+  const flipState = useRef<Flip.State | null>(null);
+
+  if (expandedId !== internalExpandedId) {
+    // Capture state before React renders the new class or we change inline styles
+    flipState.current = Flip.getState('.item-wrapper');
+    // Hide details immediately on close
+    if (!expandedId) {
+      gsap.set('.details-overlay', { opacity: 0 });
+    }
+    setInternalExpandedId(expandedId);
+  }
+
   const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
@@ -157,12 +177,8 @@ const Masonry: React.FC<MasonryProps> = ({
 
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
-      const animationProps = {
-        x: item.x,
-        y: item.y,
-        width: item.w,
-        height: item.h
-      };
+      const element = document.querySelector(selector) as HTMLElement;
+      if (!element) return;
 
       if (!hasMounted.current) {
         const initialPos = getInitialPosition(item);
@@ -177,30 +193,59 @@ const Masonry: React.FC<MasonryProps> = ({
 
         gsap.fromTo(selector, initialState, {
           opacity: 1,
-          ...animationProps,
+          x: item.x,
+          y: item.y,
+          width: item.w,
+          height: item.h,
           ...(blurToFocus && { filter: 'blur(0px)' }),
           duration: 0.8,
           ease: 'power3.out',
           delay: index * stagger
         });
       } else {
-        gsap.to(selector, {
-          ...animationProps,
-          duration: duration,
-          ease: ease,
-          overwrite: 'auto'
-        });
+        // For updates, we just set the target state
+        if (item.id === internalExpandedId) {
+          gsap.set(element, { clearProps: 'x,y,width,height,transform' });
+        } else {
+          // If we are actively flipping, just set the final state, Flip handles the animation
+          if (flipState.current) {
+             gsap.set(element, { x: item.x, y: item.y, width: item.w, height: item.h });
+          } else {
+             // Normal resize
+             gsap.to(element, {
+               x: item.x, y: item.y, width: item.w, height: item.h,
+               duration: duration,
+               ease: ease,
+               overwrite: 'auto'
+             });
+          }
+        }
       }
     });
 
+    if (hasMounted.current && flipState.current) {
+      Flip.from(flipState.current, {
+        duration: duration,
+        ease: ease,
+        absolute: true,
+        zIndex: 100,
+        onComplete: () => {
+          if (internalExpandedId) {
+            gsap.to('.details-overlay', { opacity: 1, duration: 0.3 });
+          }
+        }
+      });
+      flipState.current = null;
+    }
+
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease]);
+  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, internalExpandedId]);
 
   const handleMouseEnter = (e: React.MouseEvent, item: GridItem) => {
     const element = e.currentTarget as HTMLElement;
     const selector = `[data-key="${item.id}"]`;
 
-    if (scaleOnHover) {
+    if (scaleOnHover && internalExpandedId !== item.id) {
       gsap.to(selector, {
         scale: hoverScale,
         duration: 0.3,
@@ -208,11 +253,18 @@ const Masonry: React.FC<MasonryProps> = ({
       });
     }
 
-    if (colorShiftOnHover) {
+    if (colorShiftOnHover && internalExpandedId !== item.id) {
       const overlay = element.querySelector('.color-overlay') as HTMLElement;
       if (overlay) {
         gsap.to(overlay, {
-          opacity: 0.3,
+          opacity: 0.6,
+          duration: 0.3
+        });
+      }
+      const grunge = element.querySelector('.color-overlay-grunge') as HTMLElement;
+      if (grunge) {
+        gsap.to(grunge, {
+          opacity: 0.4,
           duration: 0.3
         });
       }
@@ -223,7 +275,7 @@ const Masonry: React.FC<MasonryProps> = ({
     const element = e.currentTarget as HTMLElement;
     const selector = `[data-key="${item.id}"]`;
 
-    if (scaleOnHover) {
+    if (scaleOnHover && internalExpandedId !== item.id) {
       gsap.to(selector, {
         scale: 1,
         duration: 0.3,
@@ -239,17 +291,24 @@ const Masonry: React.FC<MasonryProps> = ({
           duration: 0.3
         });
       }
+      const grunge = element.querySelector('.color-overlay-grunge') as HTMLElement;
+      if (grunge) {
+        gsap.to(grunge, {
+          opacity: 0,
+          duration: 0.3
+        });
+      }
     }
   };
 
   return (
-    <div ref={containerRef} className="list">
+    <div ref={containerRef} className={`list ${internalExpandedId ? 'has-expanded' : ''}`}>
       {grid.map(item => {
         return (
           <div
             key={item.id}
             data-key={item.id}
-            className="item-wrapper"
+            className={`item-wrapper ${internalExpandedId === item.id ? 'is-expanded' : ''}`}
             onClick={() => onItemClick ? onItemClick(item) : window.open(item.url, '_blank', 'noopener')}
             onMouseEnter={e => handleMouseEnter(e, item)}
             onMouseLeave={e => handleMouseLeave(e, item)}
@@ -260,16 +319,34 @@ const Masonry: React.FC<MasonryProps> = ({
                   className="color-overlay"
                   style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(45deg, rgba(255,0,150,0.5), rgba(0,150,255,0.5))',
+                    inset: 0,
+                    backgroundColor: ['#FF6A00', '#C6FF00', '#0057FF'][Number(item.id.charCodeAt(0)) % 3],
+                    mixBlendMode: 'multiply',
                     opacity: 0,
                     pointerEvents: 'none',
-                    borderRadius: '8px'
+                    borderRadius: '10px'
                   }}
                 />
+              )}
+              {colorShiftOnHover && (
+                <div
+                  className="color-overlay-grunge"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: 'radial-gradient(circle at 2px 2px, var(--color-midnight-indigo) 1.5px, transparent 0)',
+                    backgroundSize: '12px 12px',
+                    opacity: 0,
+                    pointerEvents: 'none',
+                    borderRadius: '10px'
+                  }}
+                />
+              )}
+              
+              {internalExpandedId === item.id && renderDetails && (
+                <div className="details-overlay">
+                  {renderDetails(item)}
+                </div>
               )}
             </div>
           </div>
