@@ -9,6 +9,17 @@
   pointer-events: none;
 }
 
+.list-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  cursor: pointer;
+}
+.list.has-expanded .list-backdrop {
+  display: block;
+}
+
 .item-wrapper {
   position: absolute;
   will-change: transform, width, height, opacity;

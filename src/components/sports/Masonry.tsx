@@ -163,9 +163,9 @@ const Masonry: React.FC<MasonryProps> = ({
   if (expandedId !== internalExpandedId) {
     // Capture state before React renders the new class or we change inline styles
     flipState.current = Flip.getState('.item-wrapper');
-    // Hide details immediately on close
+    // Hide details quickly on close
     if (!expandedId) {
-      gsap.set('.details-overlay', { opacity: 0 });
+      gsap.to('.details-overlay', { opacity: 0, duration: 0.15 });
     }
     setInternalExpandedId(expandedId);
   }
@@ -303,6 +303,15 @@ const Masonry: React.FC<MasonryProps> = ({
 
   return (
     <div ref={containerRef} className={`list ${internalExpandedId ? 'has-expanded' : ''}`}>
+      <div 
+        className="list-backdrop" 
+        onClick={() => {
+           if (onItemClick && internalExpandedId) {
+              const expandedItem = items.find(i => i.id === internalExpandedId);
+              if (expandedItem) onItemClick(expandedItem);
+           }
+        }} 
+      />
       {grid.map(item => {
         return (
           <div

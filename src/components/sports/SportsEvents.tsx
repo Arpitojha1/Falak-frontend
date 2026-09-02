@@ -44,82 +44,91 @@ export function SportsEvents() {
         <Masonry 
           items={masonryItems} 
           onItemClick={(item) => setExpandedId(prev => prev === item.id ? null : item.id)} 
+          expandedId={expandedId}
           colorShiftOnHover={true}
+          renderDetails={(item) => {
+            const event = sportsData.find(e => e.id === item.id);
+            if (!event) return null;
+            return (
+              <div className="w-full h-full bg-silver/95 backdrop-blur-md p-8 md:p-12 relative z-20 flex flex-col justify-center border-4 border-midnight-indigo overflow-y-auto">
+                {/* Background grain inside overlay */}
+                <div 
+                  className="absolute inset-0 pointer-events-none opacity-20 mix-blend-multiply"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle at 1px 1px, var(--color-midnight-indigo) 1px, transparent 0)',
+                    backgroundSize: '4px 4px'
+                  }}
+                />
+
+                <div className="relative z-10 max-w-4xl mx-auto w-full">
+                  <h3 className="font-headline-sports-section text-5xl md:text-8xl uppercase tracking-tighter text-midnight-indigo leading-none mb-6">
+                    {event.title}
+                  </h3>
+                  <p className="font-sans text-xl md:text-2xl text-midnight-indigo leading-relaxed mb-10 font-medium max-w-3xl">
+                    {event.description}
+                  </p>
+
+                  {/* Metadata Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                    <div className="flex flex-col p-6 bg-midnight-indigo text-silver border-2 border-midnight-indigo transform -rotate-1 shadow-[6px_6px_0_0_#FF6A00]">
+                      <div className="text-xs uppercase tracking-widest text-acid-lime font-label-sports mb-2">Date & Time</div>
+                      <div className="text-lg font-label-sports font-bold tracking-wide">{event.date}</div>
+                    </div>
+
+                    <div className="flex flex-col p-6 bg-midnight-indigo text-silver border-2 border-midnight-indigo transform rotate-1 shadow-[6px_6px_0_0_#C6FF00]">
+                      <div className="text-xs uppercase tracking-widest text-electric-orange font-label-sports mb-2">Venue</div>
+                      <div className="text-lg font-label-sports font-bold tracking-wide">{event.venue}</div>
+                    </div>
+
+                    <div className="flex flex-col p-6 bg-midnight-indigo text-silver border-2 border-midnight-indigo transform -rotate-1 shadow-[6px_6px_0_0_#FF6A00]">
+                      <div className="text-xs uppercase tracking-widest text-acid-lime font-label-sports mb-2">Format</div>
+                      <div className="text-lg font-label-sports font-bold tracking-wide">{event.format}</div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap items-center gap-8 mt-6 pt-8 border-t-4 border-midnight-indigo/30">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className="inline-flex items-center justify-center bg-electric-orange text-midnight-indigo font-headline-sports-section uppercase text-2xl px-12 py-6 hover:bg-acid-lime border-4 border-midnight-indigo shadow-[8px_8px_0_0_rgba(11,15,43,1)] active:shadow-none active:translate-x-2 active:translate-y-2 transition-all cursor-pointer"
+                    >
+                      REGISTER NOW
+                    </button>
+
+                    {event.rulesLink && (
+                      <a
+                        href={event.rulesLink}
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center font-headline-sports-section text-xl uppercase tracking-wider text-midnight-indigo hover:text-electric-orange transition-colors decoration-4 underline-offset-4 hover:underline"
+                      >
+                        Rulebook & Guidelines →
+                      </a>
+                    )}
+                    
+                    {/* Close button in the overlay */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedId(null);
+                      }}
+                      className="ml-auto flex items-center justify-center bg-midnight-indigo text-silver w-16 h-16 rounded-full hover:bg-electric-orange hover:text-midnight-indigo transition-colors"
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          }}
         />
       </div>
-
-      {/* Expanded Details Panel */}
-      <AnimatePresence mode="wait">
-        {expandedEvent && (
-          <motion.div
-            key={expandedEvent.id}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-            className="w-full bg-silver p-8 border-4 border-midnight-indigo shadow-[8px_8px_0_0_rgba(11,15,43,1)] relative z-20"
-          >
-            {/* Background grain inside card */}
-            <div 
-              className="absolute inset-0 pointer-events-none opacity-20 mix-blend-multiply"
-              style={{
-                backgroundImage: 'radial-gradient(circle at 1px 1px, var(--color-midnight-indigo) 1px, transparent 0)',
-                backgroundSize: '4px 4px'
-              }}
-            />
-
-            <div className="relative z-10">
-              <h3 className="font-headline-sports-section text-4xl md:text-6xl uppercase tracking-tighter text-midnight-indigo leading-none mb-6">
-                {expandedEvent.title}
-              </h3>
-              <p className="font-sans text-lg md:text-xl text-midnight-indigo leading-relaxed mb-8 font-medium max-w-3xl">
-                {expandedEvent.description}
-              </p>
-
-              {/* Metadata Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                <div className="flex flex-col p-4 bg-midnight-indigo text-silver border-2 border-midnight-indigo transform -rotate-1 shadow-[4px_4px_0_0_#FF6A00]">
-                  <div className="text-[10px] uppercase tracking-widest text-acid-lime font-label-sports mb-1">Date & Time</div>
-                  <div className="text-sm font-label-sports font-bold tracking-wide">{expandedEvent.date}</div>
-                </div>
-
-                <div className="flex flex-col p-4 bg-midnight-indigo text-silver border-2 border-midnight-indigo transform rotate-1 shadow-[4px_4px_0_0_#C6FF00]">
-                  <div className="text-[10px] uppercase tracking-widest text-electric-orange font-label-sports mb-1">Venue</div>
-                  <div className="text-sm font-label-sports font-bold tracking-wide">{expandedEvent.venue}</div>
-                </div>
-
-                <div className="flex flex-col p-4 bg-midnight-indigo text-silver border-2 border-midnight-indigo transform -rotate-1 shadow-[4px_4px_0_0_#FF6A00]">
-                  <div className="text-[10px] uppercase tracking-widest text-acid-lime font-label-sports mb-1">Format</div>
-                  <div className="text-sm font-label-sports font-bold tracking-wide">{expandedEvent.format}</div>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex flex-wrap items-center gap-6 mt-4 border-t-4 border-midnight-indigo pt-6">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  className="inline-flex items-center justify-center bg-electric-orange text-midnight-indigo font-headline-sports-section uppercase text-lg px-8 py-4 hover:bg-acid-lime border-2 border-midnight-indigo shadow-[4px_4px_0_0_rgba(11,15,43,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all cursor-pointer"
-                >
-                  REGISTER NOW
-                </button>
-
-                {expandedEvent.rulesLink && (
-                  <a
-                    href={expandedEvent.rulesLink}
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center font-headline-sports-section text-sm uppercase tracking-wider text-midnight-indigo hover:text-electric-orange transition-colors decoration-4 underline-offset-4 hover:underline"
-                  >
-                    Rulebook & Guidelines →
-                  </a>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </section>
   );
