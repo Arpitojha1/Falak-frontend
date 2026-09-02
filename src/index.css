@@ -9,6 +9,9 @@
   --color-deep-plum: #1C0B46;
   --color-electric-orange: #FF6A00;
   --color-acid-lime: #C6FF00;
+  --color-aurora-violet: #8A5CFF;
+  --color-soft-lilac: #E6DFF6;
+  --color-champagne-pearl: #EDE4D3;
 
   /* ── Existing Tailwind font utilities (unchanged) ── */
   --font-sans:    "Barlow", "General Sans", sans-serif;
