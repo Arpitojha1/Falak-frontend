@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type React from 'react';
 import * as motion from 'motion/react-client';
 import { AnimatePresence } from 'motion/react';
@@ -13,61 +13,68 @@ interface EventCardProps {
   isDimmed: boolean;
 }
 
-// Note: `key` is a React special prop — not destructured, handled externally by React.
+// Note: `key` is a React special prop — not destructured, handled externally.
 
 export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardProps) {
   const [hovered, setHovered] = useState(false);
 
+  // Clear hover state on expand — halftone should not persist through the transition
+  useEffect(() => {
+    if (isExpanded) setHovered(false);
+  }, [isExpanded]);
+
   return (
     <motion.div
       layout
-      transition={{ type: 'spring', bounce: 0.18, duration: 0.55 }}
       className={`
-        relative w-full cursor-pointer text-left overflow-hidden
-        transition-all duration-300
+        relative w-full text-left overflow-hidden
+        transition-opacity transition-[filter] duration-300
         ${isExpanded
-          ? 'col-span-2 row-span-2 bg-deep-plum border border-aurora-violet/50 shadow-[0_0_40px_rgba(138,92,255,0.25)]'
+          ? 'cursor-default'
           : isDimmed
-            ? 'opacity-30 blur-[2px] pointer-events-none'
-            : 'opacity-100 hover:-translate-y-1'
+            ? 'opacity-30 blur-[2px] pointer-events-none cursor-pointer'
+            : 'opacity-100 cursor-pointer hover:-translate-y-1 transition-transform duration-300'
         }
       `}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => { if (!isExpanded) setHovered(true); }}
       onMouseLeave={() => setHovered(false)}
-      onClick={onToggle}
+      onClick={isExpanded ? undefined : onToggle}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); }
+        if (!isExpanded && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onToggle();
+        }
       }}
-      tabIndex={0}
-      role="button"
+      tabIndex={isExpanded ? -1 : 0}
+      role={isExpanded ? undefined : 'button'}
       aria-expanded={isExpanded}
     >
+
       {/* ══════════════════════════════════════════════════════════════
-          COLLAPSED TILE — Ticket Stub frame + content + photo slot
+          COLLAPSED TILE — ticket stub asset, photo slot, event info
+          (visual spec unchanged from Session 3 — scope lock applies)
           ══════════════════════════════════════════════════════════════ */}
       {!isExpanded && (
         <div className="relative w-full" style={{ aspectRatio: '8 / 3', minHeight: '120px' }}>
 
-          {/* ── LAYER 0: stamp-card.png as the tile background ────────────
-              Crackle texture + double border + filigree corners baked into PNG.
-              object-fill stretches to fill the tile's exact bounding box.
-              CSS mask removed — the PNG's own border IS the frame shape now. */}
-          <img
+          {/* LAYER 0 — stamp-card.png tile background.
+              layoutId persists this element through the expand transition:
+              Framer Motion will FLIP-animate the PNG from tile size/position
+              to expanded size/position when isExpanded switches. */}
+          <motion.img
+            layoutId={`ticket-frame-${event.id}`}
             src="/assets/culturalAssets/stamp-card.png"
             alt=""
             aria-hidden="true"
             draggable="false"
             className="absolute inset-0 w-full h-full pointer-events-none select-none"
             style={{ objectFit: 'fill', zIndex: 0 }}
+            transition={{ type: 'spring', bounce: 0.1, duration: 0.5 }}
           />
 
-          {/* ── LAYER 1: Hover colour-tint overlay ────────────────────────
-              Baked-in champagne fill means fill-swap must be done via overlay.
-              Default: faint Aurora Violet tint (ties card into the palette).
-              Hover:   Soft Lilac wash — cohesive "coming into focus" signal.
-              mix-blend-mode: multiply preserves the crackle texture beneath.
-              NOTE: this overlay NEVER applies to the thumbnail — the thumbnail
-              is a separate stacked element on Layer 2. */}
+          {/* LAYER 1 — hover colour-tint overlay (mix-blend multiply, champagne crackle stays visible).
+              Default: faint Aurora Violet tint. Hover: Soft Lilac wash.
+              Explicitly does NOT apply to the photo thumbnail on Layer 2. */}
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
@@ -81,22 +88,19 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
             }}
           />
 
-          {/* ── LAYER 2: Card content — floats over the ticket PNG ──────── */}
+          {/* LAYER 2 — card content over the ticket PNG */}
           <div
             className="absolute inset-0 flex items-stretch"
             style={{ zIndex: 2 }}
           >
-            {/* Left stub zone (~16% width, left of the dashed perforation line in the PNG).
-                Holds the photo slot — ID-photo "corner-mount" position.
-                The dashed line in the asset sits at roughly 16% from the left edge. */}
+            {/* Left stub zone (~16% — left of the dashed perf line in the PNG).
+                Holds the ID-photo-style thumbnail. */}
             <div
               className="flex-shrink-0 flex items-center justify-center"
               style={{ width: '16%', paddingLeft: '6px' }}
             >
-              {/* ── Photo slot ────────────────────────────────────────────────
-                  TODO: Replace placeholderImg with real per-event photography.
-                  Currently sourced from reference/cultural/ — portrait/scene refs only:
-                  ref_c-2 (chaiwala duotone), ref_c-4 (dancer portrait),
+              {/* TODO: Replace with real per-event photography.
+                  Placeholder pool: ref_c-2 (chaiwala), ref_c-4 (dancer portrait),
                   ref_c-16 (dancer stencil), ref_c-17 (performer, stage-lit). */}
               <div
                 className="relative overflow-hidden flex-shrink-0"
@@ -104,14 +108,11 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
                   width: '38px',
                   height: '46px',
                   borderRadius: '3px',
-                  /* Thin Champagne Pearl border — distinguishes thumbnail from card border */
                   border: '1.5px solid rgba(237, 228, 211, 0.75)',
                 }}
               >
-                {/* Image — default state: duotone (Deep Plum + Champagne Pearl tones).
-                    grayscale → sepia → hue-rotate(220deg) shifts to a plum-violet tone.
-                    Hover: contrast raised to 1.6 so halftone dots (Layer 3) interact
-                    meaningfully with the tonal structure of the underlying image. */}
+                {/* Default: duotone (Deep Plum + Champagne Pearl tones).
+                    Hover: contrast raised to 1.6 for halftone interaction. */}
                 <img
                   src={event.placeholderImg}
                   alt={`${event.title} preview`}
@@ -125,14 +126,8 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
                   }}
                 />
 
-                {/* ── LAYER 3: Halftone dot overlay ──────────────────────────
-                    Applied ONLY to the photo thumbnail — NEVER to the stamp-card.png frame.
-                    The ticket's texture identity is the crackle pattern baked into the PNG;
-                    halftone is reserved for photographic content (direction doc rule).
-                    Default: opacity 0 (invisible — duotone-only state shown).
-                    Hover:   opacity 1 — dot grid fades in, 220ms, same timing as filter above.
-                    Aurora Violet dots at 55% opacity + multiply blend integrate with the
-                    plum-shifted duotone rather than sitting as opaque dots on top. */}
+                {/* Halftone dot overlay — photo only, NEVER the stamp-card.png frame.
+                    Fade in on hover, 220ms, Aurora Violet dots with multiply blend. */}
                 <div
                   aria-hidden="true"
                   className="absolute inset-0 pointer-events-none"
@@ -147,9 +142,8 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
               </div>
             </div>
 
-            {/* Main text zone — right of the perforation line */}
+            {/* Main text zone — right of perforation line */}
             <div className="flex-1 flex flex-col justify-center px-3 py-2 min-w-0">
-              {/* Category + denomination — top metadata strip */}
               <div className="flex items-center justify-between mb-1 gap-1">
                 <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-deep-plum/60 font-semibold truncate">
                   {event.category}
@@ -158,32 +152,23 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
                   {event.denomination}
                 </span>
               </div>
-
-              {/* Thin rule */}
               <div className="w-full h-px bg-deep-plum/10 mb-2" />
-
-              {/* Event title */}
               <h3 className="font-accent font-extrabold text-deep-plum leading-tight text-sm mb-0.5 truncate">
                 {event.title}
               </h3>
-
-              {/* Devanagari name */}
               <p className="font-baloo-devanagari font-bold text-aurora-violet/80 text-xs mb-1 truncate">
                 {event.devanagari}
               </p>
-
-              {/* Teaser — only if room */}
               <p className="font-sans text-deep-plum/50 text-[9px] leading-snug line-clamp-2">
                 {event.teaser}
               </p>
             </div>
 
-            {/* Right margin — filigree corner zone in the PNG, kept clear of text */}
+            {/* Right margin — filigree corner zone, kept clear of text */}
             <div
               className="flex-shrink-0 flex flex-col items-center justify-end pb-2 pr-2"
               style={{ width: '10%' }}
             >
-              {/* Postmark circle — decorative, matches the asset's ornamental register */}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <circle cx="8" cy="8" r="6" stroke="#1C0B46" strokeWidth="0.6" strokeOpacity="0.25" />
                 <line x1="2" y1="8" x2="14" y2="8" stroke="#1C0B46" strokeWidth="0.5" strokeOpacity="0.2" />
@@ -194,112 +179,212 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
       )}
 
       {/* ══════════════════════════════════════════════════════════════
-          EXPANDED DETAIL VIEW — unchanged from Session 2 spec
+          EXPANDED VIEW — same stamp-card.png persists via layoutId,
+          content redistributes into the scaled-up frame.
+          Text uses Deep Plum / Aurora Violet on the champagne PNG base.
           ══════════════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {isExpanded && (
+      {isExpanded && (
+        <div
+          className="relative w-full"
+          style={{ minHeight: '420px' }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* LAYER 0 — same PNG, same layoutId.
+              Framer Motion animates this element from the tile's screen rect
+              to the expanded screen rect — the crackle/border/filigree scale up
+              as one continuous element, no crossfade to a different background.
+              objectFit: fill stretches the PNG to the new container shape;
+              the flat champagne interior stretches cleanly, borders stretch subtly. */}
+          <motion.img
+            layoutId={`ticket-frame-${event.id}`}
+            src="/assets/culturalAssets/stamp-card.png"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            className="absolute inset-0 w-full h-full pointer-events-none select-none"
+            style={{ objectFit: 'fill', zIndex: 0 }}
+            transition={{ type: 'spring', bounce: 0.1, duration: 0.5 }}
+          />
+
+          {/* LAYER 1 — subtle tint wash in expanded state (not hover-driven).
+              Soft Lilac at very low opacity to visually indicate "selected" state.
+              Still uses multiply so crackle texture is preserved. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              zIndex: 1,
+              backgroundColor: 'rgba(230, 223, 246, 0.12)',
+              mixBlendMode: 'multiply',
+            }}
+          />
+
+          {/* LAYER 2 — expanded content.
+              Staggered fade-in with delay so it appears after the layout animation
+              completes (300ms spring). Content doesn't pop before the frame finishes growing. */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="p-8 md:p-12 relative"
-            onClick={(e) => e.stopPropagation()}
+            transition={{ delay: 0.32, duration: 0.2 }}
+            className="absolute inset-0 flex items-stretch"
+            style={{ zIndex: 2 }}
           >
-            {/* Subtle carpet-weave texture in expanded area */}
+            {/* Left stub zone (~14%) — denomination + branding, rotated vertically.
+                Mirrors the tile's stub zone. The dashed perf line in the PNG acts
+                as a natural visual boundary here at full scale. */}
             <div
-              className="absolute inset-0 pointer-events-none opacity-[0.04] rounded-sm"
-              style={{
-                backgroundImage: `
-                  linear-gradient(0deg, rgba(138,92,255,0.6) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(138,92,255,0.6) 1px, transparent 1px)
-                `,
-                backgroundSize: '32px 32px',
-              }}
-            />
-
-            {/* Header row */}
-            <div className="flex items-start justify-between gap-6 mb-2 relative z-10">
-              <div>
-                <span className="font-sans text-[10px] uppercase tracking-[0.25em] text-aurora-violet/60 font-medium block mb-2">
-                  {event.category} · {event.denomination}
-                </span>
-                <h3 className="font-accent font-extrabold text-champagne-pearl text-4xl md:text-5xl leading-none mb-1">
-                  {event.title}
-                </h3>
-                <p className="font-baloo-devanagari font-bold text-aurora-violet text-2xl">
-                  {event.devanagari}
-                </p>
-              </div>
-
-              {/* Close button */}
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); onToggle(); }}
-                className="
-                  shrink-0 flex items-center justify-center w-10 h-10 rounded-full
-                  border border-aurora-violet/40
-                  text-silver/60 hover:text-champagne-pearl hover:border-aurora-violet
-                  transition-colors duration-200
-                "
-                aria-label="Close"
+              className="flex-shrink-0 flex flex-col items-center justify-center gap-3 py-6"
+              style={{ width: '14%' }}
+            >
+              <span
+                className="font-fraunces italic text-deep-plum/35 text-xs tracking-[0.18em]"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
               >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="1" y1="1" x2="13" y2="13" />
-                  <line x1="13" y1="1" x2="1" y2="13" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Ornamental divider */}
-            <div className="flex items-center gap-3 my-6 relative z-10">
-              <div className="flex-1 h-px bg-aurora-violet/20" />
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="6" stroke="#8A5CFF" strokeWidth="0.7" strokeOpacity="0.5" />
-                <circle cx="8" cy="8" r="3" stroke="#8A5CFF" strokeWidth="0.4" strokeOpacity="0.4" />
-                <circle cx="8" cy="8" r="1" fill="#8A5CFF" fillOpacity="0.5" />
+                FALAK&apos;26
+              </span>
+              <span className="font-sans text-deep-plum/25 text-[10px] font-medium">
+                {event.denomination}
+              </span>
+              {/* Postmark circle — decorative, echoing tile */}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="#1C0B46" strokeWidth="0.7" strokeOpacity="0.2" />
+                <line x1="3" y1="12" x2="21" y2="12" stroke="#1C0B46" strokeWidth="0.5" strokeOpacity="0.18" />
+                <line x1="12" y1="3" x2="12" y2="21" stroke="#1C0B46" strokeWidth="0.5" strokeOpacity="0.18" />
               </svg>
-              <div className="flex-1 h-px bg-aurora-violet/20" />
             </div>
 
-            {/* Description */}
-            <p className="font-sans text-silver/80 text-base leading-relaxed mb-8 max-w-2xl relative z-10">
-              {event.description}
-            </p>
+            {/* Thin vertical rule echoing the perf line — separates stub from content */}
+            <div className="flex-shrink-0 w-px bg-deep-plum/8 self-stretch my-6" />
 
-            {/* Metadata chips */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 relative z-10">
-              <div className="flex flex-col gap-1 p-4 bg-midnight-indigo/60 border border-aurora-violet/20 rounded-sm">
-                <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-aurora-violet/60">Date & Time</span>
-                <span className="font-accent font-bold text-champagne-pearl text-sm">{event.date}</span>
-              </div>
-              <div className="flex flex-col gap-1 p-4 bg-midnight-indigo/60 border border-aurora-violet/20 rounded-sm">
-                <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-aurora-violet/60">Venue</span>
-                <span className="font-accent font-bold text-champagne-pearl text-sm">{event.venue}</span>
-              </div>
-              <div className="flex flex-col gap-1 p-4 bg-midnight-indigo/60 border border-aurora-violet/20 rounded-sm">
-                <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-aurora-violet/60">Format</span>
-                <span className="font-accent font-bold text-champagne-pearl text-sm">{event.format}</span>
-              </div>
-            </div>
-
-            {/* Actions row — plain StampCTA (no ticket asset, no image, no halftone — per correction) */}
-            <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-aurora-violet/20 relative z-10">
-              <StampCTA label="REGISTER NOW" href="#" />
-
-              {event.rulesLink && (
-                <a
-                  href={event.rulesLink}
-                  onClick={(e) => e.stopPropagation()}
-                  className="font-accent font-bold text-sm uppercase tracking-[0.12em] text-soft-lilac/70 hover:text-aurora-violet transition-colors duration-200 underline-offset-4 hover:underline"
+            {/* Main content zone (~56%) — event detail content on the champagne base */}
+            <div className="flex-1 flex flex-col py-6 pl-6 pr-4 min-w-0">
+              {/* Top: category label + close button */}
+              <div className="flex items-start justify-between mb-3">
+                <span className="font-sans text-[9px] uppercase tracking-[0.22em] text-aurora-violet font-semibold">
+                  {event.category}
+                </span>
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); onToggle(); }}
+                  className="
+                    shrink-0 flex items-center justify-center w-8 h-8 rounded-full
+                    border border-deep-plum/20 text-deep-plum/40
+                    hover:text-deep-plum hover:border-deep-plum/50
+                    transition-colors duration-200
+                  "
+                  aria-label="Close event detail"
                 >
-                  Rulebook →
-                </a>
-              )}
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <line x1="1" y1="1" x2="9" y2="9" />
+                    <line x1="9" y1="1" x2="1" y2="9" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Title — Deep Plum on champagne, large. */}
+              <h3
+                className="font-accent font-extrabold text-deep-plum leading-none mb-1"
+                style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3rem)' }}
+              >
+                {event.title}
+              </h3>
+              <p className="font-baloo-devanagari font-bold text-aurora-violet text-xl mb-3">
+                {event.devanagari}
+              </p>
+
+              {/* Thin ornamental rule */}
+              <div className="w-full h-px bg-deep-plum/10 mb-4" />
+
+              {/* Description */}
+              <p className="font-sans text-deep-plum/65 text-sm leading-relaxed mb-5 flex-1 overflow-hidden"
+                style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical' as React.CSSProperties['WebkitBoxOrient'],
+                  overflow: 'hidden',
+                }}
+              >
+                {event.description}
+              </p>
+
+              {/* Metadata row — three inline chips, Deep Plum text on champagne base */}
+              <div className="grid grid-cols-3 gap-3 mb-5">
+                {[
+                  { label: 'Date & Time', value: event.date },
+                  { label: 'Venue', value: event.venue },
+                  { label: 'Format', value: event.format },
+                ].map(({ label, value }) => (
+                  <div
+                    key={label}
+                    className="flex flex-col gap-0.5 p-3 rounded-sm"
+                    style={{
+                      background: 'rgba(28, 11, 70, 0.06)',
+                      border: '1px solid rgba(28, 11, 70, 0.12)',
+                    }}
+                  >
+                    <span className="font-sans text-[8px] uppercase tracking-[0.22em] text-deep-plum/40">
+                      {label}
+                    </span>
+                    <span className="font-accent font-bold text-deep-plum text-xs leading-snug">
+                      {value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Actions — Register CTA (plain reverted form) + Rulebook link.
+                  Positioned near the bottom of the content zone, above the ticket baseline. */}
+              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-deep-plum/8">
+                <StampCTA label="REGISTER NOW" href="#" />
+                {event.rulesLink && (
+                  <a
+                    href={event.rulesLink}
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-accent font-bold text-xs uppercase tracking-[0.12em] text-aurora-violet hover:text-deep-plum transition-colors duration-200 underline-offset-4 hover:underline"
+                  >
+                    Rulebook →
+                  </a>
+                )}
+              </div>
             </div>
+
+            {/* Thin vertical rule before the photo zone */}
+            <div className="flex-shrink-0 w-px bg-deep-plum/8 self-stretch my-6" />
+
+            {/* Photo zone (~22%) — placeholder image, clearly visible at expanded scale.
+                Duotone treatment only — no halftone overlay (expanded = clear/focused state per spec).
+                TODO: Replace with real per-event photography before launch. */}
+            <div
+              className="flex-shrink-0 flex items-center justify-center"
+              style={{ width: '22%', padding: '24px 20px 24px 16px' }}
+            >
+              <div
+                className="relative overflow-hidden w-full h-full"
+                style={{
+                  borderRadius: '3px',
+                  border: '1.5px solid rgba(237, 228, 211, 0.8)',
+                  maxHeight: '280px',
+                }}
+              >
+                <img
+                  src={event.placeholderImg}
+                  alt={`${event.title} preview — placeholder pending real event photography`}
+                  draggable="false"
+                  className="w-full h-full object-cover pointer-events-none select-none"
+                  style={{
+                    /* Duotone — plum-shifted, same default treatment as the collapsed tile.
+                       No halftone on the expanded state — this is the "clear" view. */
+                    filter: 'grayscale(1) sepia(0.5) hue-rotate(220deg) contrast(1.25) brightness(0.95)',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Right filigree margin — leaves the PNG's ornamental corner brackets clear */}
+            <div className="flex-shrink-0" style={{ width: '3%' }} />
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </motion.div>
   );
 }
