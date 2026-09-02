@@ -1,9 +1,11 @@
+import * as motion from 'motion/react-client';
+
 export function CultureHero() {
   return (
     <section className="relative w-full min-h-[95vh] flex items-center bg-deep-plum overflow-hidden pt-20 pb-16">
 
       {/* ═══════════════════════════════════════════════════════
-          LAYER 0 — Base gradient: Deep Plum → Midnight Indigo
+          LAYER 0 — Base gradient & Surface Grain
           ═══════════════════════════════════════════════════════ */}
       <div
         className="absolute inset-0 z-0"
@@ -11,168 +13,224 @@ export function CultureHero() {
           background: 'linear-gradient(180deg, #1C0B46 0%, #0B0F2B 100%)',
         }}
       />
+      
+      {/* Fine surface grain (SVG noise) — gives material presence beyond a flat digital gradient */}
+      <div className="absolute inset-0 z-[1] mix-blend-overlay opacity-[0.10] pointer-events-none">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <filter id="hero-noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.3 0" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#hero-noise)" />
+        </svg>
+      </div>
 
       {/* ═══════════════════════════════════════════════════════
-          LAYER 1 — Darbar Carpet: radial medallion pattern
-          Aurora Violet line-art at 8-12% opacity
-          Central medallion clear-zone shifted right (behind SWIRLA slot)
+          LAYER 1 — Darbar Carpet Field & Micro-weave
           ═══════════════════════════════════════════════════════ */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        {/* Outer border band — thin ornamental frame along viewport edges */}
-        <div
-          className="absolute inset-4 border border-aurora-violet/[0.12] rounded-sm"
-          style={{
-            boxShadow: 'inset 0 0 0 1px rgba(138,92,255,0.06)',
-          }}
-        />
-        <div
-          className="absolute inset-8 border border-aurora-violet/[0.08]"
-        />
+        
+        {/* Multi-band border (4 concentric strokes, referencing real carpet density) */}
+        <div className="absolute inset-4 border-[3px] border-aurora-violet/[0.12] rounded-sm" />
+        <div className="absolute inset-[22px] border border-aurora-violet/[0.08]" />
+        <div className="absolute inset-[30px] border border-champagne-pearl/[0.04]" />
+        <div className="absolute inset-[36px] border border-aurora-violet/[0.06]" />
 
-        {/* Central medallion — radial gradient simulating carpet rosette, positioned right-of-center behind SWIRLA */}
+        {/* Corner Ornaments (Truck-art/Carpet inspired finials replacing spandrel blobs) */}
+        <svg className="absolute top-10 left-10 w-20 h-20 opacity-[0.25]" viewBox="0 0 100 100">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="#8A5CFF" strokeWidth="1.5" />
+          <circle cx="20" cy="20" r="5" fill="#E6DFF6" />
+          <path d="M 36 20 L 80 20 M 20 36 L 20 80" stroke="#8A5CFF" strokeWidth="1" strokeDasharray="4 4" />
+          <path d="M 20 3 L 20 9 M 3 20 L 9 20" stroke="#E6DFF6" strokeWidth="1" />
+        </svg>
+        <svg className="absolute bottom-10 right-10 w-20 h-20 opacity-[0.25]" viewBox="0 0 100 100" style={{ transform: 'rotate(180deg)' }}>
+          <circle cx="20" cy="20" r="16" fill="none" stroke="#8A5CFF" strokeWidth="1.5" />
+          <circle cx="20" cy="20" r="5" fill="#E6DFF6" />
+          <path d="M 36 20 L 80 20 M 20 36 L 20 80" stroke="#8A5CFF" strokeWidth="1" strokeDasharray="4 4" />
+          <path d="M 20 3 L 20 9 M 3 20 L 9 20" stroke="#E6DFF6" strokeWidth="1" />
+        </svg>
+
+        {/* Micro-weave background pattern (tiny diamonds at 3-5%) under the main field */}
         <div
-          className="absolute w-[80vh] h-[80vh] top-1/2 -translate-y-1/2 right-[5%]"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
-            background: `
-              radial-gradient(circle at 50% 50%,
-                rgba(138,92,255,0.10) 0%,
-                rgba(138,92,255,0.06) 20%,
-                rgba(138,92,255,0.03) 40%,
-                transparent 60%
-              )
+            backgroundImage: `
+              linear-gradient(45deg, #8A5CFF 25%, transparent 25%, transparent 75%, #8A5CFF 75%, #8A5CFF),
+              linear-gradient(45deg, #8A5CFF 25%, transparent 25%, transparent 75%, #8A5CFF 75%, #8A5CFF)
             `,
+            backgroundPosition: '0 0, 4px 4px',
+            backgroundSize: '8px 8px',
           }}
         />
 
-        {/* Carpet field pattern — repeating floral/geometric tile */}
-        <div
-          className="absolute inset-0 opacity-[0.07]"
+        {/* Carpet field pattern — breathing opacity via Framer Motion for subtle life */}
+        <motion.div
+          animate={{ opacity: [0.08, 0.14, 0.08] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0"
           style={{
             backgroundImage: `
               radial-gradient(ellipse at 50% 50%, rgba(138,92,255,0.8) 0%, transparent 50%),
               radial-gradient(ellipse at 0% 0%, rgba(138,92,255,0.4) 0%, transparent 40%),
               radial-gradient(ellipse at 100% 100%, rgba(138,92,255,0.4) 0%, transparent 40%)
             `,
-            backgroundSize: '200px 200px, 100px 100px, 100px 100px',
+            backgroundSize: '160px 160px, 120px 120px, 120px 120px',
             backgroundPosition: 'center, top left, bottom right',
           }}
         />
 
-        {/* Fine ornamental grid — subtle cross-hatch simulating carpet weave */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `
-              linear-gradient(0deg, rgba(138,92,255,0.5) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(138,92,255,0.5) 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        {/* Corner spandrel accents — triangular glow in corners (carpet-style) */}
-        <div
-          className="absolute top-0 left-0 w-[30vw] h-[30vh] opacity-[0.06]"
-          style={{
-            background: 'radial-gradient(ellipse at 0% 0%, rgba(230,223,246,0.6) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          className="absolute bottom-0 right-0 w-[30vw] h-[30vh] opacity-[0.06]"
-          style={{
-            background: 'radial-gradient(ellipse at 100% 100%, rgba(230,223,246,0.6) 0%, transparent 70%)',
-          }}
-        />
+        {/* Central medallion — positioned right-of-center behind SWIRLA */}
+        <div className="absolute w-[80vh] h-[80vh] top-1/2 -translate-y-1/2 right-[5%] flex items-center justify-center">
+          
+          {/* Halftone collage element masked to the center of the medallion */}
+          <div 
+            className="absolute inset-0 overflow-hidden rounded-full opacity-[0.35]"
+            style={{
+              maskImage: 'radial-gradient(circle at 50% 50%, black 20%, transparent 60%)',
+              WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 20%, transparent 60%)',
+            }}
+          >
+            <img 
+              src="/assets/reference/cultural/ref_c-4.jpg" 
+              alt=""
+              className="w-full h-full object-cover mix-blend-screen"
+              style={{
+                filter: 'grayscale(1) sepia(0.5) hue-rotate(220deg) contrast(1.4) brightness(1.1)'
+              }}
+            />
+            {/* Halftone dot overlay on the collage */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: 'radial-gradient(circle, #8A5CFF 1.5px, transparent 1.5px)',
+                backgroundSize: '4px 4px',
+                mixBlendMode: 'multiply',
+                opacity: 0.8
+              }}
+            />
+          </div>
+          
+          {/* Concentric rings acting as medallion linework (replaces soft radial blob) */}
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={`ring-${i}`}
+              className="absolute border rounded-full"
+              style={{
+                width: `${90 - i * 15}%`,
+                height: `${90 - i * 15}%`,
+                borderColor: 'rgba(138,92,255,0.12)',
+                borderStyle: i % 2 === 0 ? 'solid' : 'dashed',
+                borderWidth: i === 0 ? '2px' : '1px',
+                transform: `rotate(${i * 15}deg)`,
+              }}
+            />
+          ))}
+          
+          {/* Central 16-point star/mandala core */}
+          <svg viewBox="0 0 100 100" className="absolute w-[20%] h-[20%] opacity-[0.35]">
+            <polygon points="50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40" fill="none" stroke="#E6DFF6" strokeWidth="0.8" />
+            <polygon points="15,15 45,35 85,15 65,45 85,85 45,65 15,85 35,45" fill="none" stroke="#8A5CFF" strokeWidth="1" />
+            <circle cx="50" cy="50" r="10" fill="none" stroke="#8A5CFF" strokeWidth="2" strokeDasharray="2 2" />
+          </svg>
+        </div>
       </div>
 
       {/* ═══════════════════════════════════════════════════════
-          LAYER 2 — Jaali Screen: perforated latticework arch
-          Reframed as a partial arch / side panel around left headline block
-          Aurora Violet stroke at 15-20% opacity
+          LAYER 2 — Jaali Screen: Dense perforated latticework arch
           ═══════════════════════════════════════════════════════ */}
       <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
-        {/* Left-side jaali arch frame — cusped arch shape wrapping the headline zone */}
+        {/* Left-side jaali arch frame — wrapped around the headline zone */}
         <svg
-          className="absolute left-0 top-0 h-full opacity-[0.15]"
-          width="55%"
-          height="100%"
+          className="absolute left-0 top-0 h-full w-[100%] md:w-[65%] lg:w-[55%]"
           viewBox="0 0 600 800"
           preserveAspectRatio="none"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <defs>
+            <clipPath id="arch-clip">
+              <path d="M 20 800 L 20 250 Q 20 100 150 50 Q 300 0 450 50 Q 550 90 560 250 L 560 800 Z" />
+            </clipPath>
+            <pattern id="arch-halftone" width="5" height="5" patternUnits="userSpaceOnUse">
+              <circle cx="2.5" cy="2.5" r="1.5" fill="#8A5CFF" />
+            </pattern>
+          </defs>
+
+          {/* Duotone collage inlay inside the arch bounds */}
+          <g clipPath="url(#arch-clip)">
+            <image 
+              href="/assets/reference/cultural/ref_c-16.jpg" 
+              width="600" 
+              height="800" 
+              preserveAspectRatio="xMidYMid slice" 
+              opacity="0.12" 
+              style={{ filter: 'grayscale(1) sepia(0.5) hue-rotate(220deg) contrast(1.5)' }} 
+            />
+            <rect width="600" height="800" fill="url(#arch-halftone)" opacity="0.6" style={{ mixBlendMode: 'multiply' }} />
+          </g>
+
           {/* Outer arch border */}
           <path
             d="M 20 800 L 20 250 Q 20 100 150 50 Q 300 0 450 50 Q 550 90 560 250 L 560 800"
             stroke="#8A5CFF"
-            strokeWidth="1.5"
+            strokeWidth="2.5"
             fill="none"
-            opacity="0.8"
+            opacity="0.4"
           />
           {/* Inner arch border */}
           <path
             d="M 50 800 L 50 260 Q 50 130 170 80 Q 300 30 430 80 Q 530 120 530 260 L 530 800"
             stroke="#8A5CFF"
-            strokeWidth="0.8"
-            fill="rgba(230,223,246,0.03)"
-            opacity="0.6"
+            strokeWidth="1.5"
+            fill="rgba(230,223,246,0.02)"
+            opacity="0.35"
           />
-          {/* Jaali lattice lines — horizontal */}
-          {Array.from({ length: 12 }, (_, i) => (
+          {/* Jaali lattice lines — horizontal (Dense) */}
+          {Array.from({ length: 24 }, (_, i) => (
             <line
               key={`h-${i}`}
               x1="50"
-              y1={200 + i * 50}
+              y1={200 + i * 25}
               x2="530"
-              y2={200 + i * 50}
+              y2={200 + i * 25}
               stroke="#8A5CFF"
-              strokeWidth="0.4"
+              strokeWidth="0.8"
               opacity="0.25"
             />
           ))}
-          {/* Jaali lattice lines — vertical */}
-          {Array.from({ length: 8 }, (_, i) => (
+          {/* Jaali lattice lines — vertical (Dense) */}
+          {Array.from({ length: 16 }, (_, i) => (
             <line
               key={`v-${i}`}
-              x1={90 + i * 60}
+              x1={65 + i * 30}
               y1="80"
-              x2={90 + i * 60}
+              x2={65 + i * 30}
               y2="800"
               stroke="#8A5CFF"
-              strokeWidth="0.4"
+              strokeWidth="0.8"
               opacity="0.2"
             />
           ))}
-          {/* Decorative star medallions at lattice intersections */}
-          {[150, 300, 450].map((x) =>
-            [200, 400, 600].map((y) => (
-              <circle
-                key={`star-${x}-${y}`}
-                cx={x}
-                cy={y}
-                r="4"
-                fill="none"
-                stroke="#8A5CFF"
-                strokeWidth="0.5"
-                opacity="0.3"
-              />
+          {/* Decorative star medallions at dense intersections */}
+          {[155, 245, 335, 425].map((x) =>
+            [250, 400, 550, 700].map((y) => (
+              <g key={`star-${x}-${y}`}>
+                <circle cx={x} cy={y} r="2.5" fill="#8A5CFF" opacity="0.5" />
+                <circle cx={x} cy={y} r="6" fill="none" stroke="#8A5CFF" strokeWidth="0.5" opacity="0.3" />
+              </g>
             ))
           )}
-          {/* Cusped arch keystone ornament */}
-          <circle
-            cx="300"
-            cy="40"
-            r="8"
-            fill="none"
-            stroke="#E6DFF6"
-            strokeWidth="0.6"
-            opacity="0.4"
-          />
+          {/* Cusped arch keystone ornament (Mandala/Crown accent) */}
+          <g transform="translate(300, 45)">
+            <circle cx="0" cy="0" r="12" fill="none" stroke="#E6DFF6" strokeWidth="1" opacity="0.4" />
+            <circle cx="0" cy="0" r="4" fill="#E6DFF6" opacity="0.6" />
+            <path d="M 0 -18 L 5 -10 L 12 -10 L 7 -4 L 14 0 L 7 4 L 12 10 L 5 10 L 0 18 L -5 10 L -12 10 L -7 4 L -14 0 L -7 -4 L -12 -10 L -5 -10 Z" fill="none" stroke="#8A5CFF" strokeWidth="0.8" opacity="0.4" />
+          </g>
         </svg>
 
         {/* Right side — lighter vertical jaali border stripe */}
         <div
-          className="absolute right-0 top-0 w-px h-full opacity-[0.08]"
+          className="absolute right-0 top-0 w-[2px] h-full opacity-[0.15]"
           style={{
             background: 'linear-gradient(180deg, transparent 0%, #8A5CFF 20%, #8A5CFF 80%, transparent 100%)',
           }}
@@ -181,12 +239,11 @@ export function CultureHero() {
 
       {/* ═══════════════════════════════════════════════════════
           LAYER 3 — Ornamental border accents
-          Silver at 20-30% for filigree; Champagne Pearl for bead-line highlights
           ═══════════════════════════════════════════════════════ */}
       <div className="absolute inset-0 z-[3] pointer-events-none">
         {/* Top ornamental border — chevron/truck-art inspired running pattern */}
         <div
-          className="absolute top-0 left-0 w-full h-3 opacity-[0.2]"
+          className="absolute top-0 left-0 w-full h-3 opacity-[0.25]"
           style={{
             backgroundImage: `
               linear-gradient(135deg, #C0C0C0 25%, transparent 25%),
@@ -198,7 +255,7 @@ export function CultureHero() {
         />
         {/* Bottom ornamental border — mirror of top */}
         <div
-          className="absolute bottom-0 left-0 w-full h-3 opacity-[0.2]"
+          className="absolute bottom-0 left-0 w-full h-3 opacity-[0.25]"
           style={{
             backgroundImage: `
               linear-gradient(315deg, #C0C0C0 25%, transparent 25%),
@@ -231,9 +288,9 @@ export function CultureHero() {
           <h1
             className="font-accent font-extrabold uppercase leading-[0.85] text-champagne-pearl"
             style={{
-              fontSize: 'clamp(4rem, 12vw, 10rem)',
-              letterSpacing: '-0.02em',
-              textShadow: '3px 4px 0 #1C0B46',
+               fontSize: 'clamp(4rem, 12vw, 10rem)',
+               letterSpacing: '-0.02em',
+               textShadow: '3px 4px 0 #1C0B46',
             }}
           >
             Culture
