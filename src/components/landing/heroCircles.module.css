@@ -1,0 +1,72 @@
+/*
+  ─── Falak '26 · Convergence Hero Circles ────────────────────────────────────
+  Minimal CSS module:
+    – Size custom-property used by both HeroCircle.tsx instances
+    – @keyframes for the Sports grunge rim-dash (torn-edge stroke animation)
+    – prefers-reduced-motion: kills ALL CSS animations in this module
+  ─────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ── Shared size token ─────────────────────────────────────────── */
+.circle {
+  --circle-size: clamp(280px, 32vw, 480px);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  /* translateY(-50%) applied inline per-side via Framer Motion style */
+  cursor: pointer;
+  user-select: none;
+  /* GPU layer — only this element will composite */
+  will-change: transform;
+}
+
+/* ── Sports side: anchored right, half off-screen ──────────────── */
+.circleRight {
+  right: calc(var(--circle-size) * -0.48);
+}
+
+/* ── Culture side: anchored left, half off-screen ──────────────── */
+.circleLeft {
+  left: calc(var(--circle-size) * -0.48);
+}
+
+/* ── Rim dash overlay (Sports torn-edge stroke) ────────────────── */
+/*
+  An SVG <circle> on top of the Sports circle carries stroke-dasharray.
+  This keyframe animates stroke-dashoffset to make the dashes crawl
+  around the rim — creating the illusion of a torn/scratchy border.
+  Direction: clockwise (positive offset decreasing).
+*/
+@keyframes rimCrawl {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -1508; } /* ≈ circumference of a 240px-radius circle */
+}
+
+.rimSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.rimDash {
+  animation: rimCrawl 18s linear infinite;
+  transform-origin: center;
+}
+
+/* ── Prefers-reduced-motion guard ──────────────────────────────── */
+/*
+  Disables every CSS animation in this module when the OS requests it.
+  The JS layer (HeroCircle.tsx) independently checks useReducedMotion()
+  to skip Framer Motion's idle rotate. Both layers must agree.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .rimDash {
+    animation: none;
+  }
+}
