@@ -37,8 +37,8 @@ const SWIPE_OFFSET_THRESHOLD   = 60;   // pixels — minimum drag distance
 const SWIPE_VELOCITY_THRESHOLD = 300;  // px/s   — fast flick counts as swipe
 
 /* ── Asset paths (verified on disk: Basketball.png, Floral.png) ───────────── */
-const SPORTS_ASSET  = '/assets/sportsAssets/Basketball.png';
-const CULTURE_ASSET = '/assets/culturalAssets/Floral.png';
+const SPORTS_ASSET  = '/assets/sportsAssets/Basketball.webp';
+const CULTURE_ASSET = '/assets/culturalAssets/Floral.webp';
 
 /* ── Component ─────────────────────────────────────────────────────────────── */
 export function HeroCircles() {
