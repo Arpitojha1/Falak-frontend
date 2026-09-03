@@ -4,13 +4,15 @@
  */
 
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
-import { Home } from './pages/Home';
-import { Schedule } from './pages/Schedule';
-import { Profile } from './pages/Profile';
-import { SportsPage } from './pages/Sports';
-import { CulturePage } from './pages/Culture';
+
+const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
+const Schedule = lazy(() => import('./pages/Schedule').then(module => ({ default: module.Schedule })));
+const Profile = lazy(() => import('./pages/Profile').then(module => ({ default: module.Profile })));
+const SportsPage = lazy(() => import('./pages/Sports').then(module => ({ default: module.SportsPage })));
+const CulturePage = lazy(() => import('./pages/Culture').then(module => ({ default: module.CulturePage })));
 
 function MainLayout() {
   return (
@@ -27,15 +29,17 @@ function MainLayout() {
 export default function App() {
   return (
     <Router>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-        <Route path="/sports" element={<SportsPage />} />
-        <Route path="/cultural" element={<CulturePage />} />
-      </Routes>
+      <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+          <Route path="/sports" element={<SportsPage />} />
+          <Route path="/cultural" element={<CulturePage />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }
