@@ -82,6 +82,9 @@ interface MasonryProps {
   renderDetails?: (item: Item) => React.ReactNode;
 }
 
+const MEDIA_QUERIES = ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'];
+const MEDIA_VALUES = [5, 4, 3, 2];
+
 const Masonry: React.FC<MasonryProps> = ({
   items,
   ease = 'power3.out',
@@ -96,11 +99,7 @@ const Masonry: React.FC<MasonryProps> = ({
   expandedId = null,
   renderDetails
 }) => {
-  const columns = useMedia(
-    ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'],
-    [5, 4, 3, 2],
-    1
-  );
+  const columns = useMedia(MEDIA_QUERIES, MEDIA_VALUES, 1);
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
@@ -159,25 +158,26 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const [internalExpandedId, setInternalExpandedId] = useState(expandedId);
   const flipState = useRef<any>(null);
+  const itemRefs = useRef(new Map<string, HTMLElement>());
 
-  if (expandedId !== internalExpandedId) {
-    // Capture state before React renders the new class or we change inline styles
-    flipState.current = Flip.getState('.item-wrapper');
-    // Hide details quickly on close
-    if (!expandedId) {
-      gsap.to('.details-overlay', { opacity: 0, duration: 0.15 });
+  useLayoutEffect(() => {
+    if (expandedId !== internalExpandedId) {
+      flipState.current = Flip.getState(Array.from(itemRefs.current.values()));
+      if (!expandedId) {
+        gsap.to('.details-overlay', { opacity: 0, duration: 0.15 });
+      }
+      setInternalExpandedId(expandedId);
     }
-    setInternalExpandedId(expandedId);
-  }
+  }, [expandedId, internalExpandedId]);
 
   const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
     if (!imagesReady) return;
+    if (expandedId !== internalExpandedId) return; // Wait for state to sync
 
     grid.forEach((item, index) => {
-      const selector = `[data-key="${item.id}"]`;
-      const element = document.querySelector(selector) as HTMLElement;
+      const element = itemRefs.current.get(item.id) as HTMLElement;
       if (!element) return;
 
       if (!hasMounted.current) {
@@ -191,7 +191,7 @@ const Masonry: React.FC<MasonryProps> = ({
           ...(blurToFocus && { filter: 'blur(10px)' })
         };
 
-        gsap.fromTo(selector, initialState, {
+        gsap.fromTo(element, initialState, {
           opacity: 1,
           x: item.x,
           y: item.y,
@@ -239,14 +239,13 @@ const Masonry: React.FC<MasonryProps> = ({
     }
 
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, internalExpandedId]);
+  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, internalExpandedId, expandedId]);
 
   const handleMouseEnter = (e: React.MouseEvent, item: GridItem) => {
     const element = e.currentTarget as HTMLElement;
-    const selector = `[data-key="${item.id}"]`;
 
     if (scaleOnHover && internalExpandedId !== item.id) {
-      gsap.to(selector, {
+      gsap.to(element, {
         scale: hoverScale,
         duration: 0.3,
         ease: 'power2.out'
@@ -273,10 +272,9 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const handleMouseLeave = (e: React.MouseEvent, item: GridItem) => {
     const element = e.currentTarget as HTMLElement;
-    const selector = `[data-key="${item.id}"]`;
 
     if (scaleOnHover && internalExpandedId !== item.id) {
-      gsap.to(selector, {
+      gsap.to(element, {
         scale: 1,
         duration: 0.3,
         ease: 'power2.out'
@@ -317,6 +315,10 @@ const Masonry: React.FC<MasonryProps> = ({
           <div
             key={item.id}
             data-key={item.id}
+            ref={(el) => {
+               if (el) itemRefs.current.set(item.id, el);
+               else itemRefs.current.delete(item.id);
+            }}
             className={`item-wrapper ${internalExpandedId === item.id ? 'is-expanded' : ''}`}
             onClick={() => onItemClick ? onItemClick(item) : window.open(item.url, '_blank', 'noopener')}
             onMouseEnter={e => handleMouseEnter(e, item)}
@@ -365,4 +367,4 @@ const Masonry: React.FC<MasonryProps> = ({
   );
 };
 
-export default Masonry;
+export default React.memo(Masonry);
