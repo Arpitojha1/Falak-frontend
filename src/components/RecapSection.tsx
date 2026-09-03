@@ -26,11 +26,11 @@ const CAROUSEL_SLIDES = [
   }
 ];
 
+const SLIDER_ITEMS = CAROUSEL_SLIDES.map(s => ({ image: s.image, caption: s.title }));
+
 export function RecapSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeSlide = CAROUSEL_SLIDES[activeIndex];
-
-  const sliderItems = CAROUSEL_SLIDES.map(s => ({ image: s.image, caption: s.title }));
 
   return (
     <section className="relative min-h-screen py-24 px-6 md:px-12 z-20 flex flex-col justify-center">
@@ -173,7 +173,7 @@ export function RecapSection() {
             <div className="relative w-full h-full overflow-hidden group z-10">
               <div className="absolute inset-0 z-0 grayscale-[20%] contrast-110 brightness-90 transition-all duration-700">
                 <MorphSlider
-                  items={sliderItems}
+                  items={SLIDER_ITEMS}
                   transition="melt"
                   intensity={0.65}
                   aberration={0.5}
