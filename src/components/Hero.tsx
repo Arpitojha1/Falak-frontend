@@ -3,7 +3,7 @@ import { LogoImage } from './LogoImage';
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-midnight-indigo pt-16 md:pt-24">
+    <section className="relative min-h-[90vh] flex items-center justify-center bg-midnight-indigo pt-16 md:pt-24">
       {/*
         ─── Kite Motif Background ──────────────────────────────────────────────
         All elements are pointer-events-none / z-0 — they never block the
