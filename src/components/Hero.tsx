@@ -35,7 +35,7 @@ export function Hero() {
           animate={{ y: [-18, -48, -18], rotate: [-6, -2, -6], opacity: [0.55, 0.75, 0.55] }}
           transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/kite/falak kite.png"
             alt=""
             aria-hidden="true"
@@ -51,7 +51,7 @@ export function Hero() {
           animate={{ y: [-10, -38, -10], rotate: [8, 14, 8], opacity: [0.30, 0.50, 0.30] }}
           transition={{ duration: 17, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/kite/kite-1.png"
             alt=""
             aria-hidden="true"
@@ -67,7 +67,7 @@ export function Hero() {
           animate={{ y: [-12, -40, -12], rotate: [4, 8, 4], opacity: [0.35, 0.55, 0.35] }}
           transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/kite/kite-2.png"
             alt=""
             aria-hidden="true"
@@ -83,7 +83,7 @@ export function Hero() {
           animate={{ y: [-8, -32, -8], rotate: [-10, -5, -10], opacity: [0.28, 0.45, 0.28] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/kite/kite-3.png"
             alt=""
             aria-hidden="true"
@@ -99,7 +99,7 @@ export function Hero() {
           animate={{ y: [-14, -44, -14], rotate: [5, 11, 5], opacity: [0.22, 0.38, 0.22] }}
           transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/kite/kite-4.png"
             alt=""
             aria-hidden="true"
@@ -115,7 +115,7 @@ export function Hero() {
           animate={{ y: [-6, -28, -6], rotate: [-3, 2, -3], opacity: [0.20, 0.35, 0.20] }}
           transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 12 }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/kite/kite-5.png"
             alt=""
             aria-hidden="true"
