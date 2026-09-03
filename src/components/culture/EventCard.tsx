@@ -25,7 +25,7 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
 
   return (
     <motion.div
-      layout
+      layout="position"
       className={`
         relative w-full text-left overflow-hidden
         transition-opacity transition-[filter] duration-300

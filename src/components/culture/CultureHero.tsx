@@ -15,15 +15,12 @@ export function CultureHero() {
       />
       
       {/* Fine surface grain (SVG noise) — gives material presence beyond a flat digital gradient */}
-      <div className="absolute inset-0 z-[1] mix-blend-overlay opacity-[0.10] pointer-events-none">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <filter id="hero-noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.3 0" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#hero-noise)" />
-        </svg>
-      </div>
+      <div 
+        className="absolute inset-0 z-[1] mix-blend-overlay opacity-[0.10] pointer-events-none"
+        style={{
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'hero-noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3CfeColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.3 0\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23hero-noise)\'/%3E%3C/svg%3E")'
+        }}
+      ></div>
 
       {/* ═══════════════════════════════════════════════════════
           LAYER 1 — Darbar Carpet Field & Micro-weave
@@ -64,10 +61,8 @@ export function CultureHero() {
         />
 
         {/* Carpet field pattern — breathing opacity via Framer Motion for subtle life */}
-        <motion.div
-          animate={{ opacity: [0.08, 0.14, 0.08] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute inset-0"
+        <div
+          className="absolute inset-0 opacity-[0.11]"
           style={{
             backgroundImage: `
               radial-gradient(ellipse at 50% 50%, rgba(138,92,255,0.8) 0%, transparent 50%),
