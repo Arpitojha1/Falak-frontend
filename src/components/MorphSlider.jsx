@@ -279,7 +279,20 @@ class MorphEngine {
 
     this.loadTextures();
 
+    this.isPaused = false;
     this.boundLoop = this.loop.bind(this);
+    this.raf = requestAnimationFrame(this.boundLoop);
+  }
+
+  pause() {
+    if (this.isPaused) return;
+    this.isPaused = true;
+    cancelAnimationFrame(this.raf);
+  }
+
+  resume() {
+    if (!this.isPaused) return;
+    this.isPaused = false;
     this.raf = requestAnimationFrame(this.boundLoop);
   }
 
@@ -524,7 +537,19 @@ export default function MorphSlider({
     engineRef.current = engine;
     setIndex(startIndex);
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          engine.resume();
+        } else {
+          engine.pause();
+        }
+      });
+    }, { threshold: 0 });
+    observer.observe(containerRef.current);
+
     return () => {
+      observer.disconnect();
       engine.destroy();
       engineRef.current = null;
     };
