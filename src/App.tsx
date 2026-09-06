@@ -14,6 +14,7 @@ const Schedule = lazy(() => import('./pages/Schedule').then(module => ({ default
 const Profile = lazy(() => import('./pages/Profile').then(module => ({ default: module.Profile })));
 const SportsPage = lazy(() => import('./pages/Sports').then(module => ({ default: module.SportsPage })));
 const CulturePage = lazy(() => import('./pages/Culture').then(module => ({ default: module.CulturePage })));
+const Passes = lazy(() => import('./pages/Passes').then(module => ({ default: module.Passes })));
 
 function MainLayout() {
   return (
@@ -58,6 +59,7 @@ function AnimatedRoutes() {
               <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/schedule" element={<Schedule />} />
+                <Route path="/passes" element={<Passes />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
               <Route path="/sports" element={<SportsPage />} />
