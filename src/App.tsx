@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/Footer';
+import { AnimatePresence, motion } from 'motion/react';
 
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
 const Schedule = lazy(() => import('./pages/Schedule').then(module => ({ default: module.Schedule })));
@@ -25,21 +26,55 @@ function MainLayout() {
   );
 }
 
+function AnimatedRoutes() {
+  const location = useLocation();
+  
+  // Determine wash color based on destination route if coming from Navbar state
+  // But standard way is to use location.state
+  const washColorClass = location.state?.washColor || '';
+
+  return (
+    <div className="relative w-full min-h-screen">
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          className="w-full h-full"
+        >
+          {/* Wash overlay during crossfade */}
+          {washColorClass && (
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className={`fixed inset-0 z-40 pointer-events-none mix-blend-color ${washColorClass}`}
+            />
+          )}
+          <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
+            <Routes location={location}>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/schedule" element={<Schedule />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+              <Route path="/sports" element={<SportsPage />} />
+              <Route path="/cultural" element={<CulturePage />} />
+            </Routes>
+          </Suspense>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <Router>
       <Navbar />
-      <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route path="/sports" element={<SportsPage />} />
-          <Route path="/cultural" element={<CulturePage />} />
-        </Routes>
-      </Suspense>
+      <AnimatedRoutes />
     </Router>
   );
 }
