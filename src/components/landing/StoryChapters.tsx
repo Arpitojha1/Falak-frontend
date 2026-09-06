@@ -11,17 +11,16 @@ export function StoryChapters() {
     offset: ['start end', 'end start'],
   });
 
-  // Sports easing: sharper, snappier (we can't easily put custom cubic-bezier in useTransform directly, 
-  // but we can apply useSpring with stiffness/damping or just use the raw value in whileInView).
-  // Actually, useSpring can give a punchy feel to the scrubbed progress:
-  const sportsScrub = useSpring(chapter1Progress, { stiffness: 300, damping: 30 });
-  const cultureScrub = useSpring(chapter1Progress, { stiffness: 50, damping: 20 }); // Softer, slower
+  // Sports easing: punchier
+  const sportsScrub = useSpring(chapter1Progress, { stiffness: 400, damping: 25 });
+  // Culture easing: softer
+  const cultureScrub = useSpring(chapter1Progress, { stiffness: 40, damping: 25 }); 
 
-  const sportsX = useTransform(sportsScrub, [0, 0.3, 0.7, 1], ['-100%', '0%', '0%', '-50%']);
-  const sportsOpacity = useTransform(sportsScrub, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const sportsX = useTransform(sportsScrub, [0, 0.35, 0.65, 1], ['-100%', '0%', '0%', '-50%']);
+  const sportsOpacity = useTransform(sportsScrub, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
 
-  const cultureX = useTransform(cultureScrub, [0, 0.3, 0.7, 1], ['100%', '0%', '0%', '50%']);
-  const cultureOpacity = useTransform(cultureScrub, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const cultureX = useTransform(cultureScrub, [0, 0.35, 0.65, 1], ['100%', '0%', '0%', '50%']);
+  const cultureOpacity = useTransform(cultureScrub, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
 
   // Chapter 2
   const chapter2Ref = useRef<HTMLElement>(null);
@@ -29,8 +28,8 @@ export function StoryChapters() {
     target: chapter2Ref,
     offset: ['start end', 'end start'],
   });
-  const numbersY = useTransform(chapter2Progress, [0, 0.4, 0.6, 1], [150, 0, 0, -150]);
-  const numbersOpacity = useTransform(chapter2Progress, [0, 0.4, 0.6, 1], [0, 1, 1, 0]);
+  const numbersY = useTransform(chapter2Progress, [0, 0.35, 0.65, 1], [150, 0, 0, -150]);
+  const numbersOpacity = useTransform(chapter2Progress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
 
   // Chapter 3
   const chapter3Ref = useRef<HTMLElement>(null);
@@ -39,11 +38,11 @@ export function StoryChapters() {
     offset: ['start end', 'end start'],
   });
   
-  const orangeX = useTransform(chapter3Progress, [0, 0.5, 1], ['-80%', '0%', '80%']);
-  const violetX = useTransform(chapter3Progress, [0, 0.5, 1], ['80%', '0%', '-80%']);
-  const magentaOpacity = useTransform(chapter3Progress, [0.35, 0.5, 0.65], [0, 0.8, 0]);
-  const textScale = useTransform(chapter3Progress, [0, 0.5, 1], [0.8, 1, 1.2]);
-  const textOpacity = useTransform(chapter3Progress, [0, 0.4, 0.6, 1], [0, 1, 1, 0]);
+  const orangeX = useTransform(chapter3Progress, [0, 0.45, 0.55, 1], ['-80%', '0%', '0%', '80%']);
+  const violetX = useTransform(chapter3Progress, [0, 0.45, 0.55, 1], ['80%', '0%', '0%', '-80%']);
+  const magentaOpacity = useTransform(chapter3Progress, [0.35, 0.45, 0.55, 0.65], [0, 0.8, 0.8, 0]);
+  const textScale = useTransform(chapter3Progress, [0, 0.35, 0.65, 1], [0.85, 1, 1, 1.15]);
+  const textOpacity = useTransform(chapter3Progress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
 
   // Chapter 4
   const chapter4Ref = useRef<HTMLElement>(null);
@@ -64,8 +63,8 @@ export function StoryChapters() {
             className="w-full max-w-md"
             style={{ x: sportsX, opacity: sportsOpacity }}
           >
-            <h2 className="font-sans font-black text-5xl md:text-7xl text-[#FF6A00] uppercase mb-8">
-              Raw Power
+            <h2 className="font-sans font-black text-6xl md:text-8xl tracking-tighter leading-[0.9] text-[#FF6A00] uppercase mb-8">
+              Raw<br/>Power
             </h2>
             <div className="w-full aspect-[4/3] bg-white/5 border border-[#FF6A00]/20 flex items-center justify-center relative overflow-hidden">
               <span className="font-mono text-[#FF6A00]/50 tracking-widest text-center">[ ZUUM PLACEHOLDER ]</span>
@@ -80,8 +79,8 @@ export function StoryChapters() {
             className="w-full max-w-md text-right flex flex-col items-end"
             style={{ x: cultureX, opacity: cultureOpacity }}
           >
-            <h2 className="font-serif italic text-5xl md:text-7xl text-[#8A5CFF] mb-8">
-              Pure Expression
+            <h2 className="font-serif italic text-6xl md:text-8xl tracking-tight leading-[1.1] text-[#8A5CFF] mb-8">
+              Pure<br/>Expression
             </h2>
             <div className="w-full aspect-[4/3] bg-white/5 border border-[#8A5CFF]/20 flex items-center justify-center relative overflow-hidden">
               <span className="font-mono text-[#8A5CFF]/50 tracking-widest text-center">[ SWIRLA PLACEHOLDER ]</span>
@@ -105,15 +104,15 @@ export function StoryChapters() {
           style={{ y: numbersY, opacity: numbersOpacity }}
         >
           <div className="flex flex-col items-center">
-            <span className="font-sans font-black text-7xl md:text-9xl text-white mb-4">{"{{EVENT_COUNT}}"}</span>
+            <span className="font-sans font-black text-8xl md:text-[10rem] tracking-tighter leading-[0.9] text-white mb-4">{"{{EVENT_COUNT}}"}</span>
             <span className="font-mono text-sm text-[#FF3D7F] uppercase tracking-widest">Events</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-sans font-black text-7xl md:text-9xl text-white mb-4">{"{{FOOTFALL}}"}</span>
+            <span className="font-sans font-black text-8xl md:text-[10rem] tracking-tighter leading-[0.9] text-white mb-4">{"{{FOOTFALL}}"}</span>
             <span className="font-mono text-sm text-[#FF3D7F] uppercase tracking-widest">Footfall</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-sans font-black text-7xl md:text-9xl text-white mb-4">{"{{DAY_COUNT}}"}</span>
+            <span className="font-sans font-black text-8xl md:text-[10rem] tracking-tighter leading-[0.9] text-white mb-4">{"{{DAY_COUNT}}"}</span>
             <span className="font-mono text-sm text-[#FF3D7F] uppercase tracking-widest">Days</span>
           </div>
         </motion.div>
@@ -140,7 +139,7 @@ export function StoryChapters() {
           className="relative z-10 text-center max-w-2xl"
           style={{ scale: textScale, opacity: textOpacity }}
         >
-          <h2 className="font-sans font-bold text-5xl md:text-7xl text-white mb-8">
+          <h2 className="font-sans font-black tracking-tight leading-[1] text-5xl md:text-7xl text-white mb-8 uppercase">
             Where Worlds Collide
           </h2>
           <p className="font-mono text-sm md:text-base text-[#C0C0C0] leading-relaxed max-w-md mx-auto">
@@ -152,7 +151,7 @@ export function StoryChapters() {
       {/* Chapter 4 — CTA handoff */}
       <section ref={chapter4Ref} className="relative py-32 flex flex-col items-center justify-center text-center px-6">
         <motion.div style={{ y: ctaY, opacity: ctaOpacity }} className="flex flex-col items-center">
-          <h3 className="font-serif italic text-4xl md:text-6xl text-white mb-8">
+          <h3 className="font-serif italic tracking-tight text-4xl md:text-6xl text-white mb-8">
             Ready to dive in?
           </h3>
           <p className="font-mono text-sm text-white/50 mb-12 max-w-md">
