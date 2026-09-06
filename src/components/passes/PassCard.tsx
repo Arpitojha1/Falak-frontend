@@ -134,15 +134,6 @@ export function PassCard({ pass, delay = 0 }: PassCardProps) {
             >
               {pass.badgeLabel}
             </span>
-            <span
-              className="text-[9px] font-mono"
-              style={{
-                fontFamily: '"Baloo Devanagari 2", sans-serif',
-                color: 'rgba(11,15,43,0.4)',
-              }}
-            >
-              {pass.badgeLabelHindi}
-            </span>
           </div>
 
           {/* Pass name */}
@@ -151,15 +142,6 @@ export function PassCard({ pass, delay = 0 }: PassCardProps) {
             style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.02em' }}
           >
             {pass.name}
-          </div>
-          <div
-            className="text-base mt-1"
-            style={{
-              fontFamily: '"Baloo Devanagari 2", sans-serif',
-              color: 'rgba(11,15,43,0.5)',
-            }}
-          >
-            {pass.nameHindi}
           </div>
 
           {/* Tagline */}

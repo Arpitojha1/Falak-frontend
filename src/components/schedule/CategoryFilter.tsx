@@ -30,7 +30,7 @@ export function CategoryFilter({ activeCategory, onCategoryChange }: CategoryFil
               onClick={() => onCategoryChange(cat.key)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
-              className="relative flex-shrink-0 flex flex-col items-center px-3 py-1.5 rounded-sm transition-all duration-200"
+              className="relative flex-shrink-0 flex items-center px-3 py-1.5 rounded-sm transition-all duration-200"
               style={{
                 background: isActive ? color : 'rgba(255,255,255,0.05)',
                 border: `1px solid ${isActive ? color : 'rgba(192,192,192,0.15)'}`,
@@ -48,19 +48,6 @@ export function CategoryFilter({ activeCategory, onCategoryChange }: CategoryFil
                 }}
               >
                 {cat.label}
-              </span>
-              <span
-                className="text-[8px] leading-none mt-0.5"
-                style={{
-                  fontFamily: '"Baloo Devanagari 2", sans-serif',
-                  color: isActive
-                    ? cat.key === 'music' || cat.key === 'business'
-                      ? 'rgba(11,15,43,0.6)'
-                      : 'rgba(255,255,255,0.6)'
-                    : 'rgba(192,192,192,0.4)',
-                }}
-              >
-                {cat.hindi}
               </span>
             </motion.button>
           );

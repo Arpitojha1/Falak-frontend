@@ -1,5 +1,4 @@
 // Schedule Page — Falak '26
-// Desi Maximalism: समय-सारणी
 // Full unified schedule: Sports + Culture, 3 days, timetable format
 
 import { useState, useRef, useEffect } from 'react';
@@ -30,19 +29,12 @@ export function Schedule() {
         '.schedule-heading-en',
         { opacity: 0, x: -40 },
         { opacity: 1, x: 0, duration: 0.8 }
-      )
-        .fromTo(
-          '.schedule-heading-hi',
-          { opacity: 0, x: 40 },
-          { opacity: 1, x: 0, duration: 0.6 },
-          '-=0.5'
-        )
-        .fromTo(
-          '.schedule-meta',
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.5 },
-          '-=0.3'
-        );
+      ).fromTo(
+        '.schedule-meta',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        '-=0.3'
+      );
     }, headerRef);
 
     return () => ctx.revert();
@@ -76,56 +68,33 @@ export function Schedule() {
 
           {/* Eyebrow tag */}
           <div className="flex items-center gap-3 mb-4">
-            <div
-              className="w-6 h-px"
-              style={{ background: '#FF3D7F' }}
-            />
-            <span
-              className="schedule-meta text-[10px] font-mono uppercase tracking-[0.3em] text-silver/50"
-            >
+            <div className="w-6 h-px" style={{ background: '#FF3D7F' }} />
+            <span className="schedule-meta text-[10px] font-mono uppercase tracking-[0.3em] text-silver/50">
               Falak &apos;26 · MIT Bengaluru
             </span>
           </div>
 
-          {/* Main heading: SCHEDULE + समय-सारणी */}
-          <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-            <h1
-              className="schedule-heading-en text-6xl md:text-8xl lg:text-[10rem] uppercase leading-none text-white"
-              style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.03em' }}
-            >
-              SCHEDULE
-            </h1>
-            <span
-              className="schedule-heading-hi text-3xl md:text-5xl lg:text-6xl leading-none"
-              style={{
-                fontFamily: '"Baloo Devanagari 2", sans-serif',
-                color: '#FF3D7F',
-                fontWeight: 700,
-              }}
-            >
-              समय-सारणी
-            </span>
-          </div>
+          {/* Main heading */}
+          <h1
+            className="schedule-heading-en text-6xl md:text-8xl lg:text-[10rem] uppercase leading-none text-white"
+            style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.03em' }}
+          >
+            SCHEDULE
+          </h1>
 
           {/* Sub-meta */}
           <div className="schedule-meta flex flex-wrap items-center gap-4 mt-4">
             {[
-              ['15–17 OCT', '15–17 अक्टूबर'],
-              ['MIT BENGALURU', 'बेंगलुरु'],
-              ['3 DIN', '3 दिन'],
-              ['60+ EVENTS', '60+ इवेंट्स'],
-              ['2 TRACKS', '2 ट्रैक'],
-            ].map(([en, hi]) => (
-              <div key={en} className="flex items-center gap-1.5">
+              '15–17 OCT',
+              'MIT BENGALURU',
+              '3 DAYS',
+              '60+ EVENTS',
+              '2 TRACKS',
+            ].map((label) => (
+              <div key={label} className="flex items-center gap-1.5">
                 <div className="w-1 h-1 rounded-full bg-silver/30" />
                 <span className="font-mono text-xs text-silver/60 uppercase tracking-widest">
-                  {en}
-                </span>
-                <span
-                  className="text-xs text-silver/30"
-                  style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-                >
-                  {hi}
+                  {label}
                 </span>
               </div>
             ))}
@@ -160,14 +129,13 @@ export function Schedule() {
         {/* ── TIMETABLE GRID ── */}
         <div className="px-6 md:px-12">
 
-          {/* Rangoli-style section header with day info */}
+          {/* Section header */}
           <div className="flex items-center gap-4 mb-6">
-            {/* Decorative diamond pattern */}
             <div className="hidden md:flex items-center gap-1">
               {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-1.5 h-1.5 rotate-45"
+                  className="w-1.5 h-1.5"
                   style={{
                     background: i === 1 ? '#FF3D7F' : 'rgba(255,61,127,0.3)',
                     transform: `rotate(45deg) scale(${i === 1 ? 1 : 0.7})`,
@@ -186,17 +154,14 @@ export function Schedule() {
           <TimetableGrid activeDay={activeDay} activeCategory={activeCategory} />
         </div>
 
-        {/* ── CTA STRIP: SCHEDULE DEKH LIYA? AB PASS LE ── */}
+        {/* ── CTA STRIP ── */}
         <div className="mt-16 mx-6 md:mx-12">
           <Link to="/passes">
             <motion.div
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
               className="w-full flex items-center justify-between px-6 md:px-10 py-6 md:py-8 relative overflow-hidden group cursor-pointer"
-              style={{
-                background: '#FF3D7F',
-                borderLeft: '6px solid #fff',
-              }}
+              style={{ background: '#FF3D7F', borderLeft: '6px solid #fff' }}
             >
               {/* Scan-line texture */}
               <div
@@ -206,7 +171,7 @@ export function Schedule() {
                     'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)',
                 }}
               />
-              {/* Tape strips (decorative) */}
+              {/* Tape strips */}
               <div
                 className="absolute top-0 left-12 w-14 h-4 rounded-b-sm opacity-60"
                 style={{ background: 'rgba(255,255,255,0.35)', transform: 'rotate(0.5deg)' }}
@@ -221,22 +186,14 @@ export function Schedule() {
                   className="text-2xl md:text-4xl uppercase leading-none text-white"
                   style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.02em' }}
                 >
-                  SCHEDULE DEKH LIYA?
+                  SEEN THE SCHEDULE?
                 </div>
-                <div
-                  className="text-base md:text-xl text-white/60 mt-1"
-                  style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-                >
-                  शेड्यूल देख लिया? अब पास ले
-                </div>
+                <p className="font-mono text-xs text-white/60 mt-2 uppercase tracking-widest">
+                  Get your pass now — single day &amp; full passes available
+                </p>
               </div>
 
               <div className="relative z-10 flex items-center gap-3">
-                <span
-                  className="hidden md:block font-mono text-xs text-white/70 uppercase tracking-widest"
-                >
-                  Single day &amp; Full passes · Limited hain bhai
-                </span>
                 <div
                   className="text-white text-3xl md:text-4xl font-bold group-hover:translate-x-2 transition-transform duration-300"
                   style={{ fontFamily: '"Anton", sans-serif' }}

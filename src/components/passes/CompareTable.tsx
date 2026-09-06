@@ -3,7 +3,7 @@
 
 import { motion } from 'motion/react';
 import { Check, X, Minus } from 'lucide-react';
-import { PASS_FEATURES, PASS_TIERS, PASSES_FINE_PRINT, PASSES_FINE_PRINT_HINDI } from '../../data/passesData';
+import { PASS_FEATURES, PASS_TIERS, PASSES_FINE_PRINT } from '../../data/passesData';
 
 function CellValue({
   value,
@@ -47,13 +47,7 @@ export function CompareTable() {
           className="text-3xl md:text-5xl uppercase leading-none text-white mb-1"
           style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.02em' }}
         >
-          COMPARE KAR LE
-        </div>
-        <div
-          className="text-lg text-silver/50"
-          style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-        >
-          तुलना करो
+          COMPARE
         </div>
         {/* Rangoli-inspired divider */}
         <div className="mt-4 flex items-center gap-2">
@@ -79,7 +73,7 @@ export function CompareTable() {
                 className="text-left py-3 pr-6 text-[11px] font-mono uppercase tracking-[0.2em] text-silver/40"
                 style={{ width: '40%', borderBottom: '1px solid rgba(192,192,192,0.1)' }}
               >
-                Feature / फ़ीचर
+                Feature
               </th>
               {tiers.map((tier) => (
                 <th
@@ -96,15 +90,6 @@ export function CompareTable() {
                     }}
                   >
                     {tier.name.split(' ')[0]}
-                  </div>
-                  <div
-                    className="text-[9px] mt-0.5"
-                    style={{
-                      fontFamily: '"Baloo Devanagari 2", sans-serif',
-                      color: `${tier.accentColor}80`,
-                    }}
-                  >
-                    {tier.nameHindi}
                   </div>
                 </th>
               ))}
@@ -127,12 +112,6 @@ export function CompareTable() {
                   <div className="font-mono text-[11px] uppercase tracking-wide text-silver/80 group-hover:text-silver transition-colors">
                     {feature.label}
                   </div>
-                  <div
-                    className="text-[10px] text-silver/30 mt-0.5"
-                    style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-                  >
-                    {feature.labelHindi}
-                  </div>
                 </td>
                 <td className="py-3.5 px-3 text-center">
                   <CellValue value={feature.gully} accentColor={tiers[0].accentColor} />
@@ -153,12 +132,6 @@ export function CompareTable() {
       <div className="mt-8 pt-4 border-t border-white/10">
         <p className="font-mono text-[11px] text-silver/40 uppercase tracking-widest">
           {PASSES_FINE_PRINT}
-        </p>
-        <p
-          className="text-sm text-silver/30 mt-1"
-          style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-        >
-          {PASSES_FINE_PRINT_HINDI}
         </p>
       </div>
     </div>

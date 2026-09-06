@@ -53,12 +53,6 @@ function TimeLabel({ time }: { time: string }) {
         >
           ALL DAY
         </span>
-        <span
-          className="text-[8px] mt-0.5"
-          style={{ fontFamily: '"Baloo Devanagari 2", sans-serif', color: 'rgba(198,255,0,0.5)' }}
-        >
-          सारा दिन
-        </span>
       </div>
     );
   }
@@ -151,13 +145,7 @@ export function TimetableGrid({ activeDay, activeCategory }: TimetableGridProps)
           className="text-6xl md:text-8xl text-[#FF3D7F]/20 uppercase leading-none mb-4"
           style={{ fontFamily: '"Anton", sans-serif' }}
         >
-          KHAALI
-        </div>
-        <div
-          className="text-2xl text-[#FF3D7F]/40"
-          style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-        >
-          खाली
+          EMPTY
         </div>
         <p className="font-mono text-sm text-silver/40 mt-4 uppercase tracking-widest">
           No events in this category today

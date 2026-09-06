@@ -72,17 +72,6 @@ export function DaySelector({ activeDay, onDayChange }: DaySelectorProps) {
               {info.label}
             </span>
 
-            {/* Hindi sub */}
-            <span
-              className="text-[9px] mt-0.5 transition-colors"
-              style={{
-                fontFamily: '"Baloo Devanagari 2", sans-serif',
-                color: isActive ? 'rgba(11,15,43,0.5)' : 'rgba(192,192,192,0.35)',
-              }}
-            >
-              {info.hindi}
-            </span>
-
             {/* Active accent bar at bottom */}
             {isActive && (
               <motion.div

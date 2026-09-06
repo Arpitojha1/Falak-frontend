@@ -17,7 +17,6 @@ export type EventCategory =
 export interface FalakEvent {
   id: string;
   name: string;
-  nameHindi?: string; // Devanagari for display
   category: EventCategory;
   day: 1 | 2 | 3; // Day 1 = Oct 15, Day 2 = Oct 16, Day 3 = Oct 17
   startTime: string; // 'HH:MM' 24h
@@ -58,18 +57,6 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
   special:   'Special',
 };
 
-export const CATEGORY_HINDI: Record<EventCategory, string> = {
-  sports:    'खेल',
-  athletics: 'एथलेटिक्स',
-  esports:   'ई-स्पोर्ट्स',
-  dance:     'नृत्य',
-  music:     'संगीत',
-  drama:     'नाटक',
-  creative:  'क्रिएटिव',
-  literary:  'साहित्य',
-  business:  'बिज़नेस',
-  special:   'स्पेशल',
-};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DAY 1 — October 15 (Thursday)
@@ -79,7 +66,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-ad-design',
     name: 'Ad Design',
-    nameHindi: 'ऐड डिज़ाइन',
     category: 'creative',
     day: 1,
     startTime: '09:00',
@@ -93,7 +79,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-short-film',
     name: 'Short Film Making',
-    nameHindi: 'शॉर्ट फिल्म',
     category: 'creative',
     day: 1,
     startTime: '09:00',
@@ -107,7 +92,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-reel-making',
     name: 'Reel Making',
-    nameHindi: 'रील मेकिंग',
     category: 'creative',
     day: 1,
     startTime: '09:00',
@@ -121,7 +105,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-photography',
     name: 'Photography Walk',
-    nameHindi: 'फ़ोटोग्राफ़ी',
     category: 'creative',
     day: 1,
     startTime: '09:00',
@@ -136,7 +119,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-general-quiz',
     name: 'General Quiz',
-    nameHindi: 'जनरल क्विज़',
     category: 'literary',
     day: 1,
     startTime: '09:00',
@@ -149,7 +131,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-pop-quiz',
     name: 'Pop Culture Quiz',
-    nameHindi: 'पॉप कल्चर क्विज़',
     category: 'literary',
     day: 1,
     startTime: '10:00',
@@ -162,7 +143,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-mock-trading',
     name: 'Mock Trading',
-    nameHindi: 'मॉक ट्रेडिंग',
     category: 'business',
     day: 1,
     startTime: '10:00',
@@ -175,7 +155,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-debate',
     name: 'Debate',
-    nameHindi: 'वाद-विवाद',
     category: 'literary',
     day: 1,
     startTime: '10:00',
@@ -188,7 +167,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-shark-tank',
     name: 'Shark Tank',
-    nameHindi: 'शार्क टैंक',
     category: 'business',
     day: 1,
     startTime: '11:30',
@@ -201,7 +179,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-auction',
     name: 'Auction',
-    nameHindi: 'ऑक्शन',
     category: 'business',
     day: 1,
     startTime: '13:00',
@@ -214,7 +191,6 @@ const DAY1_EVENTS: FalakEvent[] = [
   {
     id: 'd1-treasure-hunt',
     name: 'Treasure Hunt',
-    nameHindi: 'ट्रेज़र हंट',
     category: 'special',
     day: 1,
     startTime: '17:30',
@@ -234,7 +210,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-cricket-auction',
     name: 'Cricket Auction',
-    nameHindi: 'क्रिकेट ऑक्शन',
     category: 'sports',
     day: 2,
     startTime: '08:00',
@@ -249,7 +224,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-battle-of-bands',
     name: 'Battle of Bands',
-    nameHindi: 'बैटल ऑफ बैंड्स',
     category: 'music',
     day: 2,
     startTime: '09:00',
@@ -264,7 +238,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-stage-play',
     name: 'Stage Play',
-    nameHindi: 'स्टेज प्ले',
     category: 'drama',
     day: 2,
     startTime: '09:00',
@@ -277,7 +250,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-solo-instrumental',
     name: 'Solo Instrumental',
-    nameHindi: 'सोलो इंस्ट्रुमेंटल',
     category: 'music',
     day: 2,
     startTime: '09:00',
@@ -290,7 +262,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-valorant',
     name: 'Valorant',
-    nameHindi: 'वेलोरेंट',
     category: 'esports',
     day: 2,
     startTime: '10:30',
@@ -304,7 +275,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-fifa',
     name: 'FIFA',
-    nameHindi: 'फीफा',
     category: 'esports',
     day: 2,
     startTime: '10:30',
@@ -317,7 +287,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-codm',
     name: 'CODM',
-    nameHindi: 'कॉड मोबाइल',
     category: 'esports',
     day: 2,
     startTime: '10:30',
@@ -331,7 +300,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-bgmi',
     name: 'BGMI',
-    nameHindi: 'बीजीएमआई',
     category: 'esports',
     day: 2,
     startTime: '10:30',
@@ -345,7 +313,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-clash-royale',
     name: 'Clash Royale',
-    nameHindi: 'क्लैश रॉयले',
     category: 'esports',
     day: 2,
     startTime: '10:30',
@@ -358,7 +325,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-solo-singing',
     name: 'Solo Singing',
-    nameHindi: 'सोलो सिंगिंग',
     category: 'music',
     day: 2,
     startTime: '11:00',
@@ -371,7 +337,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-solo-classical',
     name: 'Solo Classical Dance',
-    nameHindi: 'शास्त्रीय नृत्य',
     category: 'dance',
     day: 2,
     startTime: '11:00',
@@ -384,7 +349,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-group-classical',
     name: 'Group Classical Dance',
-    nameHindi: 'ग्रुप शास्त्रीय',
     category: 'dance',
     day: 2,
     startTime: '12:30',
@@ -398,7 +362,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-monoact',
     name: 'Monoact',
-    nameHindi: 'मोनोएक्ट',
     category: 'drama',
     day: 2,
     startTime: '13:00',
@@ -411,7 +374,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-fashion-show',
     name: 'Fashion Show',
-    nameHindi: 'फैशन शो',
     category: 'special',
     day: 2,
     startTime: '13:00',
@@ -425,7 +387,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-solo-western',
     name: 'Solo Western Dance',
-    nameHindi: 'वेस्टर्न नृत्य',
     category: 'dance',
     day: 2,
     startTime: '14:30',
@@ -438,7 +399,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-group-western',
     name: 'Group Western Dance',
-    nameHindi: 'ग्रुप वेस्टर्न',
     category: 'dance',
     day: 2,
     startTime: '16:00',
@@ -452,7 +412,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-rap-battle',
     name: 'Rap Battle',
-    nameHindi: 'रैप बैटल',
     category: 'music',
     day: 2,
     startTime: '17:00',
@@ -466,7 +425,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-latent-wtf',
     name: 'Latent / What The Falak',
-    nameHindi: 'लेटेंट',
     category: 'drama',
     day: 2,
     startTime: '18:00',
@@ -480,7 +438,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-street-dance',
     name: 'Street Dance / Dance Battle',
-    nameHindi: 'डांस बैटल',
     category: 'dance',
     day: 2,
     startTime: '18:00',
@@ -494,7 +451,6 @@ const DAY2_EVENTS: FalakEvent[] = [
   {
     id: 'd2-dj-set',
     name: 'DJ Set — Main Ground',
-    nameHindi: 'डीजे नाइट',
     category: 'special',
     day: 2,
     startTime: '21:00',
@@ -514,7 +470,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-athletics-100m-m',
     name: 'Athletics — Men\'s 100m',
-    nameHindi: '100m पुरुष',
     category: 'athletics',
     day: 3,
     startTime: '08:00',
@@ -527,7 +482,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-athletics-100m-w',
     name: 'Athletics — Women\'s 100m',
-    nameHindi: '100m महिला',
     category: 'athletics',
     day: 3,
     startTime: '08:00',
@@ -540,7 +494,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-athletics-200m-m',
     name: 'Athletics — Men\'s 200m',
-    nameHindi: '200m पुरुष',
     category: 'athletics',
     day: 3,
     startTime: '08:30',
@@ -553,7 +506,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-athletics-400m',
     name: 'Athletics — 400m & 1500m',
-    nameHindi: '400m / 1500m',
     category: 'athletics',
     day: 3,
     startTime: '10:00',
@@ -566,7 +518,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-relay',
     name: 'Athletics — 4×100m Relay',
-    nameHindi: '4×100m रिले',
     category: 'athletics',
     day: 3,
     startTime: '14:00',
@@ -582,7 +533,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-cricket-final',
     name: 'Cricket — Men\'s Final',
-    nameHindi: 'क्रिकेट फाइनल',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -597,7 +547,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-football-m-final',
     name: 'Football — Men\'s Final',
-    nameHindi: 'फुटबॉल पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -612,7 +561,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-football-w-final',
     name: 'Football — Women\'s Final',
-    nameHindi: 'फुटबॉल महिला',
     category: 'sports',
     day: 3,
     startTime: '13:00',
@@ -626,7 +574,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-basketball-m-final',
     name: 'Basketball — Men\'s Final',
-    nameHindi: 'बास्केटबॉल पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -640,7 +587,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-basketball-w-final',
     name: 'Basketball — Women\'s Final',
-    nameHindi: 'बास्केटबॉल महिला',
     category: 'sports',
     day: 3,
     startTime: '13:00',
@@ -654,7 +600,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-volleyball-m',
     name: 'Volleyball — Men\'s',
-    nameHindi: 'वॉलीबॉल पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -668,7 +613,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-volleyball-w',
     name: 'Volleyball — Women\'s',
-    nameHindi: 'वॉलीबॉल महिला',
     category: 'sports',
     day: 3,
     startTime: '12:00',
@@ -682,7 +626,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-badminton-m',
     name: 'Badminton — Men\'s QF',
-    nameHindi: 'बैडमिंटन पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -696,7 +639,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-badminton-w',
     name: 'Badminton — Women\'s',
-    nameHindi: 'बैडमिंटन महिला',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -710,7 +652,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-table-tennis-m',
     name: 'Table Tennis — Men\'s',
-    nameHindi: 'टेबल टेनिस पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -724,7 +665,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-table-tennis-w',
     name: 'Table Tennis — Women\'s',
-    nameHindi: 'टेबल टेनिस महिला',
     category: 'sports',
     day: 3,
     startTime: '12:00',
@@ -738,7 +678,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-lawn-tennis-m',
     name: 'Lawn Tennis — Men\'s QF',
-    nameHindi: 'लॉन टेनिस पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -752,7 +691,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-lawn-tennis-w',
     name: 'Lawn Tennis — Women\'s Singles',
-    nameHindi: 'लॉन टेनिस महिला',
     category: 'sports',
     day: 3,
     startTime: '13:00',
@@ -765,7 +703,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-squash-m',
     name: 'Squash — Men\'s Singles',
-    nameHindi: 'स्क्वैश पुरुष',
     category: 'sports',
     day: 3,
     startTime: '09:00',
@@ -778,7 +715,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-squash-w',
     name: 'Squash — Women\'s Singles',
-    nameHindi: 'स्क्वैश महिला',
     category: 'sports',
     day: 3,
     startTime: '12:00',
@@ -791,7 +727,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-chess-m',
     name: 'Chess — Men\'s Round 1',
-    nameHindi: 'शतरंज पुरुष',
     category: 'sports',
     day: 3,
     startTime: '10:00',
@@ -805,7 +740,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-chess-w',
     name: 'Chess — Women\'s',
-    nameHindi: 'शतरंज महिला',
     category: 'sports',
     day: 3,
     startTime: '14:00',
@@ -820,7 +754,6 @@ const DAY3_EVENTS: FalakEvent[] = [
   {
     id: 'd3-dj-closing',
     name: 'Closing DJ Set — Main Ground',
-    nameHindi: 'क्लोज़िंग नाइट',
     category: 'special',
     day: 3,
     startTime: '20:00',

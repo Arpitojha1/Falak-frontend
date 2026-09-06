@@ -1,5 +1,4 @@
 // Passes Page — Falak '26
-// Desi Maximalism: पास
 // 3-tier pass system: Gully, Full Falak, Star
 // Physical ticket-card aesthetic
 
@@ -27,11 +26,6 @@ export function Passes() {
         '.passes-heading-en',
         { opacity: 0, x: -40 },
         { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }
-      );
-      gsap.fromTo(
-        '.passes-heading-hi',
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out', delay: 0.3 }
       );
       gsap.fromTo(
         '.passes-meta',
@@ -64,7 +58,7 @@ export function Passes() {
         </div>
       </div>
 
-      {/* ── Rangoli-inspired top border motif ── */}
+      {/* ── Top stripe motif ── */}
       <div className="w-full overflow-hidden pointer-events-none" aria-hidden="true">
         <div
           className="w-full h-1"
@@ -89,24 +83,12 @@ export function Passes() {
           </div>
 
           {/* Main heading */}
-          <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-            <h1
-              className="passes-heading-en text-6xl md:text-8xl lg:text-[10rem] uppercase leading-none text-white"
-              style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.03em' }}
-            >
-              PASSES
-            </h1>
-            <span
-              className="passes-heading-hi text-3xl md:text-5xl lg:text-6xl leading-none"
-              style={{
-                fontFamily: '"Baloo Devanagari 2", sans-serif',
-                color: '#C6FF00',
-                fontWeight: 700,
-              }}
-            >
-              पास
-            </span>
-          </div>
+          <h1
+            className="passes-heading-en text-6xl md:text-8xl lg:text-[10rem] uppercase leading-none text-white"
+            style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.03em' }}
+          >
+            PASSES
+          </h1>
 
           {/* Subline */}
           <div className="passes-meta mt-5 max-w-2xl">
@@ -114,12 +96,7 @@ export function Passes() {
               className="text-base md:text-lg text-silver/70"
               style={{ fontFamily: '"Barlow", sans-serif', fontStyle: 'italic' }}
             >
-              Ek Pass, Poora Falak.{' '}
-              <span
-                style={{ fontFamily: '"Baloo Devanagari 2", sans-serif', fontStyle: 'normal', color: 'rgba(192,192,192,0.4)' }}
-              >
-                एक पास, पूरा फलक।
-              </span>
+              One pass. The whole Falak.
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-3">
               {['15–17 OCT', 'MIT BENGALURU', '3 PASS TIERS', 'LIMITED EDITION'].map((label) => (
@@ -144,7 +121,7 @@ export function Passes() {
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-1 h-1 rotate-45"
+                  className="w-1 h-1"
                   style={{
                     background: ['#FF3D7F', '#8A5CFF', '#C6FF00', '#8A5CFF', '#FF3D7F'][i],
                     transform: `rotate(45deg) scale(${i === 2 ? 1.2 : 0.8})`,
@@ -153,12 +130,12 @@ export function Passes() {
               ))}
             </div>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-silver/40">
-              Choose your tier / अपना टियर चुनो
+              Choose your tier
             </span>
             <div className="flex-1 h-px bg-white/5" />
           </div>
 
-          {/* Pass cards — horizontally scrollable on mobile, flex-row on desktop */}
+          {/* Pass cards */}
           <div className="flex flex-col md:flex-row items-stretch gap-6 md:gap-4 lg:gap-6">
             {PASS_TIERS.map((pass, i) => {
               const delay = i * 0.15;
@@ -186,17 +163,14 @@ export function Passes() {
               <p className="font-mono text-xs text-[#C6FF00] uppercase tracking-widest">
                 Prices dropping soon
               </p>
-              <p
-                className="text-sm text-silver/50 mt-0.5"
-                style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-              >
-                कीमतें जल्द घोषित होंगी — watch this space!
+              <p className="font-mono text-xs text-silver/50 mt-0.5 uppercase tracking-wide">
+                Watch this space — releasing before Oct 1
               </p>
             </div>
           </motion.div>
         </div>
 
-        {/* ── COMPARE KAR LE TABLE ── */}
+        {/* ── COMPARE TABLE ── */}
         <div
           className="mt-20 mx-6 md:mx-12 p-6 md:p-10"
           style={{
@@ -207,28 +181,25 @@ export function Passes() {
           <CompareTable />
         </div>
 
-        {/* ── WHAT'S INCLUDED DETAIL STRIP ── */}
+        {/* ── WHAT'S INCLUDED ── */}
         <div className="mt-16 px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
                 icon: '🎟',
                 title: 'Entry to all events',
-                titleHindi: 'सभी इवेंट्स में एंट्री',
                 desc: '60+ cultural & sports events across 3 days at MIT Bengaluru.',
                 color: '#FF3D7F',
               },
               {
                 icon: '🎵',
                 title: 'Pro nights included',
-                titleHindi: 'प्रो नाइट्स शामिल',
                 desc: 'Battle of Bands + DJ nights — open for Full Falak & Star pass holders.',
                 color: '#C6FF00',
               },
               {
                 icon: '⭐',
                 title: 'Star perks',
-                titleHindi: 'स्टार परक्स',
                 desc: 'Priority lane, limited merch kit, backstage access. For real ones only.',
                 color: '#8A5CFF',
               },
@@ -256,10 +227,7 @@ export function Passes() {
                     transform: `rotate(${[-2, 1.5, -3][i]}deg)`,
                   }}
                 />
-                <div
-                  className="text-2xl mb-3 leading-none"
-                  aria-hidden="true"
-                >
+                <div className="text-2xl mb-3 leading-none" aria-hidden="true">
                   {item.icon}
                 </div>
                 <h3
@@ -268,13 +236,10 @@ export function Passes() {
                 >
                   {item.title}
                 </h3>
-                <div
-                  className="text-sm mt-0.5"
-                  style={{ fontFamily: '"Baloo Devanagari 2", sans-serif', color: 'rgba(11,15,43,0.5)' }}
+                <p
+                  className="text-xs text-[#0B0F2B]/65 mt-3 leading-relaxed"
+                  style={{ fontFamily: '"Barlow", sans-serif' }}
                 >
-                  {item.titleHindi}
-                </div>
-                <p className="text-xs text-[#0B0F2B]/65 mt-3 leading-relaxed" style={{ fontFamily: '"Barlow", sans-serif' }}>
                   {item.desc}
                 </p>
               </motion.div>
@@ -282,83 +247,68 @@ export function Passes() {
           </div>
         </div>
 
-        {/* ── "CONFUSE HO GAYA?" CTA STRIP ── */}
+        {/* ── CTA STRIP ── */}
         <div className="mt-20 mx-6 md:mx-12">
-          <Link to="/passes">
-            <motion.div
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              className="w-full flex flex-col md:flex-row items-center md:items-stretch gap-0 overflow-hidden relative cursor-pointer group"
-              style={{ border: '2px solid rgba(192,192,192,0.15)' }}
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="w-full flex flex-col md:flex-row items-center md:items-stretch gap-0 overflow-hidden relative cursor-pointer group"
+            style={{ border: '2px solid rgba(192,192,192,0.15)' }}
+          >
+            {/* Left: text block */}
+            <div
+              className="flex-1 px-6 md:px-10 py-7 md:py-8 flex flex-col justify-center relative"
+              style={{ borderRight: '2px solid rgba(192,192,192,0.1)' }}
             >
-              {/* Left: text block */}
               <div
-                className="flex-1 px-6 md:px-10 py-7 md:py-8 flex flex-col justify-center relative"
-                style={{ borderRight: '2px solid rgba(192,192,192,0.1)' }}
-              >
-                {/* Scan lines */}
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px)',
+                }}
+              />
+              <div className="relative z-10">
                 <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px)',
-                  }}
-                />
-                <div className="relative z-10">
-                  <div
-                    className="text-2xl md:text-3xl uppercase leading-tight text-white"
-                    style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.02em' }}
-                  >
-                    CONFUSE HO GAYA?
-                  </div>
-                  <div
-                    className="text-lg text-silver/50 mt-1"
-                    style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-                  >
-                    कन्फ़्यूज़ हो गया?
-                  </div>
-                  <p className="font-mono text-xs text-silver/40 mt-3 uppercase tracking-widest">
-                    Sirf ek din ke liye aana hai? → Gully le le. Simple.
-                  </p>
+                  className="text-2xl md:text-3xl uppercase leading-tight text-white"
+                  style={{ fontFamily: '"Anton", sans-serif', letterSpacing: '-0.02em' }}
+                >
+                  NOT SURE WHICH PASS?
                 </div>
+                <p className="font-mono text-xs text-silver/40 mt-3 uppercase tracking-widest">
+                  Only coming for one day? Get the Gully Pass. Simple.
+                </p>
               </div>
+            </div>
 
-              {/* Right: CTA block */}
-              <div
-                className="flex items-center justify-center px-8 py-6 md:py-0 gap-3 group-hover:bg-[#FF3D7F] transition-colors duration-300"
-                style={{ background: 'rgba(255,61,127,0.12)', minWidth: '200px' }}
-              >
-                <div className="text-center">
-                  <div
-                    className="text-xl md:text-2xl uppercase leading-none text-[#FF3D7F] group-hover:text-white transition-colors"
-                    style={{ fontFamily: '"Anton", sans-serif' }}
-                  >
-                    GULLY LE LE
-                  </div>
-                  <div
-                    className="text-base text-[#FF3D7F]/60 group-hover:text-white/60 transition-colors mt-0.5"
-                    style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-                  >
-                    गली ले ले
-                  </div>
-                  <div
-                    className="text-3xl text-[#FF3D7F] group-hover:text-white group-hover:translate-x-2 transition-all duration-300 mt-2"
-                    style={{ fontFamily: '"Anton", sans-serif' }}
-                  >
-                    →
-                  </div>
+            {/* Right: CTA block */}
+            <div
+              className="flex items-center justify-center px-8 py-6 md:py-0 gap-3 group-hover:bg-[#FF3D7F] transition-colors duration-300"
+              style={{ background: 'rgba(255,61,127,0.12)', minWidth: '200px' }}
+            >
+              <div className="text-center">
+                <div
+                  className="text-xl md:text-2xl uppercase leading-none text-[#FF3D7F] group-hover:text-white transition-colors"
+                  style={{ fontFamily: '"Anton", sans-serif' }}
+                >
+                  GET GULLY PASS
+                </div>
+                <div
+                  className="text-3xl text-[#FF3D7F] group-hover:text-white group-hover:translate-x-2 transition-all duration-300 mt-2"
+                  style={{ fontFamily: '"Anton", sans-serif' }}
+                >
+                  →
                 </div>
               </div>
-            </motion.div>
-          </Link>
+            </div>
+          </motion.div>
         </div>
 
-        {/* ── SCHEDULE LINK ── */}
+        {/* ── BACK LINK ── */}
         <div className="mt-8 px-6 md:px-12 flex justify-center">
           <Link
             to="/schedule"
             className="font-mono text-xs text-silver/40 hover:text-silver/70 uppercase tracking-[0.2em] transition-colors flex items-center gap-2"
           >
-            ← Back to Schedule / वापस शेड्यूल पर
+            ← Back to Schedule
           </Link>
         </div>
 

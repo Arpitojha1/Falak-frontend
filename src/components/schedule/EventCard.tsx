@@ -77,15 +77,6 @@ export function EventCard({ event, style, className = '', compact = false }: Eve
         {event.name}
       </div>
 
-      {/* Hindi name */}
-      {event.nameHindi && !compact && (
-        <div
-          className="text-[10px] text-[#0B0F2B]/50 mt-0.5 leading-none"
-          style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-        >
-          {event.nameHindi}
-        </div>
-      )}
 
       {/* Time + Venue */}
       {!compact && (
@@ -157,14 +148,6 @@ function AnchorEventBar({
         >
           {event.name}
         </div>
-        {event.nameHindi && (
-          <div
-            className="text-white/60 text-xs mt-0.5"
-            style={{ fontFamily: '"Baloo Devanagari 2", sans-serif' }}
-          >
-            {event.nameHindi}
-          </div>
-        )}
       </div>
 
       <div className="relative z-10 flex flex-col items-end gap-1">
