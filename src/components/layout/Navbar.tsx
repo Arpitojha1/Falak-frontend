@@ -39,8 +39,8 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className={`fixed top-0 w-full z-50 flex items-center justify-between px-6 md:px-12 py-4 transition-all duration-200 ${
-        scrolled ? 'bg-midnight-indigo/90 backdrop-blur-md border-b border-silver/10' : 'bg-transparent border-transparent'
+      className={`fixed top-0 w-full z-50 flex items-center justify-between px-6 md:px-12 py-4 transition-[background-color,backdrop-filter,border-color] duration-300 ease-out ${
+        scrolled ? 'bg-midnight-indigo/90 backdrop-blur-md border-b border-silver/10' : 'bg-midnight-indigo/0 backdrop-blur-none border-b border-transparent'
       }`}
       initial={false}
     >
@@ -66,23 +66,23 @@ export function Navbar() {
           <AnimatePresence>
             {dropdownOpen && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-40 bg-[#0B0F2B] border border-silver/10 shadow-xl rounded-sm overflow-hidden flex flex-col"
               >
                 <button
                   onClick={(e) => { e.stopPropagation(); handleTrackNavigation('/cultural', 'bg-aurora-violet'); }}
-                  className="px-4 py-3 font-mono text-sm text-[#C0C0C0] hover:text-[#8A5CFF] hover:bg-white/5 transition-colors text-left group"
+                  className="px-4 py-3 font-mono text-sm text-[#C0C0C0] hover:text-[#8A5CFF] hover:bg-white/5 transition-all duration-200 text-left group"
                 >
-                  <span className="group-hover:underline decoration-2 underline-offset-4">Cultural</span>
+                  <span className="group-hover:underline decoration-2 underline-offset-4 transition-all">Cultural</span>
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); handleTrackNavigation('/sports', 'bg-electric-orange'); }}
-                  className="px-4 py-3 font-mono text-sm text-[#C0C0C0] hover:text-[#FF6A00] hover:bg-white/5 transition-colors text-left group"
+                  className="px-4 py-3 font-mono text-sm text-[#C0C0C0] hover:text-[#FF6A00] hover:bg-white/5 transition-all duration-200 text-left group"
                 >
-                  <span className="group-hover:underline decoration-2 underline-offset-4">Sports</span>
+                  <span className="group-hover:underline decoration-2 underline-offset-4 transition-all">Sports</span>
                 </button>
               </motion.div>
             )}
@@ -92,7 +92,7 @@ export function Navbar() {
         <NavLink
           to="/schedule"
           className={({ isActive }) =>
-            `font-mono text-sm uppercase tracking-widest transition-colors ${
+            `font-mono text-sm uppercase tracking-widest transition-colors duration-200 ${
               isActive ? 'text-convergence-magenta' : 'text-silver hover:text-white'
             }`
           }
@@ -103,7 +103,7 @@ export function Navbar() {
         <NavLink
           to="/passes"
           className={({ isActive }) =>
-            `font-mono text-sm uppercase tracking-widest transition-colors ${
+            `font-mono text-sm uppercase tracking-widest transition-colors duration-200 ${
               isActive ? 'text-convergence-magenta' : 'text-silver hover:text-white'
             }`
           }
@@ -115,7 +115,7 @@ export function Navbar() {
       {/* Right: Profile */}
       <div className="relative">
         <button 
-          className="text-silver hover:text-white transition-colors flex items-center"
+          className="text-silver hover:text-white transition-colors duration-200 flex items-center"
           onClick={() => setAccountMenuOpen(!accountMenuOpen)}
         >
           <User size={24} strokeWidth={1.5} />
@@ -124,10 +124,10 @@ export function Navbar() {
         <AnimatePresence>
           {accountMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0, y: 8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="absolute top-full right-0 mt-4 w-48 bg-[#0B0F2B] border border-silver/10 shadow-xl rounded-sm overflow-hidden flex flex-col"
             >
               <NavLink to="/profile" onClick={() => setAccountMenuOpen(false)} className="px-4 py-3 font-mono text-sm text-[#C0C0C0] hover:text-white hover:bg-white/5 transition-colors text-left">
