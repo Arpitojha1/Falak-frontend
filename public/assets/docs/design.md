@@ -159,3 +159,5 @@ This section documents where the live code differs from previous planning or han
 - Audited the entire codebase (Sports, Culture, Main Landing Page).
 - Consolidated site-wide rules, verified implementations against previous planning docs, and produced this unified `design.md` reference.
 - Created status-only `README.md`.
+**Session 8: Profile Page Build**
+> **Profile page (/profile):** Culture-leaning base palette (Violet/Plum/Lilac/Pearl/Silver) + single-instance Convergence Magenta accent rule, applied because cross-track data display (a page showing both Sports and Cultural registrations together) was ruled a legitimate convergence context. First on-button use of the ticket-stub motif (previously card-tile only on Cultural route) — logged as an intentional extension, not scope drift. Profile Stamp introduced as a new, separate character system from ZUUM/SWIRLA: 3 user-selectable variations (Editorial Cool / Retro Performer / Heritage Artist), all shipping live, selectable by the attendee — not a design-review pick.
