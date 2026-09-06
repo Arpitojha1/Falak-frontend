@@ -1,6 +1,7 @@
 import { Hero } from '../components/Hero';
 import { RecapSection } from '../components/RecapSection';
 import { HeroCircles } from '../components/landing/HeroCircles';
+import { StoryChapters } from '../components/landing/StoryChapters';
 
 export function Home() {
   return (
@@ -13,6 +14,7 @@ export function Home() {
         <Hero />
         <HeroCircles />
       </div>
+      <StoryChapters />
       <RecapSection />
     </main>
   );
