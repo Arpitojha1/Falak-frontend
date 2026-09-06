@@ -5,7 +5,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
-import { Navigation } from './components/Navigation';
+import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/Footer';
 
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
@@ -17,7 +17,6 @@ const CulturePage = lazy(() => import('./pages/Culture').then(module => ({ defau
 function MainLayout() {
   return (
     <div className="flex flex-col min-h-screen bg-midnight-indigo selection:bg-convergence-magenta selection:text-white">
-      <Navigation />
       <div className="flex-grow pb-16 md:pb-0">
         <Outlet />
       </div>
@@ -29,6 +28,7 @@ function MainLayout() {
 export default function App() {
   return (
     <Router>
+      <Navbar />
       <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
         <Routes>
           <Route element={<MainLayout />}>
