@@ -10,3 +10,16 @@ public/assets/docs/*
 public/assets/reference/*
 .superpowers/*
 .agents/*
+
+# Event timetables, pass structure, spreadsheets & raw PDFs
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*timetable*
+*Timetable*
+*PassStructure*
+
+# Test reports & design mockups
+lighthouse-report*.json
+mockup by claude.png

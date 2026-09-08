@@ -65,18 +65,16 @@ function TimeLabel({ time }: { time: string }) {
   return (
     <div className="flex flex-col items-end justify-start pt-1 pr-4 min-w-[72px] w-[72px] flex-shrink-0">
       <span
-        className="text-xl leading-none font-bold"
+        className="text-2xl leading-none font-black text-white"
         style={{
           fontFamily: '"Anton", sans-serif',
-          color: 'rgba(192,192,192,0.9)',
           letterSpacing: '-0.02em',
         }}
       >
         {String(display12).padStart(2, '0')}
       </span>
       <span
-        className="text-[9px] font-mono uppercase tracking-[0.15em] mt-0.5"
-        style={{ color: 'rgba(192,192,192,0.4)' }}
+        className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] mt-0.5 text-[#C6FF00]"
       >
         {ampm}
       </span>
@@ -210,8 +208,8 @@ export function TimetableGrid({ activeDay, activeCategory }: TimetableGridProps)
               className="text-[120px] md:text-[180px] leading-none uppercase text-center select-none pointer-events-none"
               style={{
                 fontFamily: '"Anton", sans-serif',
-                color: 'rgba(255,61,127,0.04)',
-                letterSpacing: '-0.04em',
+                color: 'rgba(255,61,127,0.03)',
+                letterSpacing: '0.04em',
               }}
             >
               FALAK

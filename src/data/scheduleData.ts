@@ -1,6 +1,6 @@
 // Falak '26 — Unified Schedule Data
-// Oct 15–17 | MIT Bengaluru
-// All events from Culture events.xlsx + Sports event.xlsx
+// Cultural: Oct 15–17 | Sports: Oct 9–17 | MIT Bengaluru
+// Source: Cultural_timetable_falak26.pdf + Sports_Timetable_Falak26.pdf
 
 export type EventCategory =
   | 'sports'
@@ -23,25 +23,41 @@ export interface FalakEvent {
   endTime: string;   // 'HH:MM' 24h
   venue: string;
   prizePool?: string;
-  isAnchor?: boolean; // Featured / full-width bar event
-  isAllDay?: boolean; // Online or all-day events
+  isAnchor?: boolean;
+  isAllDay?: boolean;
   teamSize?: string;
   entryFee?: string;
   tags?: string[];
 }
 
+// ─── Sports Tournament (Oct 9–17) ──────────────────────────────────────────────
+
+export interface SportsDayEntry {
+  sport: string;
+  time: string;
+  venue: string;
+  stage: string; // 'start', 'pool', 'Semi Finals 1', 'Finals', etc.
+}
+
+export interface SportsDay {
+  date: string;       // e.g. '2026-10-09'
+  dateLabel: string;  // e.g. 'Thu, Oct 9'
+  dayTag: string;     // e.g. 'Day 1'
+  events: SportsDayEntry[];
+}
+
 // Category → color mapping (from existing Falak palette)
 export const CATEGORY_COLORS: Record<EventCategory, string> = {
-  sports:    '#FF6A00', // electric-orange
-  athletics: '#FF6A00', // electric-orange
-  esports:   '#8A5CFF', // aurora-violet
-  dance:     '#FF3D7F', // convergence-magenta
-  music:     '#C6FF00', // acid-lime
-  drama:     '#0057FF', // cobalt-blue
-  creative:  '#FF6A00', // electric-orange
-  literary:  '#8A5CFF', // aurora-violet
-  business:  '#C6FF00', // acid-lime
-  special:   '#FF3D7F', // convergence-magenta
+  sports:    '#FF6A00',
+  athletics: '#FF6A00',
+  esports:   '#8A5CFF',
+  dance:     '#FF3D7F',
+  music:     '#C6FF00',
+  drama:     '#0057FF',
+  creative:  '#FF6A00',
+  literary:  '#8A5CFF',
+  business:  '#C6FF00',
+  special:   '#FF3D7F',
 };
 
 export const CATEGORY_LABELS: Record<EventCategory, string> = {
@@ -57,23 +73,20 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
   special:   'Special',
 };
 
-
 // ─────────────────────────────────────────────────────────────────────────────
-// DAY 1 — October 15 (Thursday)
+// CULTURAL SCHEDULE — DAY 1: October 15 (Thursday)
 // ─────────────────────────────────────────────────────────────────────────────
 const DAY1_EVENTS: FalakEvent[] = [
   // Online / All-Day Creative events
   {
     id: 'd1-ad-design',
-    name: 'Ad Design',
+    name: 'Ad Designing',
     category: 'creative',
     day: 1,
     startTime: '09:00',
     endTime: '21:00',
     venue: 'Online',
-    prizePool: '₹8,000',
     isAllDay: true,
-    teamSize: '1',
     tags: ['online', 'creative'],
   },
   {
@@ -84,9 +97,7 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '09:00',
     endTime: '21:00',
     venue: 'Online',
-    prizePool: '₹8,000',
     isAllDay: true,
-    teamSize: '1–5',
     tags: ['online', 'creative'],
   },
   {
@@ -97,22 +108,18 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '09:00',
     endTime: '21:00',
     venue: 'Online',
-    prizePool: '₹5,000',
     isAllDay: true,
-    teamSize: '1',
     tags: ['online', 'creative'],
   },
   {
     id: 'd1-photography',
-    name: 'Photography Walk',
+    name: 'Photography',
     category: 'creative',
     day: 1,
     startTime: '09:00',
     endTime: '21:00',
     venue: 'Campus',
-    prizePool: '₹6,000',
     isAllDay: true,
-    teamSize: '1',
     tags: ['creative'],
   },
   // Scheduled events
@@ -124,9 +131,6 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '09:00',
     endTime: '10:00',
     venue: 'Classroom / Audi',
-    prizePool: '₹5,000',
-    teamSize: '2',
-    entryFee: 'TBD',
   },
   {
     id: 'd1-pop-quiz',
@@ -136,9 +140,6 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '10:00',
     endTime: '11:00',
     venue: 'Classroom / Audi',
-    prizePool: '₹5,000',
-    teamSize: '2',
-    entryFee: 'TBD',
   },
   {
     id: 'd1-mock-trading',
@@ -148,9 +149,6 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '10:00',
     endTime: '15:30',
     venue: 'Classroom / Audi',
-    prizePool: '₹6,000',
-    teamSize: '2',
-    entryFee: 'TBD',
   },
   {
     id: 'd1-debate',
@@ -160,9 +158,6 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '10:00',
     endTime: '15:00',
     venue: 'Classroom / Audi',
-    prizePool: '₹6,000',
-    teamSize: '2',
-    entryFee: 'TBD',
   },
   {
     id: 'd1-shark-tank',
@@ -172,21 +167,6 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '11:30',
     endTime: '15:30',
     venue: 'Classroom / Audi',
-    prizePool: '₹10,000',
-    teamSize: '3–5',
-    entryFee: 'TBD',
-  },
-  {
-    id: 'd1-auction',
-    name: 'Auction',
-    category: 'business',
-    day: 1,
-    startTime: '13:00',
-    endTime: '17:00',
-    venue: 'Classroom / Audi',
-    prizePool: '₹14,000',
-    teamSize: 'Variable',
-    entryFee: 'TBD',
   },
   {
     id: 'd1-treasure-hunt',
@@ -196,45 +176,14 @@ const DAY1_EVENTS: FalakEvent[] = [
     startTime: '17:30',
     endTime: '21:00',
     venue: 'Campus-wide',
-    prizePool: '₹10,000',
-    teamSize: '4–6',
-    entryFee: 'TBD',
     tags: ['outdoor'],
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DAY 2 — October 16 (Friday)
+// CULTURAL SCHEDULE — DAY 2: October 16 (Friday)
 // ─────────────────────────────────────────────────────────────────────────────
 const DAY2_EVENTS: FalakEvent[] = [
-  {
-    id: 'd2-cricket-auction',
-    name: 'Cricket Auction',
-    category: 'sports',
-    day: 2,
-    startTime: '08:00',
-    endTime: '14:00',
-    venue: 'AB4 Audi',
-    prizePool: 'upto ₹65,000',
-    teamSize: '16',
-    entryFee: '₹7,000',
-    isAnchor: false,
-    tags: ['pool'],
-  },
-  {
-    id: 'd2-battle-of-bands',
-    name: 'Battle of Bands',
-    category: 'music',
-    day: 2,
-    startTime: '09:00',
-    endTime: '13:00',
-    venue: 'Mega Audi',
-    prizePool: '₹40,000',
-    teamSize: '3–8',
-    entryFee: '₹4,000',
-    isAnchor: true,
-    tags: ['pool'],
-  },
   {
     id: 'd2-stage-play',
     name: 'Stage Play',
@@ -243,21 +192,6 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '09:00',
     endTime: '12:00',
     venue: 'AB1 Audi',
-    prizePool: '₹23,000',
-    teamSize: '5–15',
-    entryFee: '₹2,000',
-  },
-  {
-    id: 'd2-solo-instrumental',
-    name: 'Solo Instrumental',
-    category: 'music',
-    day: 2,
-    startTime: '09:00',
-    endTime: '11:00',
-    venue: 'AB5 Audi',
-    prizePool: '₹7,000',
-    teamSize: '1',
-    entryFee: '₹400',
   },
   {
     id: 'd2-valorant',
@@ -267,10 +201,7 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '10:30',
     endTime: '16:00',
     venue: 'Classroom',
-    prizePool: '₹12,000',
-    teamSize: '5',
-    entryFee: '₹100/entry',
-    tags: ['pool'],
+    tags: ['esports'],
   },
   {
     id: 'd2-fifa',
@@ -280,9 +211,7 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '10:30',
     endTime: '16:00',
     venue: 'AB4 Ground Floor',
-    prizePool: '₹5,000',
-    teamSize: '1',
-    entryFee: '₹100/entry',
+    tags: ['esports'],
   },
   {
     id: 'd2-codm',
@@ -292,10 +221,7 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '10:30',
     endTime: '16:00',
     venue: 'Classroom',
-    prizePool: '₹10,000',
-    teamSize: '4',
-    entryFee: '₹100/entry',
-    tags: ['pool'],
+    tags: ['esports'],
   },
   {
     id: 'd2-bgmi',
@@ -305,10 +231,7 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '10:30',
     endTime: '16:00',
     venue: 'Classroom',
-    prizePool: '₹10,000',
-    teamSize: '4',
-    entryFee: '₹100/entry',
-    tags: ['pool'],
+    tags: ['esports'],
   },
   {
     id: 'd2-clash-royale',
@@ -318,21 +241,7 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '10:30',
     endTime: '16:00',
     venue: 'Classroom',
-    prizePool: '₹5,000',
-    teamSize: '1',
-    entryFee: '₹100/entry',
-  },
-  {
-    id: 'd2-solo-singing',
-    name: 'Solo Singing',
-    category: 'music',
-    day: 2,
-    startTime: '11:00',
-    endTime: '13:00',
-    venue: 'AB5 Audi',
-    prizePool: '₹7,000',
-    teamSize: '1',
-    entryFee: '₹400',
+    tags: ['esports'],
   },
   {
     id: 'd2-solo-classical',
@@ -342,9 +251,6 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '11:00',
     endTime: '12:30',
     venue: 'Mega Audi',
-    prizePool: '₹10,000',
-    teamSize: '1',
-    entryFee: '₹500',
   },
   {
     id: 'd2-group-classical',
@@ -354,10 +260,6 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '12:30',
     endTime: '14:00',
     venue: 'Mega Audi',
-    prizePool: '₹20,000',
-    teamSize: '3–15',
-    entryFee: '₹3,000',
-    tags: ['pool'],
   },
   {
     id: 'd2-monoact',
@@ -367,22 +269,6 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '13:00',
     endTime: '15:00',
     venue: 'AB1 Audi',
-    prizePool: '₹7,000',
-    teamSize: '1',
-    entryFee: '₹400',
-  },
-  {
-    id: 'd2-fashion-show',
-    name: 'Fashion Show',
-    category: 'special',
-    day: 2,
-    startTime: '13:00',
-    endTime: '15:00',
-    venue: 'Mega Audi',
-    prizePool: '₹20,000',
-    teamSize: '10–20',
-    entryFee: 'TBD',
-    isAnchor: true,
   },
   {
     id: 'd2-solo-western',
@@ -392,9 +278,6 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '14:30',
     endTime: '16:00',
     venue: 'Mega Audi',
-    prizePool: '₹10,000',
-    teamSize: '1',
-    entryFee: '₹500',
   },
   {
     id: 'd2-group-western',
@@ -404,23 +287,6 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '16:00',
     endTime: '17:30',
     venue: 'Mega Audi',
-    prizePool: '₹20,000',
-    teamSize: '3–15',
-    entryFee: '₹3,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd2-rap-battle',
-    name: 'Rap Battle',
-    category: 'music',
-    day: 2,
-    startTime: '17:00',
-    endTime: '18:00',
-    venue: 'Amphitheatre',
-    prizePool: '₹5,000',
-    teamSize: '1',
-    entryFee: '₹300',
-    tags: ['outdoor'],
   },
   {
     id: 'd2-latent-wtf',
@@ -430,376 +296,248 @@ const DAY2_EVENTS: FalakEvent[] = [
     startTime: '18:00',
     endTime: '19:30',
     venue: 'Mega Audi',
-    prizePool: '₹12,000',
-    teamSize: '1',
-    entryFee: 'TBD',
+    isAnchor: true,
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CULTURAL SCHEDULE — DAY 3: October 17 (Saturday)
+// ─────────────────────────────────────────────────────────────────────────────
+const DAY3_EVENTS: FalakEvent[] = [
+  {
+    id: 'd3-cricket-auction',
+    name: 'Cricket Auction',
+    category: 'special',
+    day: 3,
+    startTime: '08:00',
+    endTime: '14:00',
+    venue: 'AB4 Audi',
     isAnchor: true,
   },
   {
-    id: 'd2-street-dance',
-    name: 'Street Dance / Dance Battle',
-    category: 'dance',
-    day: 2,
-    startTime: '18:00',
-    endTime: '19:30',
+    id: 'd3-solo-instrumental',
+    name: 'Solo Instrumental',
+    category: 'music',
+    day: 3,
+    startTime: '09:00',
+    endTime: '11:00',
+    venue: 'AB5 Audi',
+  },
+  {
+    id: 'd3-battle-of-bands',
+    name: 'Battle of Bands',
+    category: 'music',
+    day: 3,
+    startTime: '09:00',
+    endTime: '13:00',
+    venue: 'Mega Audi',
+    isAnchor: true,
+  },
+  {
+    id: 'd3-solo-singing',
+    name: 'Solo Singing',
+    category: 'music',
+    day: 3,
+    startTime: '11:00',
+    endTime: '13:00',
+    venue: 'AB5 Audi',
+  },
+  {
+    id: 'd3-fashion-show',
+    name: 'Fashion Show',
+    category: 'special',
+    day: 3,
+    startTime: '13:00',
+    endTime: '15:00',
+    venue: 'Mega Audi',
+    isAnchor: true,
+  },
+  {
+    id: 'd3-rap-battle',
+    name: 'Rap Battle',
+    category: 'music',
+    day: 3,
+    startTime: '17:00',
+    endTime: '18:00',
     venue: 'Amphitheatre',
-    prizePool: '₹5,000',
-    teamSize: '1',
-    entryFee: '₹300',
     tags: ['outdoor'],
   },
   {
-    id: 'd2-dj-set',
-    name: 'DJ Set — Main Ground',
-    category: 'special',
-    day: 2,
-    startTime: '21:00',
-    endTime: '23:00',
-    venue: 'Main Ground',
-    isAnchor: true,
-    tags: ['night', 'passes-only'],
+    id: 'd3-street-dance',
+    name: 'Street Dance / Dance Battle',
+    category: 'dance',
+    day: 3,
+    startTime: '18:00',
+    endTime: '19:30',
+    venue: 'Amphitheatre',
+    tags: ['outdoor'],
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// DAY 3 — October 17 (Saturday)
-// Sports Finals + Remaining Culture
-// ─────────────────────────────────────────────────────────────────────────────
-const DAY3_EVENTS: FalakEvent[] = [
-  // Athletics
-  {
-    id: 'd3-athletics-100m-m',
-    name: 'Athletics — Men\'s 100m',
-    category: 'athletics',
-    day: 3,
-    startTime: '08:00',
-    endTime: '10:00',
-    venue: 'Athletics Track',
-    prizePool: '₹5,800',
-    teamSize: '1',
-    entryFee: '₹400',
-  },
-  {
-    id: 'd3-athletics-100m-w',
-    name: 'Athletics — Women\'s 100m',
-    category: 'athletics',
-    day: 3,
-    startTime: '08:00',
-    endTime: '10:00',
-    venue: 'Athletics Track',
-    prizePool: '₹5,800',
-    teamSize: '1',
-    entryFee: '₹300',
-  },
-  {
-    id: 'd3-athletics-200m-m',
-    name: 'Athletics — Men\'s 200m',
-    category: 'athletics',
-    day: 3,
-    startTime: '08:30',
-    endTime: '10:30',
-    venue: 'Athletics Track',
-    prizePool: '₹5,800',
-    teamSize: '1',
-    entryFee: '₹300',
-  },
-  {
-    id: 'd3-athletics-400m',
-    name: 'Athletics — 400m & 1500m',
-    category: 'athletics',
-    day: 3,
-    startTime: '10:00',
-    endTime: '12:00',
-    venue: 'Athletics Track',
-    prizePool: '₹5,800',
-    teamSize: '1',
-    entryFee: '₹300',
-  },
-  {
-    id: 'd3-relay',
-    name: 'Athletics — 4×100m Relay',
-    category: 'athletics',
-    day: 3,
-    startTime: '14:00',
-    endTime: '16:00',
-    venue: 'Athletics Track',
-    prizePool: '₹13,000',
-    teamSize: '4',
-    entryFee: '₹800',
-    isAnchor: true,
-    tags: ['pool'],
-  },
-  // Sports
-  {
-    id: 'd3-cricket-final',
-    name: 'Cricket — Men\'s Final',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '17:00',
-    venue: 'Main Ground, 16-a-side',
-    prizePool: 'upto ₹65,000',
-    teamSize: '16',
-    entryFee: '₹7,000',
-    isAnchor: true,
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-football-m-final',
-    name: 'Football — Men\'s Final',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '13:00',
-    venue: 'Main Ground, 11-a-side',
-    prizePool: 'upto ₹80,000',
-    teamSize: '16',
-    entryFee: '₹8,000',
-    isAnchor: true,
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-football-w-final',
-    name: 'Football — Women\'s Final',
-    category: 'sports',
-    day: 3,
-    startTime: '13:00',
-    endTime: '15:00',
-    venue: 'Main Ground',
-    prizePool: 'upto ₹32,000',
-    teamSize: '13',
-    entryFee: '₹4,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-basketball-m-final',
-    name: 'Basketball — Men\'s Final',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '13:00',
-    venue: 'Basketball Court',
-    prizePool: 'upto ₹48,000',
-    teamSize: '12',
-    entryFee: '₹6,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-basketball-w-final',
-    name: 'Basketball — Women\'s Final',
-    category: 'sports',
-    day: 3,
-    startTime: '13:00',
-    endTime: '15:00',
-    venue: 'Basketball Court',
-    prizePool: 'upto ₹32,000',
-    teamSize: '12',
-    entryFee: '₹4,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-volleyball-m',
-    name: 'Volleyball — Men\'s',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '12:00',
-    venue: 'Volleyball Courts (League)',
-    prizePool: 'upto ₹24,000',
-    teamSize: '12',
-    entryFee: '₹4,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-volleyball-w',
-    name: 'Volleyball — Women\'s',
-    category: 'sports',
-    day: 3,
-    startTime: '12:00',
-    endTime: '15:00',
-    venue: 'Volleyball Courts',
-    prizePool: 'upto ₹12,000',
-    teamSize: '12',
-    entryFee: '₹2,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-badminton-m',
-    name: 'Badminton — Men\'s QF',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '13:00',
-    venue: 'Indoor Sports, Best of 2',
-    prizePool: 'upto ₹17,000',
-    teamSize: '7',
-    entryFee: '₹4,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-badminton-w',
-    name: 'Badminton — Women\'s',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '13:00',
-    venue: 'Indoor Sports',
-    prizePool: 'upto ₹11,000',
-    teamSize: '5',
-    entryFee: '₹3,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-table-tennis-m',
-    name: 'Table Tennis — Men\'s',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '12:00',
-    venue: 'Indoor Sports, Tournament',
-    prizePool: '₹12,000',
-    teamSize: '5',
-    entryFee: '₹1,800',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-table-tennis-w',
-    name: 'Table Tennis — Women\'s',
-    category: 'sports',
-    day: 3,
-    startTime: '12:00',
-    endTime: '15:00',
-    venue: 'Indoor Sports',
-    prizePool: '₹8,000',
-    teamSize: '5',
-    entryFee: '₹1,500',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-lawn-tennis-m',
-    name: 'Lawn Tennis — Men\'s QF',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '13:00',
-    venue: 'Tennis Courts',
-    prizePool: 'upto ₹19,000',
-    teamSize: '4',
-    entryFee: '₹3,000',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-lawn-tennis-w',
-    name: 'Lawn Tennis — Women\'s Singles',
-    category: 'sports',
-    day: 3,
-    startTime: '13:00',
-    endTime: '15:00',
-    venue: 'Tennis Courts',
-    prizePool: '₹6,000',
-    teamSize: '1',
-    entryFee: '₹400',
-  },
-  {
-    id: 'd3-squash-m',
-    name: 'Squash — Men\'s Singles',
-    category: 'sports',
-    day: 3,
-    startTime: '09:00',
-    endTime: '12:00',
-    venue: 'Squash Court',
-    prizePool: '₹8,000',
-    teamSize: '1',
-    entryFee: '₹500',
-  },
-  {
-    id: 'd3-squash-w',
-    name: 'Squash — Women\'s Singles',
-    category: 'sports',
-    day: 3,
-    startTime: '12:00',
-    endTime: '14:00',
-    venue: 'Squash Court',
-    prizePool: '₹6,000',
-    teamSize: '1',
-    entryFee: '₹400',
-  },
-  {
-    id: 'd3-chess-m',
-    name: 'Chess — Men\'s Round 1',
-    category: 'sports',
-    day: 3,
-    startTime: '10:00',
-    endTime: '14:00',
-    venue: 'Indoor Venue',
-    prizePool: '₹10,000',
-    teamSize: '6',
-    entryFee: '₹1,800',
-    tags: ['pool'],
-  },
-  {
-    id: 'd3-chess-w',
-    name: 'Chess — Women\'s',
-    category: 'sports',
-    day: 3,
-    startTime: '14:00',
-    endTime: '17:00',
-    venue: 'Indoor Venue',
-    prizePool: '₹10,000',
-    teamSize: '6',
-    entryFee: '₹1,800',
-    tags: ['pool'],
-  },
-  // Evening closing
-  {
-    id: 'd3-dj-closing',
-    name: 'Closing DJ Set — Main Ground',
-    category: 'special',
-    day: 3,
-    startTime: '20:00',
-    endTime: '23:00',
-    venue: 'Main Ground',
-    isAnchor: true,
-    tags: ['night', 'passes-only'],
-  },
-];
+// ─── All Cultural Events ────────────────────────────────────────────────────────
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Exported unified schedule
-// ─────────────────────────────────────────────────────────────────────────────
 export const ALL_EVENTS: FalakEvent[] = [
   ...DAY1_EVENTS,
   ...DAY2_EVENTS,
   ...DAY3_EVENTS,
 ];
 
-export const EVENTS_BY_DAY = {
+// Helper: get events for a specific day and optional category
+export function getEventsForDay(
+  day: 1 | 2 | 3,
+  category?: string
+): FalakEvent[] {
+  return ALL_EVENTS.filter(
+    (e) =>
+      e.day === day &&
+      (category === 'all' || !category || e.category === category)
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SPORTS TOURNAMENT SCHEDULE — Oct 9–17 (9 days)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const SPORTS_SCHEDULE: SportsDay[] = [
+  {
+    date: '2026-10-09',
+    dateLabel: 'Thu, Oct 9',
+    dayTag: 'Day 1',
+    events: [
+      { sport: 'Cricket', time: '7:00 AM – 5:30 PM', venue: 'Cricket Ground', stage: 'Pool Stage Begins' },
+    ],
+  },
+  {
+    date: '2026-10-10',
+    dateLabel: 'Fri, Oct 10',
+    dayTag: 'Day 2',
+    events: [
+      { sport: 'Cricket', time: '6:30 AM – 5:00 PM', venue: 'Cricket Ground', stage: 'Pool Stage' },
+    ],
+  },
+  {
+    date: '2026-10-11',
+    dateLabel: 'Sat, Oct 11',
+    dayTag: 'Day 3',
+    events: [
+      { sport: 'Cricket', time: '7:00 AM – 5:30 PM', venue: 'Cricket Ground', stage: 'Pool Stage' },
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Pool Stage Begins' },
+    ],
+  },
+  {
+    date: '2026-10-12',
+    dateLabel: 'Sun, Oct 12',
+    dayTag: 'Day 4',
+    events: [
+      { sport: 'Cricket', time: '7:00 AM – 5:30 PM', venue: 'Cricket Ground', stage: 'Pool Stage' },
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Pool Stage' },
+    ],
+  },
+  {
+    date: '2026-10-13',
+    dateLabel: 'Mon, Oct 13',
+    dayTag: 'Day 5',
+    events: [
+      { sport: 'Cricket', time: '7:00 AM – 5:30 PM', venue: 'Cricket Ground', stage: 'Pool Stage' },
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Pool Stage' },
+      { sport: 'Basketball', time: '8:00 AM – 5:00 PM', venue: 'Basketball Court', stage: 'Pool Stage Begins' },
+    ],
+  },
+  {
+    date: '2026-10-14',
+    dateLabel: 'Tue, Oct 14',
+    dayTag: 'Day 6',
+    events: [
+      { sport: 'Cricket', time: '7:00 AM – 5:00 PM', venue: 'Cricket Ground', stage: 'Semi Finals 1' },
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Pool Stage' },
+      { sport: 'Basketball', time: '8:00 AM – 5:00 PM', venue: 'Basketball Court', stage: 'Pool Stage' },
+      { sport: 'Volleyball', time: '8:00 AM – 5:00 PM', venue: 'Volleyball Court', stage: 'Pool Stage Begins' },
+      { sport: 'Lawn Tennis', time: '9:00 AM – 5:00 PM', venue: 'Tennis Court', stage: 'Pool Stage Begins' },
+      { sport: 'Table Tennis', time: '8:30 AM – 3:30 PM', venue: 'Marena', stage: 'Pool Stage Begins' },
+      { sport: 'Badminton', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Pool Stage Begins' },
+    ],
+  },
+  {
+    date: '2026-10-15',
+    dateLabel: 'Wed, Oct 15',
+    dayTag: 'Day 7',
+    events: [
+      { sport: 'Cricket', time: '7:00 AM – 5:00 PM', venue: 'Cricket Ground', stage: 'Semi Finals 2 & Finals' },
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Pool Stage' },
+      { sport: 'Basketball', time: '8:00 AM – 5:00 PM', venue: 'Basketball Court', stage: 'Pool Stage' },
+      { sport: 'Volleyball', time: '8:00 AM – 5:00 PM', venue: 'Volleyball Court', stage: 'Pool Stage' },
+      { sport: 'Lawn Tennis', time: '9:00 AM – 5:00 PM', venue: 'Tennis Court', stage: 'Pool Stage' },
+      { sport: 'Table Tennis', time: '8:30 AM – 3:30 PM', venue: 'Marena', stage: 'Pool Stage' },
+      { sport: 'Badminton', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Pool Stage' },
+      { sport: 'Chess', time: '9:00 AM – 5:00 PM', venue: 'VIP Dining Area (Food Court)', stage: 'Pool Stage Begins' },
+      { sport: 'Squash', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Pool Stage Begins' },
+      { sport: 'Athletics', time: '5:00 PM – 8:00 PM', venue: 'Outdoor Synthetic Track', stage: 'Heats Begin' },
+    ],
+  },
+  {
+    date: '2026-10-16',
+    dateLabel: 'Thu, Oct 16',
+    dayTag: 'Day 8',
+    events: [
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Pool Stage' },
+      { sport: 'Volleyball', time: '8:00 AM – 5:00 PM', venue: 'Volleyball Court', stage: 'Pool Stage' },
+      { sport: 'Lawn Tennis', time: '9:00 AM – 5:00 PM', venue: 'Tennis Court', stage: 'Group Stage & Semis' },
+      { sport: 'Table Tennis', time: '8:30 AM – 3:30 PM', venue: 'Marena', stage: 'Group Stage & Semis' },
+      { sport: 'Basketball', time: '8:00 AM – 5:00 PM', venue: 'Basketball Court', stage: 'Group Stage & Semis' },
+      { sport: 'Badminton', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Group Stage & Semis' },
+      { sport: 'Chess', time: '9:00 AM – 5:00 PM', venue: 'VIP Dining Area (Food Court)', stage: 'Group Stage & Semis' },
+      { sport: 'Squash', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Knockouts & Semis' },
+      { sport: 'Athletics', time: '4:00 PM – 8:00 PM', venue: 'Outdoor Synthetic Track', stage: 'Heats & Semis' },
+    ],
+  },
+  {
+    date: '2026-10-17',
+    dateLabel: 'Fri, Oct 17',
+    dayTag: 'Day 9 — Finals',
+    events: [
+      { sport: 'Football', time: '8:00 AM – 5:20 PM', venue: 'Football Ground', stage: 'Semis & Finals' },
+      { sport: 'Volleyball', time: '8:00 AM – 5:00 PM', venue: 'Volleyball Court', stage: 'Semis & Finals' },
+      { sport: 'Lawn Tennis', time: '9:00 AM – 5:00 PM', venue: 'Tennis Court', stage: 'Finals' },
+      { sport: 'Table Tennis', time: '8:30 AM – 3:30 PM', venue: 'Marena', stage: 'Finals' },
+      { sport: 'Basketball', time: '8:00 AM – 5:00 PM', venue: 'Basketball Court', stage: 'Finals' },
+      { sport: 'Badminton', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Finals' },
+      { sport: 'Chess', time: '9:00 AM – 5:00 PM', venue: 'VIP Dining Area (Food Court)', stage: 'Finals' },
+      { sport: 'Squash', time: '8:30 AM – 3:30 PM', venue: 'Marena Courts', stage: 'Finals' },
+      { sport: 'Athletics', time: '4:00 PM – 8:00 PM', venue: 'Outdoor Synthetic Track', stage: 'Finals' },
+    ],
+  },
+];
+
+// ─── Helpers used by existing UI components ─────────────────────────────────────
+
+// Day labels for the DaySelector component
+export const DAY_LABELS: Record<1 | 2 | 3, { day: string; date: string; label: string }> = {
+  1: { day: 'Day 1', date: 'Oct 15', label: 'Thursday' },
+  2: { day: 'Day 2', date: 'Oct 16', label: 'Friday' },
+  3: { day: 'Day 3', date: 'Oct 17', label: 'Saturday' },
+};
+
+// Category filter chips for CategoryFilter component
+export const FILTER_CATEGORIES: { key: string; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'dance', label: 'Dance' },
+  { key: 'music', label: 'Music' },
+  { key: 'drama', label: 'Drama' },
+  { key: 'creative', label: 'Creative' },
+  { key: 'literary', label: 'Literary' },
+  { key: 'business', label: 'B&M' },
+  { key: 'esports', label: 'Esports' },
+  { key: 'special', label: 'Special' },
+];
+
+// Events grouped by day for TimetableGrid
+export const EVENTS_BY_DAY: Record<1 | 2 | 3, FalakEvent[]> = {
   1: DAY1_EVENTS,
   2: DAY2_EVENTS,
   3: DAY3_EVENTS,
 };
 
-export const DAY_LABELS = {
-  1: { label: 'DAY 01', date: '15 OCT', day: 'THU', hindi: 'पहला दिन' },
-  2: { label: 'DAY 02', date: '16 OCT', day: 'FRI', hindi: 'दूसरा दिन' },
-  3: { label: 'DAY 03', date: '17 OCT', day: 'SAT', hindi: 'तीसरा दिन' },
-};
-
-export const FILTER_CATEGORIES = [
-  { key: 'all',       label: 'ALL',       hindi: 'सब' },
-  { key: 'sports',    label: 'SPORTS',    hindi: 'खेल' },
-  { key: 'athletics', label: 'ATHLETICS', hindi: 'एथलेटिक्स' },
-  { key: 'esports',   label: 'ESPORTS',   hindi: 'ई-स्पोर्ट्स' },
-  { key: 'dance',     label: 'DANCE',     hindi: 'नृत्य' },
-  { key: 'music',     label: 'MUSIC',     hindi: 'संगीत' },
-  { key: 'drama',     label: 'DRAMA',     hindi: 'नाटक' },
-  { key: 'creative',  label: 'CREATIVE',  hindi: 'क्रिएटिव' },
-  { key: 'literary',  label: 'LITERARY',  hindi: 'साहित्य' },
-  { key: 'business',  label: 'B&M',       hindi: 'बिज़नेस' },
-  { key: 'special',   label: 'SPECIAL',   hindi: 'स्पेशल' },
-] as const;
-
-// Helper: convert 'HH:MM' to numeric minutes from midnight
+// Convert 'HH:MM' to minutes since midnight
 export function timeToMinutes(time: string): number {
   const [h, m] = time.split(':').map(Number);
   return h * 60 + m;
