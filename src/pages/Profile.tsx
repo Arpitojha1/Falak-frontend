@@ -129,15 +129,15 @@ export function Profile() {
   return (
     <div className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 flex justify-center">
       
-      {/* BACKGROUND - Full page, fixed so it doesn't scroll with content */}
-      <div className="fixed inset-0 z-[-1] bg-deep-plum pointer-events-none">
+      {/* BACKGROUND - Full page, absolute to avoid mobile viewport fixed-position bugs */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <img 
           src="/assets/Landing/BackgroundProfile.png" 
           alt="Background" 
-          className="w-full h-full object-cover opacity-80 mix-blend-screen" 
+          className="w-full h-full object-cover" 
         />
         {/* Soft overlay gradient to ensure text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-deep-plum/60 via-transparent to-deep-plum/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-deep-plum/60 via-deep-plum/40 to-deep-plum/90" />
       </div>
 
       {/* Layout Container: Stacked on mobile, 2-column on desktop */}
