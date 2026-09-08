@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { mockProfileData, Registration, Pass } from '../data/mockProfile';
-import { Ticket, Scan, CheckCircle2, AlertCircle, Clock3, MapPin, Calendar, Users, ChevronDown, ChevronUp } from 'lucide-react';
+import { Scan, CheckCircle2, AlertCircle, Clock3 } from 'lucide-react';
 
 const StatusBadge = ({ status }: { status: 'paid' | 'pending' | 'failed' }) => {
   const isPaid = status === 'paid';
   const isPending = status === 'pending';
   
   return (
-    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${isPaid ? 'border-silver' : isPending ? 'border-silver/60' : 'border-silver/40'} text-[10px] sm:text-xs font-mono font-medium text-silver`}>
+    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${isPaid ? 'border-silver' : isPending ? 'border-silver/60' : 'border-silver/40'} text-[10px] sm:text-xs font-mono font-medium text-silver backdrop-blur-sm bg-midnight-indigo/40`}>
       {isPaid ? <CheckCircle2 size={12} /> : isPending ? <Clock3 size={12} /> : <AlertCircle size={12} />}
       <span className="uppercase tracking-wider">{status}</span>
     </div>
@@ -16,85 +16,58 @@ const StatusBadge = ({ status }: { status: 'paid' | 'pending' | 'failed' }) => {
 };
 
 const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
-  const [isTeamExpanded, setIsTeamExpanded] = useState(false);
-  const isTeam = event.teamMembers && event.teamMembers.length > 0;
-
+  const isCultural = event.track.toLowerCase() === 'cultural';
+  const isSports = event.track.toLowerCase() === 'sports';
+  const hoverAsset = isCultural 
+    ? '/assets/culturalAssets/CulturalTicketsBase.png' 
+    : isSports 
+      ? '/assets/sportsAssets/SportsTicketsBase.png' 
+      : '/assets/Landing/ticketsBase.png';
+                     
   return (
-    <div className="relative w-full rounded-md border border-silver/20 bg-deep-plum/40 overflow-hidden backdrop-blur-sm group">
-      {/* Ticket stub notch (left edge) */}
-      <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-deep-plum border border-silver/20 z-10"></div>
-      
-      {/* Dashed perforation line */}
-      <div className="absolute left-6 top-0 bottom-0 w-px border-l-2 border-dashed border-silver/10 z-0"></div>
+    <div className="relative w-full max-w-[700px] aspect-[3/1] group focus-within:outline-none focus-visible:ring-2 focus-visible:ring-silver/50 rounded-lg shrink-0 mb-4" tabIndex={0}>
+       {/* Background Images - Crossfade on hover/focus */}
+       <img 
+         src="/assets/Landing/ticketsBase.png" 
+         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ease-in-out group-hover:opacity-0 group-focus:opacity-0" 
+         alt="Ticket Base" 
+       />
+       
+       {hoverAsset !== '/assets/Landing/ticketsBase.png' && (
+         <img 
+           src={hoverAsset} 
+           className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100 group-focus:opacity-100" 
+           alt="Ticket Hover" 
+         />
+       )}
 
-      <div className="flex flex-col sm:flex-row relative z-10 pl-10 pr-4 py-5 gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-silver/70 border border-silver/20 px-2 py-0.5 rounded-sm">
-              {event.track}
-            </span>
-            <div className="sm:hidden">
-              <StatusBadge status={event.paymentStatus} />
-            </div>
-          </div>
-          
-          <h3 className="font-accent font-bold text-champagne-pearl text-lg sm:text-xl truncate mb-3">
-            {event.eventName}
-          </h3>
-          
-          <div className="flex flex-wrap items-center gap-4 text-xs font-sans text-soft-lilac/80 mb-4">
-            <div className="flex items-center gap-1.5">
-              <Calendar size={14} className="text-silver/60" />
-              {event.date}
-            </div>
-            <div className="flex items-center gap-1.5">
-              <MapPin size={14} className="text-silver/60" />
-              {event.venue}
-            </div>
-          </div>
+       {/* Overlay Text Zones */}
+       
+       {/* Stub Number Zone: Left Side. Aligning to the '- - - -' area in the asset */}
+       <div className="absolute top-[20%] left-[5%] w-[18%] flex flex-col pointer-events-none">
+         <h3 className="font-sans font-bold text-champagne-pearl text-[10px] sm:text-xs md:text-sm lg:text-base leading-tight" style={{ fontFamily: 'Archivo, sans-serif' }}>
+           {event.eventName}
+         </h3>
+       </div>
 
-          {isTeam && (
-            <div className="mt-2">
-              <button 
-                onClick={() => setIsTeamExpanded(!isTeamExpanded)}
-                className="flex items-center gap-2 text-xs font-sans text-aurora-violet hover:text-soft-lilac transition-colors"
-              >
-                <Users size={14} />
-                <span>Team Roster ({event.teamMembers?.length})</span>
-                {isTeamExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-              </button>
-              
-              <AnimatePresence>
-                {isTeamExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
-                  >
-                    <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-soft-lilac/70 pl-2 border-l-2 border-silver/10">
-                      {event.teamMembers?.map((member, idx) => (
-                        <li key={idx} className="truncate">• {member}</li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
-        </div>
-        
-        <div className="hidden sm:flex flex-col items-end justify-between border-l border-silver/10 pl-4 min-w-[120px]">
-           <StatusBadge status={event.paymentStatus} />
-        </div>
-      </div>
+       {/* Date Zone: Top right corner stamp-disc zone */}
+       <div className="absolute top-[10%] right-[3%] w-[10%] aspect-square flex flex-col items-center justify-center pointer-events-none">
+         <span className="font-sans font-bold text-silver/90 text-[8px] sm:text-[10px] md:text-xs text-center leading-tight uppercase" style={{ fontFamily: 'Archivo, sans-serif' }}>
+            {event.date.split(' ').slice(0, 2).join('\n')}
+         </span>
+       </div>
+       
+       {/* Status badge - bottom right out of the way of the mascot arch */}
+       <div className="absolute bottom-[10%] right-[5%]">
+          <StatusBadge status={event.paymentStatus} />
+       </div>
     </div>
   );
 };
 
 const ProfilePassCard: React.FC<{ pass: Pass }> = ({ pass }) => {
   return (
-    <div className="relative w-full rounded-md border border-silver/20 bg-transparent overflow-hidden backdrop-blur-sm p-5 flex items-start gap-4 sm:gap-6 group">
+    <div className="relative w-full max-w-[700px] rounded-md border border-silver/20 bg-deep-plum/40 overflow-hidden backdrop-blur-sm p-5 flex items-start gap-4 sm:gap-6 group mb-4">
       {/* QR Notch language on right edge */}
       <div className="absolute right-0 top-0 bottom-0 w-8 flex flex-col justify-between py-3 pr-3 opacity-30 group-hover:opacity-60 transition-opacity">
         <div className="w-3 h-3 border-t-2 border-r-2 border-silver self-end"></div>
@@ -102,7 +75,7 @@ const ProfilePassCard: React.FC<{ pass: Pass }> = ({ pass }) => {
       </div>
 
       {/* QR Placeholder Box */}
-      <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 border border-silver/40 rounded bg-deep-plum/60 flex items-center justify-center p-2 relative">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 border border-silver/40 rounded bg-midnight-indigo/60 flex items-center justify-center p-2 relative">
         <div className="absolute inset-1 border border-silver/20 border-dashed rounded-sm"></div>
         <Scan size={24} className="text-silver/40" />
       </div>
@@ -126,127 +99,118 @@ const ProfilePassCard: React.FC<{ pass: Pass }> = ({ pass }) => {
 
 export function Profile() {
   const [profile, setProfile] = useState(mockProfileData);
+  const [showStampSelector, setShowStampSelector] = useState(false);
+
+  // Sync initial avatar from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('falak_avatar');
+    if (saved && ['A', 'B', 'C'].includes(saved)) {
+      setProfile(prev => ({ ...prev, stampVariation: saved as any }));
+    } else {
+      // Set default 'A' if not present
+      if (!saved) {
+        localStorage.setItem('falak_avatar', 'A');
+        window.dispatchEvent(new Event('falak_avatar_changed'));
+      }
+      setProfile(prev => ({ ...prev, stampVariation: 'A' }));
+    }
+  }, []);
 
   const handleStampSelect = (variation: 'A' | 'B' | 'C') => {
     setProfile(prev => ({ ...prev, stampVariation: variation }));
+    localStorage.setItem('falak_avatar', variation);
+    window.dispatchEvent(new Event('falak_avatar_changed'));
+    setShowStampSelector(false);
   };
 
   return (
-    <div className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 flex flex-col items-center">
+    <div className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 flex justify-center">
       
-      {/* BACKGROUND (Asset 2) */}
-      <div className="fixed inset-0 z-[-1] bg-deep-plum flex items-center justify-center pointer-events-none">
-        {/* Lattice pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20L20 0ZM20 2L4 20L20 38L36 20L20 2Z' fill='%238A5CFF' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
-            backgroundSize: '40px 40px'
-          }}
+      {/* BACKGROUND - Full page, fixed so it doesn't scroll with content */}
+      <div className="fixed inset-0 z-[-1] bg-deep-plum pointer-events-none">
+        <img 
+          src="/assets/Landing/BackgroundProfile.png" 
+          alt="Background" 
+          className="w-full h-full object-cover opacity-80 mix-blend-screen" 
         />
-        {/* Radial glow for stamp selector */}
-        <div 
-          className="absolute top-[15vh] left-1/2 -translate-x-1/2 w-[300px] h-[300px] rounded-full blur-[80px]"
-          style={{ backgroundColor: '#FF3D7F', opacity: 0.12 }}
-        />
-        {/* Vertical gradient fade */}
-        <div className="absolute inset-0 bg-gradient-to-b from-deep-plum via-deep-plum/80 to-deep-plum/20" />
+        {/* Soft overlay gradient to ensure text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-deep-plum/60 via-transparent to-deep-plum/90" />
       </div>
 
-      <div className="w-full max-w-4xl mx-auto relative z-10">
+      {/* Layout Container: Stacked on mobile, 2-column on desktop */}
+      <div className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 lg:gap-12 items-start mt-8">
         
-        {/* HEADER & STAMP SELECTOR */}
-        <header className="mb-16 text-center flex flex-col items-center">
-          <h1 className="font-display text-3xl sm:text-4xl text-silver uppercase tracking-wider mb-2">My Falak</h1>
-          <p className="font-sans text-soft-lilac/70 text-sm">{profile.email}</p>
-          <p className="font-accent font-bold text-champagne-pearl text-xl sm:text-2xl mt-1 mb-8">{profile.name}</p>
+        {/* LEFT COLUMN - Identity Card */}
+        <div className="w-full md:w-[320px] lg:w-[360px] shrink-0 sticky top-32">
+          <div className="relative bg-deep-plum/80 border border-silver/20 rounded-xl p-8 backdrop-blur-md flex flex-col items-center text-center overflow-hidden">
+            
+            {/* Stamp Starburst/Glow from existing touchpoints */}
+            <div 
+              className="absolute top-16 left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full blur-[50px] pointer-events-none z-0"
+              style={{ backgroundColor: '#FF3D7F', opacity: 0.12 }}
+            />
 
-          <div className="flex flex-col items-center gap-4">
-            <span className="font-mono text-xs uppercase tracking-widest text-silver/50">Select your Profile Stamp</span>
-            <div className="flex gap-4 sm:gap-6">
-              {(['A', 'B', 'C'] as const).map((variation) => {
-                const isSelected = profile.stampVariation === variation;
-                return (
-                  <button
-                    key={variation}
-                    onClick={() => handleStampSelect(variation)}
-                    className="relative rounded-full transition-all duration-300"
-                    aria-label={`Select stamp variation ${variation}`}
+            <div className="relative z-10 w-full mb-8">
+              {/* Active Stamp */}
+              <div className="mx-auto relative w-32 h-32 rounded-full flex items-center justify-center bg-deep-plum border-[1.5px] border-silver shadow-[0_0_15px_rgba(255,61,127,0.15)] group"
+                   style={{ maskImage: `radial-gradient(circle at 4px 4px, transparent 2px, black 2.5px)`, maskSize: '8px 8px', maskPosition: '-4px -4px' }}>
+                  <div className="absolute inset-0 rounded-full border border-silver opacity-30"></div>
+                  <span className="font-display text-silver text-4xl">{profile.stampVariation}</span>
+              </div>
+              
+              <button 
+                 className="mt-6 text-xs font-mono uppercase tracking-widest text-aurora-violet hover:text-soft-lilac transition-colors px-4 py-1.5 border border-aurora-violet/30 rounded-full hover:bg-aurora-violet/10 cursor-pointer"
+                 onClick={() => setShowStampSelector(!showStampSelector)}
+              >
+                 Change Avatar
+              </button>
+
+              {/* Selector Expansion */}
+              <AnimatePresence>
+                {showStampSelector && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    className="flex justify-center gap-4 overflow-hidden"
                   >
-                    {/* Glow ring when selected */}
-                    {isSelected && (
-                      <div className="absolute -inset-2 rounded-full border border-silver/80 z-0">
-                         <div className="absolute inset-0 rounded-full bg-convergence-magenta opacity-[0.08] blur-[2px]"></div>
-                      </div>
-                    )}
-                    
-                    {/* Placeholder Stamp Circle */}
-                    <div 
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center bg-deep-plum transition-colors z-10 ${
-                        isSelected ? 'border-[1.5px] border-silver shadow-[0_0_15px_rgba(255,61,127,0.15)]' : 'border border-silver/40 hover:border-silver/70'
-                      }`}
-                      style={{
-                        // Perforated edge effect placeholder via CSS mask (or rough approximation)
-                        maskImage: `radial-gradient(circle at 4px 4px, transparent 2px, black 2.5px)`,
-                        maskSize: '8px 8px',
-                        maskPosition: '-4px -4px'
-                      }}
-                    >
-                       {/* The actual border is handled by the wrapper since mask will clip borders. 
-                           Re-doing a clean circle border inside the masked area: */}
-                       <div className="absolute inset-0 rounded-full border border-silver opacity-30"></div>
-                       <span className="font-display text-silver text-xl">{variation}</span>
-                    </div>
-                  </button>
-                );
-              })}
+                    {(['A', 'B', 'C'] as const).map((variation) => {
+                      const isSelected = profile.stampVariation === variation;
+                      return (
+                        <button
+                          key={variation}
+                          onClick={() => handleStampSelect(variation)}
+                          className={`relative w-12 h-12 rounded-full flex items-center justify-center font-display text-lg transition-colors cursor-pointer ${
+                            isSelected ? 'bg-silver text-deep-plum' : 'bg-deep-plum/80 border border-silver/40 text-silver hover:border-silver'
+                          }`}
+                        >
+                          {variation}
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center w-full border-t border-silver/10 pt-6">
+              <h1 className="font-display text-2xl text-silver uppercase tracking-wider mb-1">My Falak</h1>
+              <p className="font-accent font-bold text-champagne-pearl text-xl mt-4">{profile.name}</p>
+              <p className="font-sans text-soft-lilac/70 text-sm mt-1">{profile.email}</p>
             </div>
           </div>
-        </header>
-
-        {/* CTA BUTTONS ROW */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
-          {/* Events CTA - Ticket Stub */}
-          <button 
-            className="group relative h-[48px] px-8 rounded-full bg-aurora-violet border border-silver text-champagne-pearl font-sans text-sm font-bold flex items-center justify-center gap-2 overflow-hidden transition-colors"
-            style={{
-              clipPath: 'polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)' // Rough angled notch as a stub placeholder
-            }}
-          >
-            {/* Real stub notch using a pseudo-element style circle cutout at the left edge center */}
-            <div className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-4 h-4 bg-deep-plum rounded-full border border-silver group-hover:border-silver/80"></div>
-            
-            <Ticket size={16} className="text-silver z-10" />
-            <span className="z-10 tracking-wide font-[Archivo]">My Events</span>
-            
-            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-[0.08] bg-convergence-magenta transition-opacity duration-300 z-0 pointer-events-none"></div>
-          </button>
-
-          {/* Passes CTA - Boarding Pass */}
-          <button 
-            className="group relative h-[48px] px-8 rounded-full bg-transparent border border-silver text-soft-lilac font-sans text-sm font-bold flex items-center justify-center gap-2 overflow-hidden transition-colors"
-          >
-             {/* QR Corner bracket notch on right edge */}
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-[6px] opacity-70">
-              <div className="w-1.5 h-1.5 border-t border-r border-silver"></div>
-              <div className="w-1.5 h-1.5 border-b border-r border-silver"></div>
-            </div>
-
-            <span className="z-10 tracking-wide font-[Archivo] pr-4">My Passes</span>
-            <Scan size={16} className="text-silver z-10 mr-2" />
-            
-            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-[0.08] bg-convergence-magenta transition-opacity duration-300 z-0 pointer-events-none"></div>
-          </button>
         </div>
 
-        <div className="space-y-16">
-          {/* MY EVENTS SECTION */}
+        {/* RIGHT COLUMN - Holdings */}
+        <div className="flex-1 min-w-0 flex flex-col gap-12">
+          
+          {/* TICKETS SECTION */}
           <section>
-            <h2 className="font-display text-2xl text-silver uppercase tracking-widest mb-6 border-b border-silver/10 pb-4">
+            <h2 className="font-display text-xl text-silver uppercase tracking-widest mb-6 border-b border-silver/10 pb-4">
               Registered Events
             </h2>
             {profile.registrations.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-6">
                 {profile.registrations.map(reg => (
                   <ProfileEventCard key={reg.id} event={reg} />
                 ))}
@@ -256,13 +220,13 @@ export function Profile() {
             )}
           </section>
 
-          {/* MY PASSES SECTION */}
+          {/* PASSES SECTION */}
           <section>
-            <h2 className="font-display text-2xl text-silver uppercase tracking-widest mb-6 border-b border-silver/10 pb-4">
+            <h2 className="font-display text-xl text-silver uppercase tracking-widest mb-6 border-b border-silver/10 pb-4">
               Passes & Access
             </h2>
             {profile.passes.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-4">
                 {profile.passes.map(pass => (
                   <ProfilePassCard key={pass.id} pass={pass} />
                 ))}
@@ -271,6 +235,7 @@ export function Profile() {
               <p className="text-silver/50 font-sans text-sm">No passes purchased yet.</p>
             )}
           </section>
+
         </div>
       </div>
     </div>
