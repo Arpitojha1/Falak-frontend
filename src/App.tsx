@@ -59,9 +59,12 @@ function AnimatedRoutes() {
                 <Route path="/" element={<Home />} />
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/sports" element={<SportsPage />} />
+                <Route path="/cultural" element={<CulturePage />} />
+                <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
+                <Route path="/passes" element={<div className="pt-32 px-6 min-h-screen text-center">Passes Page Stub</div>} />
+                <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
               </Route>
-              <Route path="/sports" element={<SportsPage />} />
-              <Route path="/cultural" element={<CulturePage />} />
             </Routes>
           </Suspense>
         </motion.div>
