@@ -9,9 +9,22 @@ export function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [avatar, setAvatar] = useState(localStorage.getItem('falak_avatar') || null);
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setAvatar(localStorage.getItem('falak_avatar'));
+    };
+    window.addEventListener('falak_avatar_changed', handleStorageChange);
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('falak_avatar_changed', handleStorageChange);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +43,7 @@ export function Navbar() {
   const handleTrackNavigation = (route: string, colorClass: string) => {
     setDropdownOpen(false);
     setMobileMenuOpen(false);
-    navigate(route, { state: { washColor: colorClass } });
+    (window as any).__triggerTrackTransition?.(route);
   };
 
   const handleMouseEnter = () => {
@@ -127,7 +140,15 @@ export function Navbar() {
               className="text-silver hover:text-white transition-colors duration-200 flex items-center"
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
             >
-              <User size={24} strokeWidth={1.5} />
+              {avatar ? (
+                <div 
+                  className="w-8 h-8 rounded-full border-[1.5px] border-silver flex items-center justify-center bg-deep-plum/80 text-sm font-display shadow-[0_0_8px_rgba(255,61,127,0.2)]"
+                >
+                  {avatar}
+                </div>
+              ) : (
+                <User size={24} strokeWidth={1.5} />
+              )}
             </button>
             
             <AnimatePresence>
