@@ -15,6 +15,7 @@ const Schedule = lazy(() => import('./pages/Schedule').then(module => ({ default
 const Profile = lazy(() => import('./pages/Profile').then(module => ({ default: module.Profile })));
 const SportsPage = lazy(() => import('./pages/Sports').then(module => ({ default: module.SportsPage })));
 const CulturePage = lazy(() => import('./pages/Culture').then(module => ({ default: module.CulturePage })));
+const Passes = lazy(() => import('./pages/Passes').then(module => ({ default: module.Passes })));
 
 function MainLayout() {
   return (
@@ -57,20 +58,23 @@ function AnimatedRoutes() {
             />
           )}
           <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
-            <RouteTransitionController>
-              <Routes location={location}>
-                <Route element={<MainLayout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/schedule" element={<Schedule />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/sports" element={<SportsPage />} />
-                  <Route path="/cultural" element={<CulturePage />} />
-                  <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
-                  <Route path="/passes" element={<div className="pt-32 px-6 min-h-screen text-center">Passes Page Stub</div>} />
-                  <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
-                </Route>
-              </Routes>
-            </RouteTransitionController>
+            <Routes location={location}>
+              <Route element={
+                <RouteTransitionController>
+                  <MainLayout />
+                </RouteTransitionController>
+              }>
+                <Route path="/" element={<Home />} />
+                <Route path="/schedule" element={<Schedule />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
+                <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
+              </Route>
+              
+              <Route path="/passes" element={<Passes />} />
+              <Route path="/sports" element={<SportsPage />} />
+              <Route path="/cultural" element={<CulturePage />} />
+            </Routes>
           </Suspense>
         </motion.div>
       </AnimatePresence>
