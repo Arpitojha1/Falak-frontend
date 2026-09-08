@@ -25,7 +25,7 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
       : '/assets/Landing/ticketsBase.png';
                      
   return (
-    <div className="relative w-full max-w-[700px] aspect-[3/1] group focus-within:outline-none focus-visible:ring-2 focus-visible:ring-silver/50 rounded-lg shrink-0 mb-4" tabIndex={0}>
+    <div className="relative w-[500px] sm:w-[600px] md:w-full md:max-w-[700px] aspect-[3/1] group focus-within:outline-none focus-visible:ring-2 focus-visible:ring-silver/50 rounded-lg shrink-0 mb-4 @container" tabIndex={0}>
        {/* Background Images - Crossfade on hover/focus */}
        <img 
          src="/assets/Landing/ticketsBase.png" 
@@ -44,21 +44,24 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
        {/* Overlay Text Zones */}
        
        {/* Stub Number Zone: Left Side. Aligning to the '- - - -' area in the asset */}
-       <div className="absolute top-[20%] left-[5%] w-[18%] flex flex-col pointer-events-none">
-         <h3 className="font-sans font-bold text-champagne-pearl text-[10px] sm:text-xs md:text-sm lg:text-base leading-tight" style={{ fontFamily: 'Archivo, sans-serif' }}>
+       <div className="absolute top-[20%] left-[3%] w-[20%] flex flex-col pointer-events-none pr-1">
+         <h3 className="font-sans font-bold text-champagne-pearl leading-[1.15]" style={{ fontFamily: 'Archivo, sans-serif', fontSize: '2.8cqw' }}>
            {event.eventName}
          </h3>
+         <span className="font-mono uppercase tracking-widest text-silver/70 mt-[1cqw]" style={{ fontSize: '1.2cqw' }}>
+           {event.track}
+         </span>
        </div>
 
        {/* Date Zone: Top right corner stamp-disc zone */}
-       <div className="absolute top-[10%] right-[3%] w-[10%] aspect-square flex flex-col items-center justify-center pointer-events-none">
-         <span className="font-sans font-bold text-silver/90 text-[8px] sm:text-[10px] md:text-xs text-center leading-tight uppercase" style={{ fontFamily: 'Archivo, sans-serif' }}>
+       <div className="absolute top-[10%] right-[3%] w-[12%] aspect-square flex flex-col items-center justify-center pointer-events-none">
+         <span className="font-sans font-bold text-silver/90 text-center uppercase leading-tight" style={{ fontFamily: 'Archivo, sans-serif', fontSize: '2cqw' }}>
             {event.date.split(' ').slice(0, 2).join('\n')}
          </span>
        </div>
        
        {/* Status badge - bottom right out of the way of the mascot arch */}
-       <div className="absolute bottom-[10%] right-[5%]">
+       <div className="absolute bottom-[10%] right-[3%]">
           <StatusBadge status={event.paymentStatus} />
        </div>
     </div>
@@ -67,7 +70,7 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
 
 const ProfilePassCard: React.FC<{ pass: Pass }> = ({ pass }) => {
   return (
-    <div className="relative w-full max-w-[700px] rounded-md border border-silver/20 bg-deep-plum/40 overflow-hidden backdrop-blur-sm p-5 flex items-start gap-4 sm:gap-6 group mb-4">
+    <div className="relative w-[500px] sm:w-[600px] md:w-full md:max-w-[700px] rounded-md border border-silver/20 bg-deep-plum/40 overflow-hidden backdrop-blur-sm p-5 flex items-start gap-4 sm:gap-6 group mb-4">
       {/* QR Notch language on right edge */}
       <div className="absolute right-0 top-0 bottom-0 w-8 flex flex-col justify-between py-3 pr-3 opacity-30 group-hover:opacity-60 transition-opacity">
         <div className="w-3 h-3 border-t-2 border-r-2 border-silver self-end"></div>
@@ -141,7 +144,7 @@ export function Profile() {
       <div className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 lg:gap-12 items-start mt-8">
         
         {/* LEFT COLUMN - Identity Card */}
-        <div className="w-full md:w-[320px] lg:w-[360px] shrink-0 sticky top-32">
+        <div className="w-full md:w-[320px] lg:w-[360px] shrink-0 md:sticky top-32">
           <div className="relative bg-deep-plum/80 border border-silver/20 rounded-xl p-8 backdrop-blur-md flex flex-col items-center text-center overflow-hidden">
             
             {/* Stamp Starburst/Glow from existing touchpoints */}
@@ -210,10 +213,12 @@ export function Profile() {
               Registered Events
             </h2>
             {profile.registrations.length > 0 ? (
-              <div className="flex flex-col gap-6">
-                {profile.registrations.map(reg => (
-                  <ProfileEventCard key={reg.id} event={reg} />
-                ))}
+              <div className="flex flex-col gap-6 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible hide-scrollbar">
+                <div className="flex flex-col gap-6 min-w-max md:min-w-0">
+                  {profile.registrations.map(reg => (
+                    <ProfileEventCard key={reg.id} event={reg} />
+                  ))}
+                </div>
               </div>
             ) : (
               <p className="text-silver/50 font-sans text-sm">No events registered yet.</p>
@@ -226,10 +231,12 @@ export function Profile() {
               Passes & Access
             </h2>
             {profile.passes.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {profile.passes.map(pass => (
-                  <ProfilePassCard key={pass.id} pass={pass} />
-                ))}
+              <div className="flex flex-col gap-4 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible hide-scrollbar">
+                <div className="flex flex-col gap-4 min-w-max md:min-w-0">
+                  {profile.passes.map(pass => (
+                    <ProfilePassCard key={pass.id} pass={pass} />
+                  ))}
+                </div>
               </div>
             ) : (
               <p className="text-silver/50 font-sans text-sm">No passes purchased yet.</p>
