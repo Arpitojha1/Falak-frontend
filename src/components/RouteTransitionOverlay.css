@@ -1,0 +1,22 @@
+.route-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.route-transition-layer {
+  position: fixed;
+  inset: 0;
+  will-change: transform;
+  transform: translateX(100%);
+}
+
+.route-transition-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  background: radial-gradient(circle at center, #FF3D7F 0%, rgba(255, 61, 127, 0) 70%);
+  opacity: 0;
+}

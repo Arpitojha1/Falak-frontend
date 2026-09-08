@@ -8,6 +8,7 @@ import { Suspense, lazy } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/Footer';
 import { AnimatePresence, motion } from 'motion/react';
+import RouteTransitionController from './components/RouteTransitionController';
 
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
 const Schedule = lazy(() => import('./pages/Schedule').then(module => ({ default: module.Schedule })));
@@ -32,16 +33,18 @@ function AnimatedRoutes() {
   // Determine wash color based on destination route if coming from Navbar state
   // But standard way is to use location.state
   const washColorClass = location.state?.washColor || '';
+  const isWipe = location.state?.isWipe || false;
+  const duration = isWipe ? 0 : 0.5;
 
   return (
     <div className="relative w-full min-h-screen">
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: isWipe ? 1 : 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          exit={{ opacity: isWipe ? 1 : 0 }}
+          transition={{ duration, ease: 'easeInOut' }}
           className="w-full h-full"
         >
           {/* Wash overlay during crossfade */}
@@ -54,18 +57,20 @@ function AnimatedRoutes() {
             />
           )}
           <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
-            <Routes location={location}>
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/schedule" element={<Schedule />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/sports" element={<SportsPage />} />
-                <Route path="/cultural" element={<CulturePage />} />
-                <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
-                <Route path="/passes" element={<div className="pt-32 px-6 min-h-screen text-center">Passes Page Stub</div>} />
-                <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
-              </Route>
-            </Routes>
+            <RouteTransitionController>
+              <Routes location={location}>
+                <Route element={<MainLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/schedule" element={<Schedule />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/sports" element={<SportsPage />} />
+                  <Route path="/cultural" element={<CulturePage />} />
+                  <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
+                  <Route path="/passes" element={<div className="pt-32 px-6 min-h-screen text-center">Passes Page Stub</div>} />
+                  <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
+                </Route>
+              </Routes>
+            </RouteTransitionController>
           </Suspense>
         </motion.div>
       </AnimatePresence>
