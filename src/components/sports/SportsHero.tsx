@@ -1,30 +1,15 @@
 export function SportsHero() {
   return (
     <section className="relative w-full min-h-[95vh] flex items-center bg-midnight-indigo overflow-hidden pt-20 pb-16">
-      {/* Layer 1: Grunge Grain & Halftone */}
+      {/* Background Image Layer */}
       <div 
-        className="absolute inset-0 z-0 opacity-15"
+        className="absolute inset-0 z-0 bg-cover bg-center md:bg-center"
         style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, var(--color-silver) 1.5px, transparent 0)',
-          backgroundSize: '12px 12px'
+          backgroundImage: "url('/assets/sportsAssets/Sport_Hero_BG.png')"
         }}
       />
-      
-      {/* Layer 2: Massive Diagonal Orange Stripe (Torn poster vibe) */}
-      <div className="absolute top-[10%] -right-[20%] w-[150%] h-[50vh] bg-electric-orange -rotate-12 opacity-90 z-0 border-y-8 border-midnight-indigo overflow-hidden shadow-2xl flex items-center">
-        {/* Halftone inside the stripe */}
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, var(--color-midnight-indigo) 2px, transparent 0)',
-            backgroundSize: '8px 8px'
-          }}
-        />
-        {/* Marquee text in background */}
-        <div className="whitespace-nowrap font-headline-sports-section text-[15rem] text-midnight-indigo/10 uppercase -translate-y-4">
-          FALAK SPORTS FALAK SPORTS FALAK SPORTS
-        </div>
-      </div>
+      {/* Subtle Scrim for contrast */}
+      <div className="absolute inset-0 z-0 bg-midnight-indigo/20 mix-blend-multiply" />
 
       {/* Layer 3: Main Content Grid */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 h-full flex flex-col lg:flex-row items-center gap-12 lg:gap-0 mt-10">
