@@ -187,9 +187,9 @@ export function TimetableGrid({ activeDay, activeCategory }: TimetableGridProps)
                     </div>
                   ))}
 
-                  {/* Regular events in a responsive grid */}
+                  {/* Regular events in a responsive 4-column grid matching Photo 2 */}
                   {regularEvents.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                       {regularEvents.map((event) => (
                         <div key={event.id} className="timetable-event-card">
                           <EventCard event={event} />
