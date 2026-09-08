@@ -1,4 +1,4 @@
-# Falak '26 — Full-Site Design Reference
+# Falak '26 â€” Full-Site Design Reference
 
 > This document reflects the **actual, audited state of the codebase** as of Session 7. It supersedes previous planning documents and serves as the single source of truth for the implemented design system across all tracks.
 
@@ -18,16 +18,16 @@
 
 ### Palette
 - **Midnight Indigo** (`#0B0F2B`): Base background, heavy borders, text in light surfaces, hard drop shadows.
-- **Electric Orange** (`#FF6A00`): Primary pop — diagonal hero stripe, CTA buttons, highlighted text, top footer border, solid offset shadows.
-- **Acid Lime** (`#C6FF00`): High-energy accent — hero "ON" text, offset shadow plates, badge backgrounds.
+- **Electric Orange** (`#FF6A00`): Primary pop â€” diagonal hero stripe, CTA buttons, highlighted text, top footer border, solid offset shadows.
+- **Acid Lime** (`#C6FF00`): High-energy accent â€” hero "ON" text, offset shadow plates, badge backgrounds.
 - **Silver** (`#C0C0C0`): Body text, mascot slot backing, overlay backgrounds.
 - **Cobalt Blue** (`#0057FF`): Used dynamically in hover color-cycling arrays.
 
 ### Typography
-- **Headlines:** `Anton` (400 weight condensed) — Massive hero display ("GAME ON").
-- **Section/Component Titles:** `Archivo Black` (900 weight) — Marquees, event titles, CTAs, footer links.
-- **Data/Labels:** `Archivo Condensed` (600 weight) — Badges, metadata headers, copyright.
-- **Body:** `Barlow` (400/500 weight) — Intro paragraphs and event descriptions.
+- **Headlines:** `Anton` (400 weight condensed) â€” Massive hero display ("GAME ON").
+- **Section/Component Titles:** `Archivo Black` (900 weight) â€” Marquees, event titles, CTAs, footer links.
+- **Data/Labels:** `Archivo Condensed` (600 weight) â€” Badges, metadata headers, copyright.
+- **Body:** `Barlow` (400/500 weight) â€” Intro paragraphs and event descriptions.
 
 ### Motif Vocabulary
 - **Neobrutalism:** Hard 4px/8px solid borders (`border-midnight-indigo`), heavy solid offset drop shadows without blur (`shadow-[8px_8px_0_0_#FF6A00]`).
@@ -58,16 +58,16 @@
 
 ### Palette
 - **Deep Plum** (`#1C0B46`) to **Midnight Indigo** (`#0B0F2B`): Base gradient backgrounds.
-- **Aurora Violet** (`#8A5CFF`): Main pop — SVG strokes, Devanagari text, hover washes, category labels, CTA backgrounds.
+- **Aurora Violet** (`#8A5CFF`): Main pop â€” SVG strokes, Devanagari text, hover washes, category labels, CTA backgrounds.
 - **Soft Lilac** (`#E6DFF6`): Accents, mascot slot borders, hover washes.
-- **Champagne Pearl** (`#EDE4D3`): Warm neutral — typography, photo borders, ticket perforations.
+- **Champagne Pearl** (`#EDE4D3`): Warm neutral â€” typography, photo borders, ticket perforations.
 - **Silver** (`#C0C0C0`): Utility text, chevron borders.
 
 ### Typography
-- **Hero & Primary Titles:** `Baloo 2` (800 weight) — Poppy, rounded festival feel.
-- **Hindi / Devanagari:** `Baloo Devanagari 2` (700 weight) — Used for event translations (e.g. "संस्कृति", "सुर संगम").
-- **Accents:** `Fraunces` (Italic) — Premium moments like the hero tagline and vertical ticket-stub branding.
-- **Data/Labels & Body:** `Barlow` (400/500/600 weight) — Body copy, metadata labels, copyright.
+- **Hero & Primary Titles:** `Baloo 2` (800 weight) â€” Poppy, rounded festival feel.
+- **Hindi / Devanagari:** `Baloo Devanagari 2` (700 weight) â€” Used for event translations (e.g. "à¤¸à¤‚à¤¸à¥�à¤•à¥ƒà¤¤à¤¿", "à¤¸à¥�à¤° à¤¸à¤‚à¤—à¤®").
+- **Accents:** `Fraunces` (Italic) â€” Premium moments like the hero tagline and vertical ticket-stub branding.
+- **Data/Labels & Body:** `Barlow` (400/500/600 weight) â€” Body copy, metadata labels, copyright.
 
 ### Motif Vocabulary
 - **Darbar Carpet & Jaali:** Multi-layered background incorporating micro-weave patterns, truck-art finials, and a dense 24x16 jaali screen arch.
@@ -138,7 +138,7 @@ This section documents where the live code differs from previous planning or han
 
 ## 7. Full-Site Changelog
 
-**Session 1–5: Sports Track Build**
+**Session 1â€“5: Sports Track Build**
 - Setup isolated routing and scaffolded page shell for `/sports`.
 - Added Archivo font families and Sports color tokens.
 - Scaffolded Sports Hero with asymmetric layout and mascot placeholder.
@@ -160,4 +160,9 @@ This section documents where the live code differs from previous planning or han
 - Consolidated site-wide rules, verified implementations against previous planning docs, and produced this unified `design.md` reference.
 - Created status-only `README.md`.
 **Session 8: Profile Page Build**
-> **Profile page (/profile):** Culture-leaning base palette (Violet/Plum/Lilac/Pearl/Silver) + single-instance Convergence Magenta accent rule, applied because cross-track data display (a page showing both Sports and Cultural registrations together) was ruled a legitimate convergence context. First on-button use of the ticket-stub motif (previously card-tile only on Cultural route) � logged as an intentional extension, not scope drift. Profile Stamp introduced as a new, separate character system from ZUUM/SWIRLA: 3 user-selectable variations (Editorial Cool / Retro Performer / Heritage Artist), all shipping live, selectable by the attendee � not a design-review pick.
+> **Profile page (/profile):** Culture-leaning base palette (Violet/Plum/Lilac/Pearl/Silver) + single-instance Convergence Magenta accent rule, applied because cross-track data display (a page showing both Sports and Cultural registrations together) was ruled a legitimate convergence context. First on-button use of the ticket-stub motif (previously card-tile only on Cultural route) — logged as an intentional extension, not scope drift. Profile Stamp introduced as a new, separate character system from ZUUM/SWIRLA: 3 user-selectable variations (Editorial Cool / Retro Performer / Heritage Artist), all shipping live, selectable by the attendee — not a design-review pick.
+
+**Session 9: Footer Redesign**
+- Overhauled `Footer.tsx` with a new asymmetric layout featuring the `MysteryArtist` block on the left and a stacked, numbered navigation list on the right.
+- Systemic decision: Shared components may read route context to swap accent color. The Footer reads `useLocation` to tint hover states (Magenta for `/`, Electric Orange for `/sports`, Aurora Violet for `/cultural`) while remaining structure-agnostic.
+- Added animated hover pills and track-tinted iconography for nav items.
