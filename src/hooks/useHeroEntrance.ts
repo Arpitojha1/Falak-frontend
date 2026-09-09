@@ -1,4 +1,5 @@
-﻿import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { RefObject } from 'react';
 import { useLocation } from 'react-router-dom';
 
 interface UseHeroEntranceOptions {
@@ -6,7 +7,7 @@ interface UseHeroEntranceOptions {
    * The hero section element ref. The drag listener is scoped to this element
    * so it does not interfere with the global track-navigation swipe.
    */
-  heroRef: React.RefObject<HTMLElement | null>;
+  heroRef: RefObject<HTMLElement | null>;
   /**
    * Horizontal drag distance (px) required to replay the animation.
    * Desktop pointer-drag only — touch polish is deferred site-wide.
