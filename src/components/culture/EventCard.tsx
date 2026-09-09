@@ -11,11 +11,12 @@ interface EventCardProps {
   isExpanded: boolean;
   onToggle: () => void;
   isDimmed: boolean;
+  isActive?: boolean;
 }
 
 // Note: `key` is a React special prop — not destructured, handled externally.
 
-export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardProps) {
+export function EventCard({ event, isExpanded, onToggle, isDimmed, isActive }: EventCardProps) {
   const [hovered, setHovered] = useState(false);
   // Track active breakpoint so the expanded view can match the correct
   // collapsed-tile layoutId (mobile vs desktop both exist in DOM via CSS display:none).
@@ -37,6 +38,7 @@ export function EventCard({ event, isExpanded, onToggle, isDimmed }: EventCardPr
   return (
     <motion.div
       layout="position"
+      style={{ zIndex: isActive ? 50 : 1 }}
       className={`
         relative w-full text-left overflow-hidden
         transition-opacity transition-[filter] duration-300

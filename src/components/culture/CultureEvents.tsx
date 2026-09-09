@@ -5,9 +5,17 @@ import { EventCard } from './EventCard';
 
 export function CultureEvents() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   function toggleEvent(id: string) {
-    setExpandedId((prev) => (prev === id ? null : id));
+    if (expandedId === id) {
+      setExpandedId(null);
+      // Keep activeId active for the duration of the transition (500ms)
+      setTimeout(() => setActiveId(null), 500);
+    } else {
+      setExpandedId(id);
+      setActiveId(id);
+    }
   }
 
   return (
@@ -111,6 +119,7 @@ export function CultureEvents() {
                     isExpanded={true}
                     onToggle={() => toggleEvent(event.id)}
                     isDimmed={false}
+                    isActive={activeId === event.id}
                   />
                 ) : null;
               })()}
@@ -126,6 +135,7 @@ export function CultureEvents() {
                       isExpanded={false}
                       onToggle={() => toggleEvent(event.id)}
                       isDimmed={true}
+                      isActive={activeId === event.id}
                     />
                   ))}
               </div>
@@ -140,6 +150,7 @@ export function CultureEvents() {
                   isExpanded={false}
                   onToggle={() => toggleEvent(event.id)}
                   isDimmed={false}
+                  isActive={activeId === event.id}
                 />
               ))}
             </div>
