@@ -13,6 +13,7 @@ import RouteTransitionController from './components/RouteTransitionController';
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
 const Schedule = lazy(() => import('./pages/Schedule').then(module => ({ default: module.Schedule })));
 const Profile = lazy(() => import('./pages/Profile').then(module => ({ default: module.Profile })));
+const Support = lazy(() => import('./pages/Support').then(module => ({ default: module.Support })));
 const SportsPage = lazy(() => import('./pages/Sports').then(module => ({ default: module.SportsPage })));
 const CulturePage = lazy(() => import('./pages/Culture').then(module => ({ default: module.CulturePage })));
 const Passes = lazy(() => import('./pages/Passes').then(module => ({ default: module.Passes })));
@@ -70,7 +71,7 @@ function AnimatedRoutes() {
                   <Route path="/" element={<Home />} />
                   <Route path="/schedule" element={<Schedule />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
+                  <Route path="/support" element={<Support />} />
                   <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
                   {/* Track routes inside the controller so the overlay + swipe listeners
                       are mounted when the user is on /sports or /cultural — enabling
