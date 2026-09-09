@@ -159,9 +159,11 @@ const Masonry: React.FC<MasonryProps> = ({
   const [internalExpandedId, setInternalExpandedId] = useState(expandedId);
   const flipState = useRef<any>(null);
   const itemRefs = useRef(new Map<string, HTMLElement>());
+  const animatingIdRef = useRef<string | null>(null);
 
   useLayoutEffect(() => {
     if (expandedId !== internalExpandedId) {
+      animatingIdRef.current = expandedId || internalExpandedId;
       flipState.current = Flip.getState(Array.from(itemRefs.current.values()));
       if (!expandedId) {
         gsap.to('.details-overlay', { opacity: 0, duration: 0.15 });
@@ -228,8 +230,18 @@ const Masonry: React.FC<MasonryProps> = ({
         duration: duration,
         ease: ease,
         absolute: true,
-        zIndex: 100,
+        onStart: () => {
+          if (animatingIdRef.current) {
+            const el = itemRefs.current.get(animatingIdRef.current);
+            if (el) gsap.set(el, { zIndex: 100 });
+          }
+        },
         onComplete: () => {
+          if (animatingIdRef.current) {
+            const el = itemRefs.current.get(animatingIdRef.current);
+            // clear inline zIndex so CSS rules take over again
+            if (el) gsap.set(el, { clearProps: 'zIndex' });
+          }
           if (internalExpandedId) {
             gsap.to('.details-overlay', { opacity: 1, duration: 0.3 });
           }
