@@ -30,7 +30,7 @@ export default function RouteTransitionController({ children }: { children: Reac
 
       document.body.style.overflow = 'hidden';
       overlayRef.current?.play(target, direction, () => {
-        navigate(target, { state: { isWipe: true, fromNav: true } });
+        navigate(target, { state: { isWipe: true } });
       }).then(() => {
         document.body.style.overflow = '';
       });
