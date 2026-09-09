@@ -12,11 +12,8 @@ interface CategoryFilterProps {
 export function CategoryFilter({ activeCategory, onCategoryChange }: CategoryFilterProps) {
   return (
     <div className="relative">
-      {/* Horizontal scroll container */}
-      <div
-        className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 scrollbar-hide"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
+      {/* Wrapped chip bar without horizontal scroll */}
+      <div className="flex items-center flex-wrap gap-2 pb-1 pt-1">
         {FILTER_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.key;
           const color =

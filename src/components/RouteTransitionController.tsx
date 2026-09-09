@@ -17,7 +17,7 @@ export default function RouteTransitionController({ children }: { children: Reac
     (TRACK_ROUTES as readonly string[]).includes(path);
 
   const goDirection = useCallback(
-    (direction: 'left' | 'right') => {
+    (direction: 'right' | 'left') => {
       const current = location.pathname;
       if (!isTrackRoute(current)) return; // only wipe-transition between the three track routes
       if (overlayRef.current?.isBusy()) return;
@@ -39,14 +39,14 @@ export default function RouteTransitionController({ children }: { children: Reac
   );
 
   useTrackSwipeNavigation({
-    onSwipeLeft: () => goDirection('left'),
-    onSwipeRight: () => goDirection('right'),
+    onSwipeLeft: () => goDirection('right'),
+    onSwipeRight: () => goDirection('left'),
     disabled: !isTrackRoute(location.pathname)
   });
 
   useDesktopTrackNavigation({
-    onSwipeLeft: () => goDirection('left'),
-    onSwipeRight: () => goDirection('right'),
+    onSwipeLeft: () => goDirection('right'),
+    onSwipeRight: () => goDirection('left'),
     disabled: !isTrackRoute(location.pathname)
   });
 

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { background: #0B0F2B; margin: 0; padding: 40px; display: flex; flex-direction: column; gap: 40px; }
+.row { display: flex; gap: 40px; }
+.card { width: 270px; height: 270px; position: relative; border: 1px dashed rgba(255,255,255,0.2); }
+.art-wrap { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.art-img { width: 100%; height: 100%; object-fit: contain; }
+.tint-overlay {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: color;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+  <!-- Support icons -->
+  <div class="row">
+    <div class="card">
+      <div class="art-wrap">
+        <img src="/assets/footer/supporticons.png" class="art-img" />
+      </div>
+    </div>
+    <div class="card">
+      <div class="art-wrap">
+        <img src="/assets/footer/supporticons.png" class="art-img" style="filter: grayscale(1) contrast(1.1);" />
+        <div class="tint-overlay" style="background-color: #FF6A00; mask-image: url(/assets/footer/supporticons.png); -webkit-mask-image: url(/assets/footer/supporticons.png);"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="art-wrap">
+        <img src="/assets/footer/supporticons.png" class="art-img" style="filter: grayscale(1) contrast(1.1);" />
+        <div class="tint-overlay" style="background-color: #8A5CFF; mask-image: url(/assets/footer/supporticons.png); -webkit-mask-image: url(/assets/footer/supporticons.png);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About icons -->
+  <div class="row">
+    <div class="card">
+      <div class="art-wrap">
+        <img src="/assets/footer/AboutIcons.png" class="art-img" />
+      </div>
+    </div>
+    <div class="card">
+      <div class="art-wrap">
+        <img src="/assets/footer/AboutIcons.png" class="art-img" style="filter: grayscale(1) contrast(1.1);" />
+        <div class="tint-overlay" style="background-color: #FF6A00; mask-image: url(/assets/footer/AboutIcons.png); -webkit-mask-image: url(/assets/footer/AboutIcons.png);"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="art-wrap">
+        <img src="/assets/footer/AboutIcons.png" class="art-img" style="filter: grayscale(1) contrast(1.1);" />
+        <div class="tint-overlay" style="background-color: #8A5CFF; mask-image: url(/assets/footer/AboutIcons.png); -webkit-mask-image: url(/assets/footer/AboutIcons.png);"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

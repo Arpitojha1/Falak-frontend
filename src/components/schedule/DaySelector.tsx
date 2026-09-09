@@ -17,7 +17,7 @@ const DAY_ACCENT_COLORS = {
 
 export function DaySelector({ activeDay, onDayChange }: DaySelectorProps) {
   return (
-    <div className="flex items-stretch gap-2 md:gap-3 w-full md:w-auto overflow-x-auto pb-1 scrollbar-hide">
+    <div className="grid grid-cols-3 gap-2 md:flex md:items-stretch md:gap-3 w-full md:w-auto pb-1">
       {([1, 2, 3] as const).map((day) => {
         const info = DAY_LABELS[day];
         const isActive = activeDay === day;

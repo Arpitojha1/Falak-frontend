@@ -236,8 +236,8 @@ export function SportsCalendar() {
         <div className="flex-1 h-px bg-white/15" />
       </div>
 
-      {/* Day selector — horizontal scroll */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+      {/* Day selector — wrapped chips, no horizontal scroll */}
+      <div className="flex items-center flex-wrap gap-2 pb-3 mb-6">
         {SPORTS_SCHEDULE.map((day, idx) => (
           <DayCard
             key={day.date}

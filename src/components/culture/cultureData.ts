@@ -27,6 +27,40 @@ const IMG = {
   chaiwala: '/assets/reference/cultural/ref_c-2.jpg',
 } as const;
 
+// Desktop/tablet card posters. Events without an asset intentionally fall back
+// to their existing reference image below.
+const EVENT_POSTER_BY_TITLE: Record<string, string> = {
+  'Solo Classical Dance': '/assets/culturalAssets/CulturalEventsPoster/SOLO CLASSICAL DANCE (2).png',
+  'Group Classical Dance': '/assets/culturalAssets/CulturalEventsPoster/Group Classical Dance.png',
+  'Solo Western Dance': '/assets/culturalAssets/CulturalEventsPoster/solo western dance .png',
+  'Group Western Dance': '/assets/culturalAssets/CulturalEventsPoster/group western dance(1).png',
+  'Street Dance': '/assets/culturalAssets/CulturalEventsPoster/street dance.png',
+  'Battle of Bands': '/assets/culturalAssets/CulturalEventsPoster/BATTLE OF BANDS POSTER-1.png',
+  'Solo Instrumental': '/assets/culturalAssets/CulturalEventsPoster/Solo Instrumental-1.png',
+  'Solo Singing': '/assets/culturalAssets/CulturalEventsPoster/Solo Singing-1.png',
+  'Stage Play': '/assets/culturalAssets/CulturalEventsPoster/STAGE PLAY POSTER-1.png',
+  'Mono Acting': '/assets/culturalAssets/CulturalEventsPoster/mono Act.png',
+  'Mock Trading': '/assets/culturalAssets/CulturalEventsPoster/mock trading .png',
+  'Shark Tank': '/assets/culturalAssets/CulturalEventsPoster/shark tank.png',
+  Debate: '/assets/culturalAssets/CulturalEventsPoster/Debate-1.png',
+  'Fashion Show': '/assets/culturalAssets/CulturalEventsPoster/FASHION SHOW POSTER-1.png',
+  'Treasure Hunt': '/assets/culturalAssets/CulturalEventsPoster/TREASURE HUNT POSTER-1.png',
+  'Short Filmmaking': '/assets/culturalAssets/CulturalEventsPoster/FILMMAKING (2).png',
+  'Reel Making': '/assets/culturalAssets/CulturalEventsPoster/reel Making.png',
+  Photography: '/assets/culturalAssets/CulturalEventsPoster/PHOTOGRAPHY.png',
+  'Pop Culture Quiz': '/assets/culturalAssets/CulturalEventsPoster/popQuiz.png',
+  'General Quiz': '/assets/culturalAssets/CulturalEventsPoster/General Quiz.png',
+  'EA Sports FC 25': '/assets/culturalAssets/CulturalEventsPoster/FC25.jpg',
+  'Clash Royale': '/assets/culturalAssets/CulturalEventsPoster/clash royale.png',
+  'COD Mobile': '/assets/culturalAssets/CulturalEventsPoster/CODM.jpg',
+  BGMI: '/assets/culturalAssets/CulturalEventsPoster/BGMI.png',
+  Valorant: '/assets/culturalAssets/CulturalEventsPoster/VALORANT.jpg',
+};
+
+export function getDesktopPosterImg(event: CultureEvent): string {
+  return EVENT_POSTER_BY_TITLE[event.title] ?? event.placeholderImg;
+}
+
 export const cultureData: CultureEvent[] = [
   {
     id: 'solo-classical-dance',

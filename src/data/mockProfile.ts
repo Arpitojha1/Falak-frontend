@@ -18,7 +18,7 @@ export interface Pass {
 export interface Profile {
   name: string;
   email: string;
-  stampVariation: 'A' | 'B' | 'C' | null;
+  stampVariation: string | null;
   registrations: Registration[];
   passes: Pass[];
 }

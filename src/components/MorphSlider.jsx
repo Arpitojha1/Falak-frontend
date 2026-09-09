@@ -8,7 +8,7 @@ const TRANSITIONS = { melt: 0, ripple: 1, shear: 2, swirl: 3 };
 
 const DEFAULT_ITEMS = [
   {
-    image: 'https://images.unsplash.com/photo-1782977389500-dd7adad33ebe?q=80&w=1600&auto=format&fit=crop',
+    image: 'public/assets/Landing/Pranav/pranavSharma2.jpeg',
     caption: 'One'
   },
   {
@@ -311,7 +311,7 @@ class MorphEngine {
           this.program.uniforms.uCurrentSize.value = this.sizes[index];
         }
       };
-      img.onerror = () => {};
+      img.onerror = () => { };
     });
   }
 
@@ -583,7 +583,7 @@ export default function MorphSlider({
       if (active && el.setPointerCapture) {
         try {
           el.setPointerCapture(e.pointerId);
-        } catch {}
+        } catch { }
       }
     };
     const onMove = e => {

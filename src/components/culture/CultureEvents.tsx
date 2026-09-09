@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { cultureData } from './cultureData';
 import { EventCard } from './EventCard';
+import { StampBurst } from './StampBurst';
 
 export const CULTURAL_CATEGORIES = [
   'Dance',
@@ -135,11 +136,8 @@ export function CultureEvents() {
           <div className="flex-1 h-px bg-aurora-violet/20" />
         </div>
 
-        {/* ── Category Filter Toggles ── */}
-        <div
-          className="flex items-center justify-start md:justify-center gap-2 md:gap-3 overflow-x-auto pb-2 pt-8 scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
+        {/* ── Category Filter Toggles (Wrapped, No horizontal scroll) ── */}
+        <div className="flex items-center justify-center flex-wrap gap-2 md:gap-3 pt-6 md:pt-8">
           {CULTURAL_CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat;
             const count = categoryCounts[cat] ?? 0;
@@ -149,7 +147,7 @@ export function CultureEvents() {
                 type="button"
                 onClick={() => handleCategoryChange(cat)}
                 className={`
-                  group relative flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full
+                  group relative flex-shrink-0 inline-flex items-center gap-2 px-3.5 xs:px-4 md:px-5 py-2 rounded-full
                   font-sans text-xs md:text-sm font-semibold uppercase tracking-[0.14em]
                   transition-all duration-300 cursor-pointer select-none
                   ${
@@ -179,17 +177,114 @@ export function CultureEvents() {
         </div>
       </div>
 
-      {/* ── Stamp Sheet Grid ── */}
-      {/* Standard CSS Grid — no GSAP, no Flip, no Masonry import */}
-      <div className="max-w-7xl mx-auto relative z-10">
+      {/* ── MOBILE LAYOUT (md:hidden) — Clean vertical feed, NO desktop FLIP/dimming interaction, NO horizontal scrolling ── */}
+      <div className="flex flex-col gap-6 max-w-md mx-auto w-full md:hidden relative z-10">
+        {filteredEvents.map((event) => (
+          <div
+            key={event.id}
+            className="relative w-full aspect-[3/4.2] min-h-[500px] rounded-sm overflow-hidden shadow-2xl"
+          >
+            {/* Background stamp asset */}
+            <img
+              src="/assets/culturalAssets/stamp-card-portrait.jpg"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none"
+            />
+
+            {/* Top Jaali Header: Category & Denomination */}
+            <div
+              className="absolute left-0 right-0 flex items-center justify-between px-5 pointer-events-none"
+              style={{ top: '4%', height: '14%' }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-soft-lilac bg-deep-plum/85 px-2.5 py-1 rounded border border-aurora-violet/30 font-semibold shadow-sm">
+                  {event.category}
+                </span>
+                <span className="font-fraunces italic text-deep-plum/60 text-xs font-semibold">
+                  {event.denomination}
+                </span>
+              </div>
+            </div>
+
+            {/* Middle Parchment Content Zone */}
+            <div
+              className="absolute left-0 right-0 flex flex-col items-center justify-center text-center px-6 py-2"
+              style={{ top: '24%', height: '52%' }}
+            >
+              <h3 className="font-accent font-extrabold text-deep-plum leading-tight text-xl xs:text-2xl line-clamp-2">
+                {event.title}
+              </h3>
+              <p className="font-baloo-devanagari font-bold text-aurora-violet text-sm xs:text-base mt-0.5 leading-none">
+                {event.devanagari}
+              </p>
+
+              <div className="w-14 h-px bg-deep-plum/15 my-2" />
+
+              <p className="font-sans text-deep-plum/70 text-xs xs:text-[13px] leading-relaxed line-clamp-3 xs:line-clamp-4 max-w-xs px-2">
+                {event.description}
+              </p>
+
+              {/* 3 Clean, legible micro-chips */}
+              <div className="grid grid-cols-3 gap-1.5 xs:gap-2 w-full max-w-xs mt-2.5">
+                <div className="flex flex-col items-center justify-center py-1.5 px-1 rounded bg-deep-plum/[0.04] border border-deep-plum/10 text-center">
+                  <span className="font-sans text-[7px] xs:text-[8px] uppercase tracking-wider text-deep-plum/50 font-semibold">Date & Time</span>
+                  <span className="font-accent font-bold text-deep-plum text-[10px] xs:text-[11px] leading-tight mt-0.5">{event.date}</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1.5 px-1 rounded bg-deep-plum/[0.04] border border-deep-plum/10 text-center">
+                  <span className="font-sans text-[7px] xs:text-[8px] uppercase tracking-wider text-deep-plum/50 font-semibold">Venue</span>
+                  <span className="font-accent font-bold text-deep-plum text-[10px] xs:text-[11px] leading-tight mt-0.5">{event.venue}</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1.5 px-1 rounded bg-deep-plum/[0.04] border border-deep-plum/10 text-center">
+                  <span className="font-sans text-[7px] xs:text-[8px] uppercase tracking-wider text-deep-plum/50 font-semibold">Format</span>
+                  <span className="font-accent font-bold text-deep-plum text-[10px] xs:text-[11px] leading-tight mt-0.5">{event.format}</span>
+                </div>
+              </div>
+
+              {event.rulesLink && (
+                <a
+                  href={event.rulesLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-accent font-bold text-[11px] uppercase tracking-wider text-aurora-violet hover:text-deep-plum transition-colors underline-offset-2 hover:underline mt-2 block"
+                >
+                  Rulebook & Guidelines →
+                </a>
+              )}
+            </div>
+
+            {/* Bottom Dark Banner: CTA cleanly housed in dark container */}
+            <div
+              className="absolute left-0 right-0 flex items-center justify-center px-6"
+              style={{ top: '78%', height: '18%' }}
+            >
+              <StampBurst>
+                <button
+                  type="button"
+                  className="
+                    w-full max-w-[220px] py-2.5 px-6
+                    bg-aurora-violet hover:bg-soft-lilac text-midnight-indigo
+                    font-accent font-bold text-xs xs:text-sm uppercase tracking-[0.18em]
+                    rounded shadow-[0_4px_16px_rgba(138,92,255,0.4)]
+                    border border-champagne-pearl/30
+                    transition-all duration-200 active:scale-95 cursor-pointer text-center
+                  "
+                >
+                  REGISTER NOW
+                </button>
+              </StampBurst>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── DESKTOP LAYOUT (hidden md:block) — Stamp Sheet Grid with FLIP expand ── */}
+      <div className="max-w-7xl mx-auto relative z-10 hidden md:block">
         <AnimatePresence mode="sync">
           {expandedId ? (
             /* Expanded state — show expanded card full-width + rest dimmed below */
             <div className="space-y-6">
-              {/* Expanded card — spans full width.
-                  key={expandedId} matches key={event.id} in the collapsed grid so Framer
-                  Motion can track the layoutId across the DOM position change.
-                  No wrapping motion.div — EventCard's internal layoutId on the PNG handles the FLIP. */}
               {(() => {
                 const event = cultureData.find((e) => e.id === expandedId);
                 return event ? (

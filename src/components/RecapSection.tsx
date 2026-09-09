@@ -6,7 +6,7 @@ const CAROUSEL_SLIDES = [
   {
     id: '01',
     year: '2025',
-    title: 'Neon Garba Nights',
+    title: 'Stand Up Comedy',
     category: 'Events',
     image: '/assets/Landing/Pranav/pranavSharma2.jpeg',
     alt: 'Falak 2025 Events — live performance'
@@ -14,7 +14,7 @@ const CAROUSEL_SLIDES = [
   {
     id: '02',
     year: '2025',
-    title: 'Midnight Gully Cricket',
+    title: 'Football',
     category: 'Sports',
     image: '/assets/Landing/FootballRef.JPG',
     alt: 'Falak 2025 Sports action shot'
@@ -22,7 +22,7 @@ const CAROUSEL_SLIDES = [
   {
     id: '03',
     year: '2025',
-    title: 'Sufi Echoes',
+    title: 'Dance',
     category: 'Culture',
     image: '/assets/Landing/CulturalRefrence.JPG',
     alt: 'Falak 2025 Cultural performance'
@@ -174,71 +174,71 @@ export function RecapSection() {
               }}></div>
 
               {/* Centered Artwork with MorphSlider */}
-            <div className="relative w-full h-full overflow-hidden group z-10">
-              <div className="absolute inset-0 z-0 grayscale-[20%] contrast-110 brightness-90 transition-all duration-700">
-                <MorphSlider
-                  items={SLIDER_ITEMS}
-                  transition="melt"
-                  intensity={0.65}
-                  aberration={0.5}
-                  drift={0.4}
-                  autoplay={false}
-                  showCaptions={false}
-                  showControls={true}
-                  showIndicators={true}
-                  overlayColor="#0B0F2B"
-                  onIndexChange={setActiveIndex}
-                />
-              </div>
+              <div className="relative w-full h-full overflow-hidden group z-10">
+                <div className="absolute inset-0 z-0 grayscale-[20%] contrast-110 brightness-90 transition-all duration-700">
+                  <MorphSlider
+                    items={SLIDER_ITEMS}
+                    transition="melt"
+                    intensity={0.65}
+                    aberration={0.5}
+                    drift={0.4}
+                    autoplay={false}
+                    showCaptions={false}
+                    showControls={true}
+                    showIndicators={true}
+                    overlayColor="#0B0F2B"
+                    onIndexChange={setActiveIndex}
+                  />
+                </div>
 
-              {/* Subtle Jaali (Latticework) Screen overlay over the slider image */}
-              <div className="absolute inset-0 pointer-events-none z-12 mix-blend-overlay opacity-20">
-                <svg className="w-full h-full text-silver" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <rect width="100%" height="100%" fill="url(#card-jaali-lattice)" />
-                </svg>
-              </div>
+                {/* Subtle Jaali (Latticework) Screen overlay over the slider image */}
+                <div className="absolute inset-0 pointer-events-none z-12 mix-blend-overlay opacity-20">
+                  <svg className="w-full h-full text-silver" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect width="100%" height="100%" fill="url(#card-jaali-lattice)" />
+                  </svg>
+                </div>
 
-              {/* Heavy Grain overlay on the slider */}
-              <div className="absolute inset-0 mix-blend-overlay z-15 pointer-events-none opacity-30"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'1.5\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}>
-              </div>
+                {/* Heavy Grain overlay on the slider */}
+                <div className="absolute inset-0 mix-blend-overlay z-15 pointer-events-none opacity-30"
+                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'1.5\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}>
+                </div>
 
-              {/* Bottom Gradient for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight-indigo/90 via-midnight-indigo/20 to-transparent pointer-events-none z-10"></div>
+                {/* Bottom Gradient for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-midnight-indigo/90 via-midnight-indigo/20 to-transparent pointer-events-none z-10"></div>
 
-              <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 z-20 pointer-events-none flex flex-col justify-end h-full">
-                {/* Slide counter: data label — Space Mono */}
-                <motion.span
-                  key={`id-${activeSlide.id}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="font-mono text-silver/70 text-sm md:text-base mb-2 block"
-                >
-                  {activeSlide.id} / 03
-                </motion.span>
-                {/*
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 z-20 pointer-events-none flex flex-col justify-end h-full">
+                  {/* Slide counter: data label — Space Mono */}
+                  <motion.span
+                    key={`id-${activeSlide.id}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="font-mono text-silver/70 text-sm md:text-base mb-2 block"
+                  >
+                    {activeSlide.id} / 03
+                  </motion.span>
+                  {/*
                   Event title: role-aware headline.
                   Sports / Esports category → Anton (--font-headline-sports)
                   Culture / Music / other  → Baloo 2 (--font-headline-culture)
                 */}
-                <motion.h3
-                  key={`title-${activeSlide.title}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className={`text-4xl md:text-6xl text-silver leading-tight drop-shadow-lg ${activeSlide.category === 'Sports' || activeSlide.category === 'Esports'
-                    ? 'font-display uppercase'
-                    : 'font-accent'
-                    }`}
-                >
-                  {activeSlide.title}
-                </motion.h3>
+                  <motion.h3
+                    key={`title-${activeSlide.title}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    className={`text-4xl md:text-6xl text-silver leading-tight drop-shadow-lg ${activeSlide.category === 'Sports' || activeSlide.category === 'Esports'
+                      ? 'font-display uppercase'
+                      : 'font-accent'
+                      }`}
+                  >
+                    {activeSlide.title}
+                  </motion.h3>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
         {/* Decorative divider */}
         <div className="mt-24 md:mt-32 flex justify-center opacity-30">

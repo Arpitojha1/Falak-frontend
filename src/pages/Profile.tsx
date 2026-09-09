@@ -6,7 +6,7 @@ import { Scan, CheckCircle2, AlertCircle, Clock3 } from 'lucide-react';
 const StatusBadge = ({ status }: { status: 'paid' | 'pending' | 'failed' }) => {
   const isPaid = status === 'paid';
   const isPending = status === 'pending';
-  
+
   return (
     <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${isPaid ? 'border-silver' : isPending ? 'border-silver/60' : 'border-silver/40'} text-[10px] sm:text-xs font-mono font-medium text-silver backdrop-blur-sm bg-midnight-indigo/40`}>
       {isPaid ? <CheckCircle2 size={12} /> : isPending ? <Clock3 size={12} /> : <AlertCircle size={12} />}
@@ -20,6 +20,11 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
   const isSports = event.track.toLowerCase() === 'sports';
 
   // Desktop (landscape): crossfade between base + track-specific art — unchanged
+  const AVATAR_OPTIONS = [
+    '/assets/profile/Neon%20Violet%20Anime%20Icon.png',
+    '/assets/profile/Joyful%20Retro%20Singer%20Avatar.png',
+    '/assets/profile/Elegant%20Purple%20Indian%20Portrait%20Emblem.png'
+  ];
   const desktopBaseAsset = '/assets/Landing/ticketsBase.png';
   const desktopHoverAsset = isCultural
     ? '/assets/culturalAssets/CulturalTicketsBase.png'
@@ -62,11 +67,10 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
           style={{ top: '3%', height: '12%' }}
         >
           <span
-            className={`font-mono uppercase tracking-widest text-[9px] font-semibold px-2.5 py-0.5 rounded-sm ${
-              isSports
-                ? 'text-midnight-indigo bg-electric-orange/80'
-                : 'text-champagne-pearl bg-aurora-violet/50'
-            }`}
+            className={`font-mono uppercase tracking-widest text-[9px] font-semibold px-2.5 py-0.5 rounded-sm ${isSports
+              ? 'text-midnight-indigo bg-electric-orange/80'
+              : 'text-champagne-pearl bg-aurora-violet/50'
+              }`}
           >
             {event.track} Track
           </span>
@@ -81,9 +85,8 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
           style={{ top: '15%', height: '55%' }}
         >
           <h3
-            className={`font-sans font-bold text-center leading-snug ${
-              isSports ? 'text-midnight-indigo' : 'text-deep-plum'
-            }`}
+            className={`font-sans font-bold text-center leading-snug ${isSports ? 'text-midnight-indigo' : 'text-deep-plum'
+              }`}
             style={{ fontSize: 'clamp(0.85rem, 5vw, 1.15rem)' }}
           >
             {event.eventName}
@@ -92,24 +95,21 @@ const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
             className={`w-8 h-px ${isSports ? 'bg-midnight-indigo/30' : 'bg-aurora-violet/35'}`}
           />
           <p
-            className={`font-sans text-[11px] text-center leading-snug ${
-              isSports ? 'text-midnight-indigo/70' : 'text-deep-plum/70'
-            }`}
+            className={`font-sans text-[11px] text-center leading-snug ${isSports ? 'text-midnight-indigo/70' : 'text-deep-plum/70'
+              }`}
           >
             {event.venue}
           </p>
           <p
-            className={`font-mono text-[10px] uppercase tracking-wider ${
-              isSports ? 'text-midnight-indigo/55' : 'text-aurora-violet/80'
-            }`}
+            className={`font-mono text-[10px] uppercase tracking-wider ${isSports ? 'text-midnight-indigo/55' : 'text-aurora-violet/80'
+              }`}
           >
             {event.date}
           </p>
           {event.teamMembers && event.teamMembers.length > 0 && (
             <p
-              className={`font-mono text-[9px] uppercase tracking-wider ${
-                isSports ? 'text-midnight-indigo/45' : 'text-deep-plum/45'
-              }`}
+              className={`font-mono text-[9px] uppercase tracking-wider ${isSports ? 'text-midnight-indigo/45' : 'text-deep-plum/45'
+                }`}
             >
               Team · {event.teamMembers.length} members
             </p>
@@ -282,6 +282,12 @@ const ProfilePassCard: React.FC<{ pass: Pass }> = ({ pass }) => {
   );
 };
 
+const AVATAR_OPTIONS = [
+  '/assets/profile/Neon%20Violet%20Anime%20Icon.png',
+  '/assets/profile/Joyful%20Retro%20Singer%20Avatar.png',
+  '/assets/profile/Elegant%20Purple%20Indian%20Portrait%20Emblem.png'
+];
+
 export function Profile() {
   const [profile, setProfile] = useState(mockProfileData);
   const [showStampSelector, setShowStampSelector] = useState(false);
@@ -289,20 +295,19 @@ export function Profile() {
   // Sync initial avatar from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('falak_avatar');
-    if (saved && ['A', 'B', 'C'].includes(saved)) {
+    if (saved && AVATAR_OPTIONS.includes(saved)) {
       setProfile(prev => ({ ...prev, stampVariation: saved as any }));
     } else {
-      // Set default 'A' if not present
       if (!saved) {
-        localStorage.setItem('falak_avatar', 'A');
+        localStorage.setItem('falak_avatar', AVATAR_OPTIONS[0]);
         window.dispatchEvent(new Event('falak_avatar_changed'));
       }
-      setProfile(prev => ({ ...prev, stampVariation: 'A' }));
+      setProfile(prev => ({ ...prev, stampVariation: AVATAR_OPTIONS[0] as any }));
     }
   }, []);
 
-  const handleStampSelect = (variation: 'A' | 'B' | 'C') => {
-    setProfile(prev => ({ ...prev, stampVariation: variation }));
+  const handleStampSelect = (variation: string) => {
+    setProfile(prev => ({ ...prev, stampVariation: variation as any }));
     localStorage.setItem('falak_avatar', variation);
     window.dispatchEvent(new Event('falak_avatar_changed'));
     setShowStampSelector(false);
@@ -310,13 +315,13 @@ export function Profile() {
 
   return (
     <div className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 flex justify-center">
-      
+
       {/* BACKGROUND - Full page, absolute to avoid mobile viewport fixed-position bugs */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <img 
-          src="/assets/Landing/BackgroundProfile.png" 
-          alt="Background" 
-          className="w-full h-full object-cover" 
+        <img
+          src="/assets/Landing/BackgroundProfile.png"
+          alt="Background"
+          className="w-full h-full object-cover"
         />
         {/* Soft overlay gradient to ensure text legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-deep-plum/60 via-deep-plum/40 to-deep-plum/90" />
@@ -324,30 +329,29 @@ export function Profile() {
 
       {/* Layout Container: Stacked on mobile, 2-column on desktop */}
       <div className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 lg:gap-12 items-start mt-8">
-        
+
         {/* LEFT COLUMN - Identity Card */}
         <div className="w-full md:w-[320px] lg:w-[360px] shrink-0 md:sticky top-32">
           <div className="relative bg-deep-plum/80 border border-silver/20 rounded-xl p-8 backdrop-blur-md flex flex-col items-center text-center overflow-hidden">
-            
+
             {/* Stamp Starburst/Glow from existing touchpoints */}
-            <div 
+            <div
               className="absolute top-16 left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full blur-[50px] pointer-events-none z-0"
               style={{ backgroundColor: '#FF3D7F', opacity: 0.12 }}
             />
 
             <div className="relative z-10 w-full mb-8">
               {/* Active Stamp */}
-              <div className="mx-auto relative w-32 h-32 rounded-full flex items-center justify-center bg-deep-plum border-[1.5px] border-silver shadow-[0_0_15px_rgba(255,61,127,0.15)] group"
-                   style={{ maskImage: `radial-gradient(circle at 4px 4px, transparent 2px, black 2.5px)`, maskSize: '8px 8px', maskPosition: '-4px -4px' }}>
-                  <div className="absolute inset-0 rounded-full border border-silver opacity-30"></div>
-                  <span className="font-display text-silver text-4xl">{profile.stampVariation}</span>
+              <div className="mx-auto relative w-32 h-32 rounded-full flex items-center justify-center bg-deep-plum border-[1.5px] border-silver shadow-[0_0_15px_rgba(255,61,127,0.15)] group overflow-hidden">
+                <div className="absolute inset-0 rounded-full border border-silver opacity-30 z-10 pointer-events-none"></div>
+                <img src={profile.stampVariation} alt="Profile Avatar" className="w-full h-full object-cover" />
               </div>
-              
-              <button 
-                 className="mt-6 text-xs font-mono uppercase tracking-widest text-aurora-violet hover:text-soft-lilac transition-colors px-4 py-1.5 border border-aurora-violet/30 rounded-full hover:bg-aurora-violet/10 cursor-pointer"
-                 onClick={() => setShowStampSelector(!showStampSelector)}
+
+              <button
+                className="mt-6 text-xs font-mono uppercase tracking-widest text-aurora-violet hover:text-soft-lilac transition-colors px-4 py-1.5 border border-aurora-violet/30 rounded-full hover:bg-aurora-violet/10 cursor-pointer"
+                onClick={() => setShowStampSelector(!showStampSelector)}
               >
-                 Change Avatar
+                Change Avatar
               </button>
 
               {/* Selector Expansion */}
@@ -359,17 +363,15 @@ export function Profile() {
                     exit={{ opacity: 0, height: 0, marginTop: 0 }}
                     className="flex justify-center gap-4 overflow-hidden"
                   >
-                    {(['A', 'B', 'C'] as const).map((variation) => {
+                    {AVATAR_OPTIONS.map((variation, idx) => {
                       const isSelected = profile.stampVariation === variation;
                       return (
                         <button
-                          key={variation}
+                          key={idx}
                           onClick={() => handleStampSelect(variation)}
-                          className={`relative w-12 h-12 rounded-full flex items-center justify-center font-display text-lg transition-colors cursor-pointer ${
-                            isSelected ? 'bg-silver text-deep-plum' : 'bg-deep-plum/80 border border-silver/40 text-silver hover:border-silver'
-                          }`}
+                          className={`relative w-12 h-12 rounded-full flex items-center justify-center transition-colors cursor-pointer overflow-hidden ${isSelected ? 'ring-2 ring-silver' : 'ring-1 ring-silver/40 hover:ring-silver'}`}
                         >
-                          {variation}
+                          <img src={variation} alt={`Avatar option ${idx + 1}`} className="w-full h-full object-cover" />
                         </button>
                       );
                     })}
@@ -388,7 +390,7 @@ export function Profile() {
 
         {/* RIGHT COLUMN - Holdings */}
         <div className="flex-1 min-w-0 flex flex-col gap-12">
-          
+
           {/* TICKETS SECTION */}
           <section>
             <h2 className="font-display text-xl text-silver uppercase tracking-widest mb-6 border-b border-silver/10 pb-4">
