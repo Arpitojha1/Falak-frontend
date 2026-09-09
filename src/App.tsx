@@ -16,10 +16,16 @@ const Profile = lazy(() => import('./pages/Profile').then(module => ({ default: 
 const SportsPage = lazy(() => import('./pages/Sports').then(module => ({ default: module.SportsPage })));
 const CulturePage = lazy(() => import('./pages/Culture').then(module => ({ default: module.CulturePage })));
 const Passes = lazy(() => import('./pages/Passes').then(module => ({ default: module.Passes })));
+const PassesPreview = lazy(() => import('./pages/PassesPreview').then(module => ({ default: module.PassesPreview })));
+const Register = lazy(() => import('./pages/Register').then(module => ({ default: module.Register })));
 
 function MainLayout() {
+  const location = useLocation();
+  const isSports = location.pathname.startsWith('/sports');
+  const isCulture = location.pathname.startsWith('/cultural');
+
   return (
-    <div className="flex flex-col min-h-screen bg-midnight-indigo selection:bg-convergence-magenta selection:text-white">
+    <div className={`flex flex-col min-h-screen bg-midnight-indigo ${isSports ? 'selection:bg-electric-orange selection:text-midnight-indigo' : isCulture ? 'selection:bg-aurora-violet selection:text-white' : 'selection:bg-convergence-magenta selection:text-white'}`}>
       <div className="flex-1 pb-16 md:pb-0">
         <Outlet />
       </div>
@@ -66,10 +72,15 @@ function AnimatedRoutes() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
                   <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
+                  {/* Track routes inside the controller so the overlay + swipe listeners
+                      are mounted when the user is on /sports or /cultural — enabling
+                      bidirectional wipe (not just outbound from /) */}
+                  <Route path="/sports" element={<SportsPage />} />
+                  <Route path="/cultural" element={<CulturePage />} />
                 </Route>
                 <Route path="/passes" element={<Passes />} />
-                <Route path="/sports" element={<SportsPage />} />
-                <Route path="/cultural" element={<CulturePage />} />
+                <Route path="/passes-preview" element={<PassesPreview />} />
+                <Route path="/register" element={<Register />} />
               </Route>
             </Routes>
           </Suspense>
