@@ -588,7 +588,7 @@ export const cultureData: CultureEvent[] = [
     participationType: 'Not specified',
     eligibility: 'Not specified',
     registrationDeadline: 'Not specified',
-    _note: 'Ambiguous — BGMI description explicitly says "at FALAK 2025", inconsistent with FALAK \\'26 branding.',
+    _note: 'Ambiguous — BGMI description explicitly says "at FALAK 2025", inconsistent with FALAK \'26 branding.',
   },
   {
     id: 'valorant',
