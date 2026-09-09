@@ -59,7 +59,7 @@ export const sportsData: SportsEvent[] = [
     registrationDeadline: 'Not specified',
   },
   {
-    id: 'cricket',
+    id: 'box-cricket',
     title: 'CRICKET',
     iconName: 'Flame',
     teaser: 'A white-ball league-to-knockout cricket tournament with escalating over-counts.',
@@ -76,7 +76,7 @@ export const sportsData: SportsEvent[] = [
     participationType: 'Team',
     eligibility: 'Undergraduate students only; age ≤25',
     registrationDeadline: 'Not specified',
-    _note: 'Ambiguous — Only a Men\'s table is given. Requires verification if Women\'s was omitted. Changed slug from box-cricket to cricket to match master file.',
+    _note: 'Ambiguous — Only a Men\'s table is given. Requires verification if Women\'s was omitted. Slug mismatch: retained existing slug \"box-cricket\" instead of master file \"cricket\".',
   },
   {
     id: 'badminton',

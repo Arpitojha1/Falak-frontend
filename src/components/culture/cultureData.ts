@@ -329,7 +329,7 @@ export const cultureData: CultureEvent[] = [
     registrationDeadline: 'Not specified',
   },
   {
-    id: 'fashion-show',
+    id: 'fashion',
     title: 'Fashion Show',
     devanagari: 'फैशन शो',
     category: 'Lifestyle',
@@ -347,6 +347,7 @@ export const cultureData: CultureEvent[] = [
     participationType: 'Not specified',
     eligibility: 'Not specified',
     registrationDeadline: 'Not specified',
+    _note: 'Slug mismatch: retained existing slug \"fashion\" instead of master file \"fashion-show\".',
   },
   {
     id: 'treasure-hunt',
