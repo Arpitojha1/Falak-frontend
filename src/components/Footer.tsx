@@ -89,8 +89,8 @@ export function Footer() {
                           width: item.id === 'passes' ? '240px' : '160px',
                           height: item.id === 'passes' ? '240px' : '160px',
                           opacity: isHovered ? 1 : 0,
-                          transform: isHovered ? 'translateY(-50%) translateX(0)' : 'translateY(-50%) translateX(40px)',
-                          zIndex: isHovered ? 50 : 0
+                          transform: isHovered ? 'translateY(-50%) translateX(-24px)' : 'translateY(-50%) translateX(16px)',
+                          zIndex: -1
                         }}
                       >
                         {item.id === 'passes' ? (
