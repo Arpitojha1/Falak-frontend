@@ -93,7 +93,7 @@ const RouteTransitionOverlay = forwardRef<RouteTransitionOverlayHandle>((_, ref)
 
   return createPortal(
     <div ref={containerRef} className="route-transition-overlay" aria-hidden="true">
-      {[0, 1, 2, 3].map(i => (
+      {[0, 1, 2, 3, 4, 5].map(i => (
         <div key={i} ref={el => setLayerRef(el, i)} className="route-transition-layer" />
       ))}
       <div ref={flashElRef} className="route-transition-flash" aria-hidden="true" />
