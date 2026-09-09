@@ -18,85 +18,267 @@ const StatusBadge = ({ status }: { status: 'paid' | 'pending' | 'failed' }) => {
 const ProfileEventCard: React.FC<{ event: Registration }> = ({ event }) => {
   const isCultural = event.track.toLowerCase() === 'cultural';
   const isSports = event.track.toLowerCase() === 'sports';
-  const hoverAsset = isCultural 
-    ? '/assets/culturalAssets/CulturalTicketsBase.png' 
-    : isSports 
-      ? '/assets/sportsAssets/SportsTicketsBase.png' 
+
+  // Desktop (landscape): crossfade between base + track-specific art — unchanged
+  const desktopBaseAsset = '/assets/Landing/ticketsBase.png';
+  const desktopHoverAsset = isCultural
+    ? '/assets/culturalAssets/CulturalTicketsBase.png'
+    : isSports
+      ? '/assets/sportsAssets/SportsTicketsBase.png'
       : '/assets/Landing/ticketsBase.png';
-                     
+
+  // Mobile (portrait): correctly proportioned 3:4 assets — object-cover, no letterbox
+  const mobileAsset = isCultural
+    ? '/assets/culturalAssets/cultural_ticket_portrait.jpg'
+    : isSports
+      ? '/assets/Landing/sports_ticket_portrait.jpg'
+      : '/assets/Landing/generic_ticket_portrait.jpg';
+
+  // Zone proportions per art brief: top-stub 15% | main-body 55% | qr-band 30%
+
   return (
-    <div className="relative w-[500px] sm:w-[600px] md:w-full md:max-w-[700px] aspect-[3/1] group focus-within:outline-none focus-visible:ring-2 focus-visible:ring-silver/50 rounded-lg shrink-0 mb-4 @container" tabIndex={0}>
-       {/* Background Images - Crossfade on hover/focus */}
-       <img 
-         src="/assets/Landing/ticketsBase.png" 
-         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ease-in-out group-hover:opacity-0 group-focus:opacity-0" 
-         alt="Ticket Base" 
-       />
-       
-       {hoverAsset !== '/assets/Landing/ticketsBase.png' && (
-         <img 
-           src={hoverAsset} 
-           className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100 group-focus:opacity-100" 
-           alt="Ticket Hover" 
-         />
-       )}
+    <>
+      {/* ── MOBILE portrait card (hidden md+) ──
+          3:4 container. Portrait art fills it with object-cover.
+          Content anchored to band percentages so it stays aligned
+          at any card width (320px, 375px, 414px). */}
+      <div
+        className="relative md:hidden w-full max-w-[300px] mx-auto mb-4 rounded-md overflow-hidden"
+        style={{ aspectRatio: '3 / 4' }}
+      >
+        {/* Portrait art — object-cover, correct proportion, no empty space */}
+        <img
+          src={mobileAsset}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+          draggable="false"
+        />
 
-       {/* Overlay Text Zones */}
-       
-       {/* Stub Number Zone: Left Side. Aligning to the '- - - -' area in the asset */}
-       <div className="absolute top-[20%] left-[3%] w-[20%] flex flex-col pointer-events-none pr-1">
-         <h3 className="font-sans font-bold text-champagne-pearl leading-[1.15]" style={{ fontFamily: 'Archivo, sans-serif', fontSize: '2.8cqw' }}>
-           {event.eventName}
-         </h3>
-         <span className="font-mono uppercase tracking-widest text-silver/70 mt-[1cqw]" style={{ fontSize: '1.2cqw' }}>
-           {event.track}
-         </span>
-       </div>
+        {/* TOP BAND: track label (top 0–15%)
+            Sits inside the header stub band of the art. */}
+        <div
+          className="absolute left-0 right-0 flex items-center justify-center pointer-events-none"
+          style={{ top: '3%', height: '12%' }}
+        >
+          <span
+            className={`font-mono uppercase tracking-widest text-[9px] font-semibold px-2.5 py-0.5 rounded-sm ${
+              isSports
+                ? 'text-midnight-indigo bg-electric-orange/80'
+                : 'text-champagne-pearl bg-aurora-violet/50'
+            }`}
+          >
+            {event.track} Track
+          </span>
+        </div>
 
-       {/* Date Zone: Top right corner stamp-disc zone */}
-       <div className="absolute top-[10%] right-[3%] w-[12%] aspect-square flex flex-col items-center justify-center pointer-events-none">
-         <span className="font-sans font-bold text-silver/90 text-center uppercase leading-tight" style={{ fontFamily: 'Archivo, sans-serif', fontSize: '2cqw' }}>
-            {event.date.split(' ').slice(0, 2).join('\n')}
-         </span>
-       </div>
-       
-       {/* Status badge - bottom right out of the way of the mascot arch */}
-       <div className="absolute bottom-[10%] right-[3%]">
+        {/* MIDDLE BAND: event name + venue + date (15%–70%)
+            Negative-space zone in the art — text sits over the open crackle/halftone surface.
+            ZONE CHECK: if realistic event name + venue overflows into bottom 30%,
+            stop and flag — do not shrink below 10px or truncate silently. */}
+        <div
+          className="absolute left-0 right-0 flex flex-col items-center justify-center gap-1.5 px-4 pointer-events-none"
+          style={{ top: '15%', height: '55%' }}
+        >
+          <h3
+            className={`font-sans font-bold text-center leading-snug ${
+              isSports ? 'text-midnight-indigo' : 'text-deep-plum'
+            }`}
+            style={{ fontSize: 'clamp(0.85rem, 5vw, 1.15rem)' }}
+          >
+            {event.eventName}
+          </h3>
+          <div
+            className={`w-8 h-px ${isSports ? 'bg-midnight-indigo/30' : 'bg-aurora-violet/35'}`}
+          />
+          <p
+            className={`font-sans text-[11px] text-center leading-snug ${
+              isSports ? 'text-midnight-indigo/70' : 'text-deep-plum/70'
+            }`}
+          >
+            {event.venue}
+          </p>
+          <p
+            className={`font-mono text-[10px] uppercase tracking-wider ${
+              isSports ? 'text-midnight-indigo/55' : 'text-aurora-violet/80'
+            }`}
+          >
+            {event.date}
+          </p>
+          {event.teamMembers && event.teamMembers.length > 0 && (
+            <p
+              className={`font-mono text-[9px] uppercase tracking-wider ${
+                isSports ? 'text-midnight-indigo/45' : 'text-deep-plum/45'
+              }`}
+            >
+              Team · {event.teamMembers.length} members
+            </p>
+          )}
+        </div>
+
+        {/* BOTTOM BAND: QR placeholder + status badge (70%–100%)
+            QR sized to ~55% of band height so the art's starburst/seal
+            decorative element (sports: 8-pt starburst; cultural: wax-seal circle)
+            remains visibly framed around the QR edges. */}
+        <div
+          className="absolute left-0 right-0 flex flex-col items-center justify-center gap-1.5"
+          style={{ top: '70%', height: '30%' }}
+        >
+          <div
+            className="border border-silver/40 rounded-sm bg-midnight-indigo/20 flex items-center justify-center relative"
+            style={{ width: '20%', aspectRatio: '1 / 1' }}
+            aria-label="QR code placeholder"
+          >
+            <div className="absolute inset-1 border border-silver/20 border-dashed rounded-sm" />
+            <Scan size={12} className="text-silver/50" />
+          </div>
           <StatusBadge status={event.paymentStatus} />
-       </div>
-    </div>
+        </div>
+      </div>
+
+      {/* ── DESKTOP landscape card (md+ only) — completely unchanged from original ── */}
+      <div
+        className="relative hidden md:block w-full max-w-[700px] aspect-[3/1] group focus-within:outline-none focus-visible:ring-2 focus-visible:ring-silver/50 rounded-lg shrink-0 mb-4 @container"
+        tabIndex={0}
+      >
+        {/* Background Images - Crossfade on hover/focus */}
+        <img
+          src={desktopBaseAsset}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ease-in-out group-hover:opacity-0 group-focus:opacity-0"
+          alt="Ticket Base"
+        />
+
+        {desktopHoverAsset !== desktopBaseAsset && (
+          <img
+            src={desktopHoverAsset}
+            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100 group-focus:opacity-100"
+            alt="Ticket Hover"
+          />
+        )}
+
+        {/* Overlay Text Zones */}
+
+        {/* Stub Number Zone: Left Side. Aligning to the '- - - -' area in the asset */}
+        <div className="absolute top-[20%] left-[3%] w-[20%] flex flex-col pointer-events-none pr-1">
+          <h3 className="font-sans font-bold text-champagne-pearl leading-[1.15]" style={{ fontFamily: 'Archivo, sans-serif', fontSize: '2.8cqw' }}>
+            {event.eventName}
+          </h3>
+          <span className="font-mono uppercase tracking-widest text-silver/70 mt-[1cqw]" style={{ fontSize: '1.2cqw' }}>
+            {event.track}
+          </span>
+        </div>
+
+        {/* Date Zone: Top right corner stamp-disc zone */}
+        <div className="absolute top-[10%] right-[3%] w-[12%] aspect-square flex flex-col items-center justify-center pointer-events-none">
+          <span className="font-sans font-bold text-silver/90 text-center uppercase leading-tight" style={{ fontFamily: 'Archivo, sans-serif', fontSize: '2cqw' }}>
+            {event.date.split(' ').slice(0, 2).join('\n')}
+          </span>
+        </div>
+
+        {/* Status badge - bottom right out of the way of the mascot arch */}
+        <div className="absolute bottom-[10%] right-[3%]">
+          <StatusBadge status={event.paymentStatus} />
+        </div>
+      </div>
+    </>
   );
 };
 
 const ProfilePassCard: React.FC<{ pass: Pass }> = ({ pass }) => {
+  // Passes are always generic (not track-specific) — use the generic portrait asset
+  // which carries the Culture palette + single Magenta starburst per /profile rules.
+  const mobileAsset = '/assets/Landing/generic_ticket_portrait.jpg';
+
   return (
-    <div className="relative w-[500px] sm:w-[600px] md:w-full md:max-w-[700px] rounded-md border border-silver/20 bg-deep-plum/40 overflow-hidden backdrop-blur-sm p-5 flex items-start gap-4 sm:gap-6 group mb-4">
-      {/* QR Notch language on right edge */}
-      <div className="absolute right-0 top-0 bottom-0 w-8 flex flex-col justify-between py-3 pr-3 opacity-30 group-hover:opacity-60 transition-opacity">
-        <div className="w-3 h-3 border-t-2 border-r-2 border-silver self-end"></div>
-        <div className="w-3 h-3 border-b-2 border-r-2 border-silver self-end"></div>
-      </div>
+    <>
+      {/* ── MOBILE portrait pass card (hidden md+) ──
+          generic_ticket_portrait.jpg has a centered Magenta starburst in the
+          bottom 30% with an open circle interior. QR is sized to ~55% of band height
+          so starburst spike tips remain visible around the QR edges. */}
+      <div
+        className="relative md:hidden w-full max-w-[300px] mx-auto mb-4 rounded-md overflow-hidden"
+        style={{ aspectRatio: '3 / 4' }}
+      >
+        {/* Portrait art — object-cover, correct proportion, no empty space */}
+        <img
+          src={mobileAsset}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+          draggable="false"
+        />
 
-      {/* QR Placeholder Box */}
-      <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 border border-silver/40 rounded bg-midnight-indigo/60 flex items-center justify-center p-2 relative">
-        <div className="absolute inset-1 border border-silver/20 border-dashed rounded-sm"></div>
-        <Scan size={24} className="text-silver/40" />
-      </div>
-
-      <div className="flex-1 flex flex-col justify-between min-h-[64px] sm:min-h-[80px] py-1">
-        <div>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-silver/60">
-            Falak '26 Pass
+        {/* TOP BAND: pass label (top 0–15%) */}
+        <div
+          className="absolute left-0 right-0 flex items-center justify-center pointer-events-none"
+          style={{ top: '3%', height: '12%' }}
+        >
+          <span className="font-mono uppercase tracking-widest text-[9px] font-semibold text-champagne-pearl bg-aurora-violet/50 px-2.5 py-0.5 rounded-sm">
+            Falak &apos;26 Pass
           </span>
-          <h3 className="font-sans font-bold text-soft-lilac text-sm sm:text-base leading-tight mt-1 mb-3 pr-6">
+        </div>
+
+        {/* MIDDLE BAND: pass name + status (15%–70%) */}
+        <div
+          className="absolute left-0 right-0 flex flex-col items-center justify-center gap-2 px-4 pointer-events-none"
+          style={{ top: '15%', height: '55%' }}
+        >
+          <h3
+            className="font-sans font-bold text-deep-plum text-center leading-snug"
+            style={{ fontSize: 'clamp(0.85rem, 5vw, 1.15rem)' }}
+          >
             {pass.passName}
           </h3>
-        </div>
-        <div>
+          <div className="w-8 h-px bg-aurora-violet/35" />
           <StatusBadge status={pass.paymentStatus} />
         </div>
+
+        {/* BOTTOM BAND: QR placeholder inside the Magenta starburst open circle (70%–100%)
+            Width ~22% of card = ~66px at 300px card width — starburst points visible at edges. */}
+        <div
+          className="absolute left-0 right-0 flex items-center justify-center"
+          style={{ top: '70%', height: '30%' }}
+        >
+          <div
+            className="border border-silver/40 rounded-sm bg-midnight-indigo/25 flex items-center justify-center relative"
+            style={{ width: '22%', aspectRatio: '1 / 1' }}
+            aria-label="QR code placeholder"
+          >
+            <div className="absolute inset-1 border border-silver/20 border-dashed rounded-sm" />
+            <Scan size={12} className="text-silver/40" />
+          </div>
+        </div>
       </div>
-    </div>
+
+      {/* ── DESKTOP plain card (md+ only) — completely unchanged from original ── */}
+      <div className="relative hidden md:flex w-full max-w-[700px] rounded-md border border-silver/20 bg-deep-plum/40 overflow-hidden backdrop-blur-sm p-5 items-start gap-4 sm:gap-6 group mb-4">
+        {/* QR Notch language on right edge */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 flex flex-col justify-between py-3 pr-3 opacity-30 group-hover:opacity-60 transition-opacity">
+          <div className="w-3 h-3 border-t-2 border-r-2 border-silver self-end"></div>
+          <div className="w-3 h-3 border-b-2 border-r-2 border-silver self-end"></div>
+        </div>
+
+        {/* QR Placeholder Box */}
+        <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 border border-silver/40 rounded bg-midnight-indigo/60 flex items-center justify-center p-2 relative">
+          <div className="absolute inset-1 border border-silver/20 border-dashed rounded-sm"></div>
+          <Scan size={24} className="text-silver/40" />
+        </div>
+
+        <div className="flex-1 flex flex-col justify-between min-h-[64px] sm:min-h-[80px] py-1">
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-silver/60">
+              Falak &apos;26 Pass
+            </span>
+            <h3 className="font-sans font-bold text-soft-lilac text-sm sm:text-base leading-tight mt-1 mb-3 pr-6">
+              {pass.passName}
+            </h3>
+          </div>
+          <div>
+            <StatusBadge status={pass.paymentStatus} />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -213,16 +395,17 @@ export function Profile() {
               Registered Events
             </h2>
             {profile.registrations.length > 0 ? (
-              <div className="flex flex-col gap-6 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible hide-scrollbar">
-                <div className="flex flex-col gap-6 min-w-max md:min-w-0">
-                  {profile.registrations.map(reg => (
-                    <ProfileEventCard key={reg.id} event={reg} />
-                  ))}
-                </div>
+              {/* Mobile: simple vertical stack, no horizontal scroll needed (portrait cards stack) */}
+              {/* Desktop: flex-col, cards are md:block full-width — no horizontal scroll needed either */}
+              <div className="flex flex-col gap-6">
+                {profile.registrations.map(reg => (
+                  <ProfileEventCard key={reg.id} event={reg} />
+                ))}
               </div>
             ) : (
               <p className="text-silver/50 font-sans text-sm">No events registered yet.</p>
             )}
+
           </section>
 
           {/* PASSES SECTION */}
@@ -231,12 +414,10 @@ export function Profile() {
               Passes & Access
             </h2>
             {profile.passes.length > 0 ? (
-              <div className="flex flex-col gap-4 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible hide-scrollbar">
-                <div className="flex flex-col gap-4 min-w-max md:min-w-0">
-                  {profile.passes.map(pass => (
-                    <ProfilePassCard key={pass.id} pass={pass} />
-                  ))}
-                </div>
+              <div className="flex flex-col gap-4">
+                {profile.passes.map(pass => (
+                  <ProfilePassCard key={pass.id} pass={pass} />
+                ))}
               </div>
             ) : (
               <p className="text-silver/50 font-sans text-sm">No passes purchased yet.</p>
