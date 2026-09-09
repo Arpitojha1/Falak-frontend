@@ -1,11 +1,48 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { cultureData } from './cultureData';
 import { EventCard } from './EventCard';
 
+export const CULTURAL_CATEGORIES = [
+  'Dance',
+  'Music',
+  'Drama',
+  'Business',
+  'Lifestyle',
+  'Creative',
+  'Quiz',
+  'Esports',
+] as const;
+
+export type CulturalCategory = (typeof CULTURAL_CATEGORIES)[number];
+
 export function CultureEvents() {
+  const [selectedCategory, setSelectedCategory] = useState<CulturalCategory>('Dance');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const cat of CULTURAL_CATEGORIES) {
+      counts[cat] = cultureData.filter(
+        (e) => e.category.toLowerCase() === cat.toLowerCase()
+      ).length;
+    }
+    return counts;
+  }, []);
+
+  const filteredEvents = useMemo(() => {
+    return cultureData.filter(
+      (e) => e.category.toLowerCase() === selectedCategory.toLowerCase()
+    );
+  }, [selectedCategory]);
+
+  function handleCategoryChange(cat: CulturalCategory) {
+    if (selectedCategory === cat) return;
+    setExpandedId(null);
+    setActiveId(null);
+    setSelectedCategory(cat);
+  }
 
   function toggleEvent(id: string) {
     if (expandedId === id) {
@@ -97,6 +134,49 @@ export function CultureEvents() {
           </svg>
           <div className="flex-1 h-px bg-aurora-violet/20" />
         </div>
+
+        {/* ── Category Filter Toggles ── */}
+        <div
+          className="flex items-center justify-start md:justify-center gap-2 md:gap-3 overflow-x-auto pb-2 pt-8 scrollbar-hide"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {CULTURAL_CATEGORIES.map((cat) => {
+            const isSelected = selectedCategory === cat;
+            const count = categoryCounts[cat] ?? 0;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => handleCategoryChange(cat)}
+                className={`
+                  group relative flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full
+                  font-sans text-xs md:text-sm font-semibold uppercase tracking-[0.14em]
+                  transition-all duration-300 cursor-pointer select-none
+                  ${
+                    isSelected
+                      ? 'bg-aurora-violet text-midnight-indigo border border-champagne-pearl/70 shadow-[0_0_22px_rgba(138,92,255,0.45)] scale-105'
+                      : 'bg-deep-plum/60 text-soft-lilac/75 border border-aurora-violet/25 hover:border-aurora-violet/60 hover:text-champagne-pearl hover:bg-aurora-violet/15'
+                  }
+                `}
+                aria-pressed={isSelected}
+              >
+                <span>{cat}</span>
+                <span
+                  className={`
+                    text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-full leading-none transition-colors
+                    ${
+                      isSelected
+                        ? 'bg-midnight-indigo/20 text-midnight-indigo'
+                        : 'bg-aurora-violet/15 text-soft-lilac/60 group-hover:text-champagne-pearl'
+                    }
+                  `}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* ── Stamp Sheet Grid ── */}
@@ -124,9 +204,9 @@ export function CultureEvents() {
                 ) : null;
               })()}
 
-              {/* Remaining dimmed tiles in 3-column row below */}
+              {/* Remaining dimmed tiles in category row below */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-                {cultureData
+                {filteredEvents
                   .filter((e) => e.id !== expandedId)
                   .map((event) => (
                     <EventCard
@@ -141,9 +221,9 @@ export function CultureEvents() {
               </div>
             </div>
           ) : (
-            /* Collapsed state — full 3×2 stamp sheet grid */
+            /* Collapsed state — filtered category stamp sheet grid */
             <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-              {cultureData.map((event) => (
+              {filteredEvents.map((event) => (
                 <EventCard
                   key={event.id}
                   event={event}
