@@ -395,8 +395,6 @@ export function Profile() {
               Registered Events
             </h2>
             {profile.registrations.length > 0 ? (
-              {/* Mobile: simple vertical stack, no horizontal scroll needed (portrait cards stack) */}
-              {/* Desktop: flex-col, cards are md:block full-width — no horizontal scroll needed either */}
               <div className="flex flex-col gap-6">
                 {profile.registrations.map(reg => (
                   <ProfileEventCard key={reg.id} event={reg} />
@@ -405,6 +403,7 @@ export function Profile() {
             ) : (
               <p className="text-silver/50 font-sans text-sm">No events registered yet.</p>
             )}
+
 
           </section>
 
