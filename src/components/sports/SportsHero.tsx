@@ -15,24 +15,20 @@ export function SportsHero() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 h-full flex flex-col lg:flex-row items-center gap-12 lg:gap-0 mt-10">
         
         {/* Mascot Slot (Left on desktop, bottom on mobile visually but rendered first in DOM for tab order unless changed) */}
-        <div className="w-full lg:w-5/12 order-2 lg:order-1 relative group mt-16 lg:mt-0">
-          <div className="relative -rotate-3 transition-transform duration-300 group-hover:-rotate-1">
-             {/* Acid Lime Offset Shadow / Border */}
-             <div className="absolute inset-0 bg-acid-lime translate-x-4 translate-y-4 -z-10 border-4 border-midnight-indigo" />
-             
-             {/* TODO: Sports mascot asset goes here */}
-             <div className="aspect-[4/5] w-full max-w-md bg-silver border-4 border-midnight-indigo flex flex-col items-center justify-center p-8 shadow-2xl relative overflow-hidden">
-               {/* Masking tape effect */}
-               <div className="absolute -top-6 right-8 w-32 h-12 bg-silver/60 rotate-6 backdrop-blur-sm shadow-sm" />
-               <div className="absolute -bottom-6 left-8 w-32 h-12 bg-silver/60 -rotate-3 backdrop-blur-sm shadow-sm" />
-               
-               <h3 className="text-midnight-indigo font-headline-sports-section text-3xl uppercase text-center border-b-4 border-midnight-indigo pb-3">
-                 MASCOT ASSET
-               </h3>
-               <p className="font-label-sports text-midnight-indigo/70 mt-4 text-center text-lg leading-tight uppercase">
-                 Drop halftone player <br/> cutout here
-               </p>
-             </div>
+        <div className="w-full lg:w-5/12 order-2 lg:order-1 relative group mt-16 lg:mt-0 flex justify-center items-center">
+          {/* Container for the box and character. No overflow hidden. */}
+          <div className="relative flex justify-center items-center w-full max-w-sm mt-12">
+            
+            {/* The Box - Using Electric Orange as the solid fill, simple geometric rectangle */}
+            <div className="w-48 h-64 md:w-56 md:h-72 bg-electric-orange border-4 border-midnight-indigo shadow-[8px_8px_0_0_rgba(11,15,43,1)] rotate-3 transition-transform duration-300 group-hover:rotate-6"></div>
+            
+            {/* The Character - 2x box size, overlapping the box, no overflow hidden */}
+            <img 
+              src="/assets/sportsAssets/SportsCharacter.png" 
+              alt="ZUUM Sports Mascot" 
+              className="absolute w-96 md:w-[448px] max-w-none bottom-[-10%] md:bottom-[-15%] -left-6 md:-left-8 z-10 drop-shadow-[12px_12px_0_rgba(11,15,43,0.3)] transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-2 pointer-events-none"
+            />
+            
           </div>
         </div>
 
