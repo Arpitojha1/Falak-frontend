@@ -20,7 +20,7 @@ const Passes = lazy(() => import('./pages/Passes').then(module => ({ default: mo
 function MainLayout() {
   return (
     <div className="flex flex-col min-h-screen bg-midnight-indigo selection:bg-convergence-magenta selection:text-white">
-      <div className="flex-grow pb-16 md:pb-0">
+      <div className="flex-1 pb-16 md:pb-0">
         <Outlet />
       </div>
       <Footer />
@@ -59,21 +59,18 @@ function AnimatedRoutes() {
           )}
           <Suspense fallback={<div className="min-h-screen bg-midnight-indigo flex items-center justify-center text-silver font-mono text-sm tracking-widest uppercase">Loading...</div>}>
             <Routes location={location}>
-              <Route element={
-                <RouteTransitionController>
-                  <MainLayout />
-                </RouteTransitionController>
-              }>
-                <Route path="/" element={<Home />} />
-                <Route path="/schedule" element={<Schedule />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
-                <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
+              <Route element={<MainLayout />}>
+                <Route element={<RouteTransitionController><Outlet /></RouteTransitionController>}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/schedule" element={<Schedule />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/support" element={<div className="pt-32 px-6 min-h-screen text-center">Support Page Stub</div>} />
+                  <Route path="/about" element={<div className="pt-32 px-6 min-h-screen text-center">About Page Stub</div>} />
+                </Route>
+                <Route path="/passes" element={<Passes />} />
+                <Route path="/sports" element={<SportsPage />} />
+                <Route path="/cultural" element={<CulturePage />} />
               </Route>
-              
-              <Route path="/passes" element={<Passes />} />
-              <Route path="/sports" element={<SportsPage />} />
-              <Route path="/cultural" element={<CulturePage />} />
             </Routes>
           </Suspense>
         </motion.div>
