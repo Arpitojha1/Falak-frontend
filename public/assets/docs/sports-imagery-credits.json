@@ -1,0 +1,42 @@
+{
+  "athletics": {
+    "primary": { "source": "Unsplash", "photographer": "Steven Lelham", "url": "https://unsplash.com/photos/group-of-people-running-on-stadium-atSaEOeE8Nk", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Lysander Yuen", "url": "https://unsplash.com/photos/red-running-track-lane-markings-LKaN_tqplEw", "license": "Unsplash License" }
+  },
+  "cricket": {
+    "primary": { "source": "Unsplash", "photographer": "Yogendra Singh", "url": "https://unsplash.com/photos/cricket-batsman-hitting-ball-on-field-dE3exzmYlKc", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Alessandro Bogliari", "url": "https://unsplash.com/photos/shallow-focus-photography-of-red-cricket-ball-oDs_AxeR5g4", "license": "Unsplash License" }
+  },
+  "badminton": {
+    "primary": { "source": "Unsplash", "photographer": "Stephan Rothe", "url": "https://unsplash.com/photos/shuttlecock-on-badminton-net-VePgmkq3hHI", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Allison Saeng", "url": "https://unsplash.com/photos/a-badminton-racket-and-two-shuttles-on-a-green-surface-VRqmHMYMq1c", "license": "Unsplash License" }
+  },
+  "table-tennis": {
+    "primary": { "source": "Unsplash", "photographer": "Inkiipow", "url": "https://unsplash.com/photos/two-ping-pong-paddles-and-an-orange-ball-on-a-blue-table-JwxatcF2Oec", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Inkiipow", "url": "https://unsplash.com/photos/two-ping-pong-paddles-and-a-ping-pong-ball-on-a-blue-table-7h9wGq4IUdE", "license": "Unsplash License" }
+  },
+  "basketball": {
+    "primary": { "source": "Unsplash", "photographer": "Markus Spiske", "url": "https://unsplash.com/photos/ball-under-basketball-ring-BfphcCvhl6E", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Tom Briskey", "url": "https://unsplash.com/photos/brown-basketball-on-basketball-hoop-HM3WZ4B1gvM", "license": "Unsplash License" }
+  },
+  "football": {
+    "primary": { "source": "Unsplash", "photographer": "Sebastian Schuster", "url": "https://unsplash.com/photos/close-up-of-a-soccer-goal-net-against-black-background-2EbwO2RaKA8", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Arpit Sharma", "url": "https://unsplash.com/photos/a-white-soccer-goal-on-a-green-artificial-turf-field-W8XwIYFDh2I", "license": "Unsplash License" }
+  },
+  "volleyball": {
+    "primary": { "source": "Unsplash", "photographer": "HorseRat", "url": "https://unsplash.com/photos/a-group-of-people-playing-a-game-of-volleyball-FcuE1a_pOA0", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "HorseRat", "url": "https://unsplash.com/photos/a-group-of-young-men-playing-a-game-of-volleyball-MTn5AkX15tg", "license": "Unsplash License" }
+  },
+  "chess": {
+    "primary": { "source": "Unsplash", "photographer": "Hassan Pasha", "url": "https://unsplash.com/photos/black-and-white-chess-knights-7SjEuEF06Zw", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Felix Mittermeier", "url": "https://unsplash.com/photos/chess-pieces-on-board-nAjil1z3eLk", "license": "Unsplash License" }
+  },
+  "lawn-tennis": {
+    "primary": { "source": "Unsplash", "photographer": "Ryan Searle", "url": "https://unsplash.com/photos/aerial-photo-of-tennis-court-surrounded-with-trees-qjrjJnFypa0", "license": "Unsplash License" },
+    "backup": { "source": "Unsplash", "photographer": "Kateryna Hliznitsova", "url": "https://unsplash.com/photos/a-tennis-racket-and-three-tennis-balls-on-a-court-nYmHWEIh0BM", "license": "Unsplash License" }
+  },
+  "squash": {
+    "primary": { "source": "Pexels", "photographer": "Jenny K.", "url": "https://www.pexels.com/photo/squash-rackets-in-close-up-shot-14629511/", "license": "Pexels License" },
+    "backup": { "source": "Pexels", "photographer": "Connor Scott McManus", "url": "https://www.pexels.com/photo/neglected-squash-gym-14982688/", "license": "Pexels License" }
+  }
+}
