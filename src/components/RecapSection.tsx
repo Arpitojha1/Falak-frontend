@@ -7,26 +7,29 @@ const CAROUSEL_SLIDES = [
     id: '01',
     year: '2025',
     title: 'Neon Garba Nights',
-    category: 'Culture',
-    image: 'assets/reference/cultural/ref_c-2.jpg'
+    category: 'Events',
+    image: '/assets/Landing/Pranav/pranavSharma2.jpeg',
+    alt: 'Falak 2025 Events — live performance'
   },
   {
     id: '02',
     year: '2025',
     title: 'Midnight Gully Cricket',
     category: 'Sports',
-    image: 'assets/reference/cultural/ref_c-22.jpg'
+    image: '/assets/Landing/FootballRef.JPG',
+    alt: 'Falak 2025 Sports action shot'
   },
   {
     id: '03',
-    year: '2024',
+    year: '2025',
     title: 'Sufi Echoes',
-    category: 'Music',
-    image: 'assets/reference/cultural/ref_c-13.jpg'
+    category: 'Culture',
+    image: '/assets/Landing/CulturalRefrence.JPG',
+    alt: 'Falak 2025 Cultural performance'
   }
 ];
 
-const SLIDER_ITEMS = CAROUSEL_SLIDES.map(s => ({ image: s.image, caption: s.title }));
+const SLIDER_ITEMS = CAROUSEL_SLIDES.map(s => ({ image: s.image, caption: s.title, alt: s.alt }));
 
 export function RecapSection() {
   const [activeIndex, setActiveIndex] = useState(0);

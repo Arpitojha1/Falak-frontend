@@ -33,8 +33,8 @@ const ECHO_ASSETS: EchoAsset[] = [
     id: 'echo-1',
     src: '/assets/Landing/echoes/mohitCh1WithoutBG.png',
     alt: 'Falak performer silhouette - Vocals and stage energy',
-    // Mobile unchanged. Desktop: Large upper-left interior with vertical bleed. Dominant.
-    className: 'top-0 left-0 w-48 h-64 xs:w-56 xs:h-72 md:-top-[5%] md:left-[10%] lg:-top-[8%] lg:left-[15%] md:w-[30rem] md:h-[40rem] lg:w-[34rem] lg:h-[46rem]',
+    // Mobile unchanged. Desktop: Large upper-left, pulled out to flank to keep center empty.
+    className: 'top-0 left-0 w-48 h-64 xs:w-56 xs:h-72 md:-top-[5%] md:-left-[5%] lg:-top-[8%] lg:-left-[5%] md:w-[30rem] md:h-[40rem] lg:w-[34rem] lg:h-[46rem]',
     rotation: '-rotate-6 hover:-rotate-3',
     outlineColor: '#8A5CFF', // Aurora Violet
     zIndex: 12,
@@ -43,8 +43,8 @@ const ECHO_ASSETS: EchoAsset[] = [
     id: 'echo-2',
     src: '/assets/Landing/echoes/mohitch2WithoutBG.png',
     alt: 'Falak stage moment - Performance dynamics',
-    // Mobile unchanged. Desktop: Lower-left interior with diagonal relationship. Medium/Large.
-    className: 'bottom-0 left-0 w-56 h-72 xs:w-64 xs:h-80 md:bottom-[15%] md:left-[10%] lg:bottom-[20%] lg:left-[12%] md:w-[26rem] md:h-[34rem] lg:w-[30rem] lg:h-[38rem]',
+    // Mobile unchanged. Desktop: Lower-left, pulled out to flank.
+    className: 'bottom-0 left-0 w-56 h-72 xs:w-64 xs:h-80 md:bottom-[5%] md:-left-[5%] lg:bottom-[10%] lg:-left-[2%] md:w-[26rem] md:h-[34rem] lg:w-[30rem] lg:h-[38rem]',
     rotation: 'rotate-3 hover:rotate-6',
     outlineColor: '#FF6A00', // Electric Orange
     zIndex: 14,
@@ -53,8 +53,8 @@ const ECHO_ASSETS: EchoAsset[] = [
     id: 'echo-3',
     src: '/assets/Landing/echoes/PranavSharmawithoutBG.png',
     alt: 'Falak athlete action - High-velocity athletic capture',
-    // Mobile unchanged. Desktop: Upper-right pushed deep into composition. Small/Medium accent.
-    className: 'top-4 right-0 w-56 h-48 xs:w-72 xs:h-56 md:top-[12%] md:right-[22%] lg:top-[15%] lg:right-[26%] md:w-[20rem] md:h-[16rem] lg:w-[24rem] lg:h-[18rem]',
+    // Mobile unchanged. Desktop: Upper-right, pulled out to flank.
+    className: 'top-4 right-0 w-56 h-48 xs:w-72 xs:h-56 md:top-[8%] md:-right-[2%] lg:top-[10%] lg:-right-[5%] md:w-[20rem] md:h-[16rem] lg:w-[24rem] lg:h-[18rem]',
     rotation: 'rotate-6 hover:rotate-2',
     outlineColor: '#FF3D7F', // Convergence Magenta
     zIndex: 12,
@@ -63,18 +63,18 @@ const ECHO_ASSETS: EchoAsset[] = [
     id: 'echo-4',
     src: '/assets/Landing/echoes/mohitCh5WithoutBG.png',
     alt: 'Falak live concert - Crowd resonance and artist expression',
-    // Mobile unchanged. Desktop: Mid-field right-side overlapping element. Dominant. IN FRONT of text (z-25).
-    className: 'top-[35%] right-[10%] w-48 h-64 xs:w-56 xs:h-72 md:top-[35%] md:right-[5%] lg:top-[40%] lg:right-[8%] md:w-[30rem] md:h-[40rem] lg:w-[34rem] lg:h-[44rem]',
+    // Mobile unchanged. Desktop: Mid-right element, pushed back to the right flank to clear the text.
+    className: 'top-[35%] right-[10%] w-48 h-64 xs:w-56 xs:h-72 md:top-[35%] md:-right-[10%] lg:top-[40%] lg:-right-[12%] md:w-[30rem] md:h-[40rem] lg:w-[34rem] lg:h-[44rem]',
     rotation: '-rotate-4 hover:-rotate-1',
     outlineColor: '#C6FF00', // Acid Lime
-    zIndex: 25,
+    zIndex: 13,
   },
   {
     id: 'echo-5',
     src: '/assets/Landing/echoes/mohitchWithoutBG.png',
     alt: 'Falak center-stage presence - Full-body festival scale',
-    // Mobile unchanged. Desktop: Lower-mid center, creating tension with 1 and 2. Medium.
-    className: 'top-[25%] left-[10%] w-48 h-72 xs:w-56 xs:h-80 md:top-[50%] md:left-[28%] lg:top-[55%] lg:left-[30%] md:w-[20rem] md:h-[28rem] lg:w-[24rem] lg:h-[32rem]',
+    // Mobile unchanged. Desktop: Mid-left element, pushed back to the left flank to clear the text.
+    className: 'top-[25%] left-[10%] w-48 h-72 xs:w-56 xs:h-80 md:top-[50%] md:-left-[10%] lg:top-[55%] lg:-left-[8%] md:w-[20rem] md:h-[28rem] lg:w-[24rem] lg:h-[32rem]',
     rotation: 'rotate-2 hover:rotate-4',
     outlineColor: '#0057FF', // Cobalt Blue
     zIndex: 11,
@@ -83,8 +83,8 @@ const ECHO_ASSETS: EchoAsset[] = [
     id: 'echo-6',
     src: '/assets/Landing/echoes/mohitchWithoutBG2.png',
     alt: 'Falak musical rhythm - Expressive stage gesture',
-    // Mobile unchanged. Desktop: Lower-right anchor but interior. Medium/Large.
-    className: 'bottom-0 right-0 w-56 h-72 xs:w-64 xs:h-80 md:bottom-[5%] md:right-[20%] lg:bottom-[8%] lg:right-[24%] md:w-[28rem] md:h-[36rem] lg:w-[32rem] lg:h-[42rem]',
+    // Mobile unchanged. Desktop: Lower-right anchor, pulled out to flank.
+    className: 'bottom-0 right-0 w-56 h-72 xs:w-64 xs:h-80 md:bottom-[5%] md:-right-[5%] lg:bottom-[8%] lg:-right-[2%] md:w-[28rem] md:h-[36rem] lg:w-[32rem] lg:h-[42rem]',
     rotation: '-rotate-6 hover:-rotate-3',
     outlineColor: '#E6DFF6', // Soft Lilac
     zIndex: 14,
@@ -93,8 +93,8 @@ const ECHO_ASSETS: EchoAsset[] = [
     id: 'echo-7',
     src: '/assets/Landing/echoes/PranavSharmawithoutBG2.png',
     alt: 'Falak convergence celebration - Team spirit and victory',
-    // Mobile unchanged. Desktop: Small floating accent. NOT centered-bottom. Foreground overlapping (z-30).
-    className: 'bottom-4 left-1/2 -translate-x-1/2 w-64 h-48 xs:w-72 xs:h-56 md:bottom-auto md:top-[60%] md:left-[55%] md:translate-x-0 lg:top-[65%] lg:left-[60%] md:w-[16rem] md:h-[12rem] lg:w-[18rem] lg:h-[14rem]',
+    // Mobile unchanged. Desktop: Small floating accent in the lower-right flank (not center).
+    className: 'bottom-4 left-1/2 -translate-x-1/2 w-64 h-48 xs:w-72 xs:h-56 md:bottom-auto md:top-[70%] md:left-auto md:right-[15%] md:translate-x-0 lg:top-[75%] lg:right-[18%] md:w-[16rem] md:h-[12rem] lg:w-[18rem] lg:h-[14rem]',
     rotation: 'rotate-2 hover:-rotate-1',
     outlineColor: '#FF3D7F', // Convergence Magenta outline
     zIndex: 30,

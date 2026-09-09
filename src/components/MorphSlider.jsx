@@ -642,7 +642,7 @@ export default function MorphSlider({
         className="morph-slider-stage"
         role="group"
         aria-roledescription="carousel"
-        aria-label="Image morph slider"
+        aria-label={items[index]?.alt || 'Image morph slider'}
         tabIndex={0}
         onKeyDown={onKeyDown}
       />
