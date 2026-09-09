@@ -1,165 +1,252 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Echoes of the Past — Convergence Asset Configuration
+ * ─────────────────────────────────────────────────────────────────────────────
+ * DESIGN.MD CHANGELOG CANDIDATES / ARCHITECTURAL NOTES:
+ *
+ * 1. Convergence Magenta (#FF3D7F) Usage Pattern:
+ *    Convergence Magenta is strictly scoped in this section to outline accents
+ *    on exactly 2 of the 7 assets (Asset 3 and Asset 7). It does not dominate the
+ *    visual space, preserving the balance alongside Aurora Violet (#8A5CFF),
+ *    Cobalt Blue (#0057FF), Electric Orange (#FF6A00), Acid Lime (#C6FF00),
+ *    and Soft Lilac (#E6DFF6) in accordance with the locked festival palette.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+interface EchoAsset {
+  id: string;
+  src: string;
+  alt: string;
+  className: string;
+  rotation: string;
+  outlineColor: string;
+  zIndex: number;
+}
+
+const ECHO_ASSETS: EchoAsset[] = [
+  {
+    id: 'echo-1',
+    src: '/assets/Landing/echoes/mohitCh1WithoutBG.png',
+    alt: 'Falak performer silhouette - Vocals and stage energy',
+    // Mobile unchanged. Desktop: Large upper-left interior with vertical bleed. Dominant.
+    className: 'top-0 left-0 w-48 h-64 xs:w-56 xs:h-72 md:-top-[5%] md:left-[10%] lg:-top-[8%] lg:left-[15%] md:w-[30rem] md:h-[40rem] lg:w-[34rem] lg:h-[46rem]',
+    rotation: '-rotate-6 hover:-rotate-3',
+    outlineColor: '#8A5CFF', // Aurora Violet
+    zIndex: 12,
+  },
+  {
+    id: 'echo-2',
+    src: '/assets/Landing/echoes/mohitch2WithoutBG.png',
+    alt: 'Falak stage moment - Performance dynamics',
+    // Mobile unchanged. Desktop: Lower-left interior with diagonal relationship. Medium/Large.
+    className: 'bottom-0 left-0 w-56 h-72 xs:w-64 xs:h-80 md:bottom-[15%] md:left-[10%] lg:bottom-[20%] lg:left-[12%] md:w-[26rem] md:h-[34rem] lg:w-[30rem] lg:h-[38rem]',
+    rotation: 'rotate-3 hover:rotate-6',
+    outlineColor: '#FF6A00', // Electric Orange
+    zIndex: 14,
+  },
+  {
+    id: 'echo-3',
+    src: '/assets/Landing/echoes/PranavSharmawithoutBG.png',
+    alt: 'Falak athlete action - High-velocity athletic capture',
+    // Mobile unchanged. Desktop: Upper-right pushed deep into composition. Small/Medium accent.
+    className: 'top-4 right-0 w-56 h-48 xs:w-72 xs:h-56 md:top-[12%] md:right-[22%] lg:top-[15%] lg:right-[26%] md:w-[20rem] md:h-[16rem] lg:w-[24rem] lg:h-[18rem]',
+    rotation: 'rotate-6 hover:rotate-2',
+    outlineColor: '#FF3D7F', // Convergence Magenta
+    zIndex: 12,
+  },
+  {
+    id: 'echo-4',
+    src: '/assets/Landing/echoes/mohitCh5WithoutBG.png',
+    alt: 'Falak live concert - Crowd resonance and artist expression',
+    // Mobile unchanged. Desktop: Mid-field right-side overlapping element. Dominant. IN FRONT of text (z-25).
+    className: 'top-[35%] right-[10%] w-48 h-64 xs:w-56 xs:h-72 md:top-[35%] md:right-[5%] lg:top-[40%] lg:right-[8%] md:w-[30rem] md:h-[40rem] lg:w-[34rem] lg:h-[44rem]',
+    rotation: '-rotate-4 hover:-rotate-1',
+    outlineColor: '#C6FF00', // Acid Lime
+    zIndex: 25,
+  },
+  {
+    id: 'echo-5',
+    src: '/assets/Landing/echoes/mohitchWithoutBG.png',
+    alt: 'Falak center-stage presence - Full-body festival scale',
+    // Mobile unchanged. Desktop: Lower-mid center, creating tension with 1 and 2. Medium.
+    className: 'top-[25%] left-[10%] w-48 h-72 xs:w-56 xs:h-80 md:top-[50%] md:left-[28%] lg:top-[55%] lg:left-[30%] md:w-[20rem] md:h-[28rem] lg:w-[24rem] lg:h-[32rem]',
+    rotation: 'rotate-2 hover:rotate-4',
+    outlineColor: '#0057FF', // Cobalt Blue
+    zIndex: 11,
+  },
+  {
+    id: 'echo-6',
+    src: '/assets/Landing/echoes/mohitchWithoutBG2.png',
+    alt: 'Falak musical rhythm - Expressive stage gesture',
+    // Mobile unchanged. Desktop: Lower-right anchor but interior. Medium/Large.
+    className: 'bottom-0 right-0 w-56 h-72 xs:w-64 xs:h-80 md:bottom-[5%] md:right-[20%] lg:bottom-[8%] lg:right-[24%] md:w-[28rem] md:h-[36rem] lg:w-[32rem] lg:h-[42rem]',
+    rotation: '-rotate-6 hover:-rotate-3',
+    outlineColor: '#E6DFF6', // Soft Lilac
+    zIndex: 14,
+  },
+  {
+    id: 'echo-7',
+    src: '/assets/Landing/echoes/PranavSharmawithoutBG2.png',
+    alt: 'Falak convergence celebration - Team spirit and victory',
+    // Mobile unchanged. Desktop: Small floating accent. NOT centered-bottom. Foreground overlapping (z-30).
+    className: 'bottom-4 left-1/2 -translate-x-1/2 w-64 h-48 xs:w-72 xs:h-56 md:bottom-auto md:top-[60%] md:left-[55%] md:translate-x-0 lg:top-[65%] lg:left-[60%] md:w-[16rem] md:h-[12rem] lg:w-[18rem] lg:h-[14rem]',
+    rotation: 'rotate-2 hover:-rotate-1',
+    outlineColor: '#FF3D7F', // Convergence Magenta outline
+    zIndex: 30,
+  },
+];
 
 export function StoryChapters() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const numberRef1 = useRef<HTMLSpanElement>(null);
+  const numberRef2 = useRef<HTMLSpanElement>(null);
+  const numberRef3 = useRef<HTMLSpanElement>(null);
+  const numberRef4 = useRef<HTMLSpanElement>(null);
+  const numbersSectionRef = useRef<HTMLElement>(null);
 
-  // Chapter 1
-  const chapter1Ref = useRef<HTMLElement>(null);
-  const { scrollYProgress: chapter1Progress } = useScroll({
-    target: chapter1Ref,
-    offset: ['start end', 'end start'],
-  });
+  useEffect(() => {
+    const refs = [
+      { ref: numberRef1, target: 50, suffix: '+' },
+      { ref: numberRef2, target: 120, suffix: 'k+' },
+      { ref: numberRef3, target: 30, suffix: '+' },
+      { ref: numberRef4, target: 72, suffix: '+' }
+    ];
+    
+    const ctx = gsap.context(() => {
+      refs.forEach(({ ref, target, suffix }) => {
+        if (!ref.current) return;
+        
+        const counter = { val: 0 };
+        
+        gsap.to(counter, {
+          val: target,
+          duration: 2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: numbersSectionRef.current,
+            start: 'top 70%',
+            toggleActions: 'play none none none',
+          },
+          onUpdate: () => {
+            if (ref.current) {
+              ref.current.innerText = Math.floor(counter.val) + suffix;
+            }
+          }
+        });
+      });
+    });
 
-  // Sports easing: punchier
-  const sportsScrub = useSpring(chapter1Progress, { stiffness: 400, damping: 25 });
-  // Culture easing: softer
-  const cultureScrub = useSpring(chapter1Progress, { stiffness: 40, damping: 25 }); 
-
-  const sportsX = useTransform(sportsScrub, [0, 0.35, 0.65, 1], ['-100%', '0%', '0%', '-50%']);
-  const sportsOpacity = useTransform(sportsScrub, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
-
-  const cultureX = useTransform(cultureScrub, [0, 0.35, 0.65, 1], ['100%', '0%', '0%', '50%']);
-  const cultureOpacity = useTransform(cultureScrub, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
-
-  // Chapter 2
-  const chapter2Ref = useRef<HTMLElement>(null);
-  const { scrollYProgress: chapter2Progress } = useScroll({
-    target: chapter2Ref,
-    offset: ['start end', 'end start'],
-  });
-  const numbersY = useTransform(chapter2Progress, [0, 0.35, 0.65, 1], [150, 0, 0, -150]);
-  const numbersOpacity = useTransform(chapter2Progress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
-
-  // Chapter 3
-  const chapter3Ref = useRef<HTMLElement>(null);
-  const { scrollYProgress: chapter3Progress } = useScroll({
-    target: chapter3Ref,
-    offset: ['start end', 'end start'],
-  });
-  
-  const orangeX = useTransform(chapter3Progress, [0, 0.45, 0.55, 1], ['-80%', '0%', '0%', '80%']);
-  const violetX = useTransform(chapter3Progress, [0, 0.45, 0.55, 1], ['80%', '0%', '0%', '-80%']);
-  const magentaOpacity = useTransform(chapter3Progress, [0.35, 0.45, 0.55, 0.65], [0, 0.8, 0.8, 0]);
-  const textScale = useTransform(chapter3Progress, [0, 0.35, 0.65, 1], [0.85, 1, 1, 1.15]);
-  const textOpacity = useTransform(chapter3Progress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
-
-  // Chapter 4
-  const chapter4Ref = useRef<HTMLElement>(null);
-  const { scrollYProgress: chapter4Progress } = useScroll({
-    target: chapter4Ref,
-    offset: ['start end', 'end start'],
-  });
-  const ctaY = useTransform(chapter4Progress, [0, 0.5], [100, 0]);
-  const ctaOpacity = useTransform(chapter4Progress, [0, 0.5], [0, 1]);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div ref={containerRef} className="flex flex-col bg-[#0B0F2B] text-[#C0C0C0] w-full overflow-hidden">
-      {/* Chapter 1 — The Split */}
-      <section ref={chapter1Ref} className="relative h-[100vh] flex items-center justify-center border-b border-white/5 overflow-hidden">
-        {/* Left Side: Sports */}
-        <div className="absolute inset-y-0 left-0 w-1/2 bg-[#0B0F2B] border-r border-white/10 flex flex-col items-center justify-center p-8 z-10 overflow-hidden">
-          <motion.div 
-            className="w-full max-w-md"
-            style={{ x: sportsX, opacity: sportsOpacity }}
-          >
-            <h2 className="font-sans font-black text-6xl md:text-8xl tracking-tighter leading-[0.9] text-[#FF6A00] uppercase mb-8">
-              Raw<br/>Power
-            </h2>
-            <div className="w-full aspect-[4/3] bg-white/5 border border-[#FF6A00]/20 flex items-center justify-center relative overflow-hidden">
-              <span className="font-mono text-[#FF6A00]/50 tracking-widest text-center">[ ZUUM PLACEHOLDER ]</span>
-              <div className="absolute inset-0 bg-[#FF6A00]/10 mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}></div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Side: Culture */}
-        <div className="absolute inset-y-0 right-0 w-1/2 bg-[#0B0F2B] flex flex-col items-center justify-center p-8 z-10 overflow-hidden">
-          <motion.div 
-            className="w-full max-w-md text-right flex flex-col items-end"
-            style={{ x: cultureX, opacity: cultureOpacity }}
-          >
-            <h2 className="font-serif italic text-6xl md:text-8xl tracking-tight leading-[1.1] text-[#8A5CFF] mb-8">
-              Pure<br/>Expression
-            </h2>
-            <div className="w-full aspect-[4/3] bg-white/5 border border-[#8A5CFF]/20 flex items-center justify-center relative overflow-hidden">
-              <span className="font-mono text-[#8A5CFF]/50 tracking-widest text-center">[ SWIRLA PLACEHOLDER ]</span>
-              <div className="absolute inset-0 bg-[#8A5CFF]/10 mix-blend-overlay" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(138,92,255,0.2) 0, transparent 2px)', backgroundSize: '12px 12px' }}></div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Chapter 2 — The Numbers */}
-      <section ref={chapter2Ref} className="relative h-[80vh] flex flex-col items-center justify-center p-8 border-b border-white/5">
-        <motion.div 
-          className="text-center mb-16"
-          style={{ y: numbersY, opacity: numbersOpacity }}
-        >
-          <h2 className="font-mono text-sm uppercase tracking-widest text-white/50 mb-6">The Scale</h2>
-          <div className="w-16 h-px bg-[#FF3D7F] mx-auto"></div>
-        </motion.div>
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-5xl"
-          style={{ y: numbersY, opacity: numbersOpacity }}
-        >
-          <div className="flex flex-col items-center">
-            <span className="font-sans font-black text-8xl md:text-[10rem] tracking-tighter leading-[0.9] text-white mb-4">{"{{EVENT_COUNT}}"}</span>
-            <span className="font-mono text-sm text-[#FF3D7F] uppercase tracking-widest">Events</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="font-sans font-black text-8xl md:text-[10rem] tracking-tighter leading-[0.9] text-white mb-4">{"{{FOOTFALL}}"}</span>
-            <span className="font-mono text-sm text-[#FF3D7F] uppercase tracking-widest">Footfall</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="font-sans font-black text-8xl md:text-[10rem] tracking-tighter leading-[0.9] text-white mb-4">{"{{DAY_COUNT}}"}</span>
-            <span className="font-mono text-sm text-[#FF3D7F] uppercase tracking-widest">Days</span>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Chapter 3 — Convergence */}
-      <section ref={chapter3Ref} className="relative h-[100vh] flex items-center justify-center overflow-hidden border-b border-white/5 p-8">
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <motion.div 
-            className="w-[120vw] md:w-[60vw] aspect-square rounded-full bg-[#FF6A00] opacity-20 blur-[100px] absolute"
-            style={{ x: orangeX }}
-          ></motion.div>
-          <motion.div 
-            className="w-[120vw] md:w-[60vw] aspect-square rounded-full bg-[#8A5CFF] opacity-20 blur-[100px] absolute"
-            style={{ x: violetX }}
-          ></motion.div>
-          <motion.div 
-            className="w-[60vw] md:w-[30vw] aspect-square rounded-full bg-[#FF3D7F] blur-[80px] absolute mix-blend-screen"
-            style={{ opacity: magentaOpacity }}
-          ></motion.div>
-        </div>
+    <div className="flex flex-col w-full bg-midnight-indigo overflow-hidden">
+      
+      {/* SECTION 1: Echoes of Past (Real Cutouts with Locked Palette Outlines & Dominant Scale) */}
+      <section className="relative min-h-[100dvh] flex flex-col items-center justify-center p-8 overflow-visible border-b border-silver/10 z-10">
         
-        <motion.div 
-          className="relative z-10 text-center max-w-2xl"
-          style={{ scale: textScale, opacity: textOpacity }}
-        >
-          <h2 className="font-sans font-black tracking-tight leading-[1] text-5xl md:text-7xl text-white mb-8 uppercase">
-            Where Worlds Collide
+        {/* Background Layer */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{ 
+            backgroundImage: "url('/assets/Landing/echoesofpast.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        {/* Subtle overlay for legibility */}
+        <div className="absolute inset-0 z-0 bg-midnight-indigo/50 pointer-events-none" />
+
+        {/* 7 Cutout Collage Assets */}
+        {ECHO_ASSETS.map((asset) => {
+          // Sharp contour outline in locked palette color + offset shadow for stamped collage effect.
+          // Note: Tone correction and overlays were removed per addendum.
+          const outlineFilter = `drop-shadow(2px 0 0 ${asset.outlineColor}) drop-shadow(-2px 0 0 ${asset.outlineColor}) drop-shadow(0 2px 0 ${asset.outlineColor}) drop-shadow(0 -2px 0 ${asset.outlineColor}) drop-shadow(4px 6px 0 rgba(11, 15, 43, 0.75))`;
+
+          return (
+            <div
+              key={asset.id}
+              className={`absolute ${asset.className} ${asset.rotation} transition-all duration-300 ease-out hover:scale-105 pointer-events-auto select-none`}
+              style={{ zIndex: asset.zIndex }}
+            >
+              <div className="relative w-full h-full">
+                {/* Base cutout with contour outline */}
+                <img
+                  src={asset.src}
+                  alt={asset.alt}
+                  loading="lazy"
+                  className="w-full h-full object-contain"
+                  style={{
+                    filter: outlineFilter,
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Focal Content */}
+        <div className="relative z-20 text-center max-w-2xl px-6 pointer-events-none">
+          <h2 className="font-accent text-5xl md:text-7xl text-silver mb-6 drop-shadow-xl">
+            Echoes of the Past
           </h2>
-          <p className="font-mono text-sm md:text-base text-[#C0C0C0] leading-relaxed max-w-md mx-auto">
-            Experience the unprecedented fusion of athletic dominance and artistic brilliance.
+          <p className="font-mono text-sm md:text-base text-silver/90 max-w-md mx-auto leading-relaxed drop-shadow-md">
+            A look back at last year's convergence. The scale, the energy, the moments that defined us.
           </p>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Chapter 4 — CTA handoff */}
-      <section ref={chapter4Ref} className="relative py-32 flex flex-col items-center justify-center text-center px-6">
-        <motion.div style={{ y: ctaY, opacity: ctaOpacity }} className="flex flex-col items-center">
-          <h3 className="font-serif italic tracking-tight text-4xl md:text-6xl text-white mb-8">
-            Ready to dive in?
-          </h3>
-          <p className="font-mono text-sm text-white/50 mb-12 max-w-md">
-            Explore the individual tracks or grab your pass to witness the convergence.
-          </p>
-          <div className="w-px h-32 bg-gradient-to-b from-white/20 to-transparent"></div>
-        </motion.div>
+      {/* SECTION 2: Numbers */}
+      <section ref={numbersSectionRef} className="relative min-h-[100dvh] flex flex-col items-center justify-center p-8 border-b border-silver/10 overflow-hidden">
+        
+        {/* Background Layer */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{ 
+            backgroundImage: "url('/assets/Landing/FortheNumbers.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        {/* Subtle overlay for legibility */}
+        <div className="absolute inset-0 z-0 bg-midnight-indigo/50 pointer-events-none" />
+
+        <div className="relative z-10 text-center mb-16 md:mb-24">
+          <h2 className="font-mono text-sm md:text-base uppercase tracking-widest text-[#FF3D7F] mb-4 drop-shadow-md">By The Numbers</h2>
+          <div className="w-16 h-px bg-silver/50 mx-auto"></div>
+        </div>
+
+        <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full max-w-6xl px-4">
+          <div className="flex flex-col items-center text-center">
+            <span ref={numberRef1} style={{ fontFamily: 'Archivo, sans-serif' }} className="font-black text-5xl xs:text-6xl md:text-8xl tracking-tighter text-silver mb-2 drop-shadow-lg">0+</span>
+            <span className="font-mono text-[10px] xs:text-xs md:text-sm text-silver/80 uppercase tracking-widest drop-shadow-md">Events</span>
+          </div>
+          
+          <div className="flex flex-col items-center text-center">
+            <span ref={numberRef2} style={{ fontFamily: 'Archivo, sans-serif' }} className="font-black text-5xl xs:text-6xl md:text-8xl tracking-tighter text-silver mb-2 drop-shadow-lg">0k+</span>
+            <span className="font-mono text-[10px] xs:text-xs md:text-sm text-[#FF3D7F] uppercase tracking-widest drop-shadow-md">Attendees</span>
+          </div>
+          
+          <div className="flex flex-col items-center text-center">
+            <span ref={numberRef3} style={{ fontFamily: 'Archivo, sans-serif' }} className="font-black text-5xl xs:text-6xl md:text-8xl tracking-tighter text-silver mb-2 drop-shadow-lg">0+</span>
+            <span className="font-mono text-[10px] xs:text-xs md:text-sm text-silver/80 uppercase tracking-widest drop-shadow-md">Colleges</span>
+          </div>
+          
+          <div className="flex flex-col items-center text-center">
+            <span ref={numberRef4} style={{ fontFamily: 'Archivo, sans-serif' }} className="font-black text-5xl xs:text-6xl md:text-8xl tracking-tighter text-silver mb-2 drop-shadow-lg">0+</span>
+            <span className="font-mono text-[10px] xs:text-xs md:text-sm text-[#FF3D7F] uppercase tracking-widest drop-shadow-md">Hours</span>
+          </div>
+        </div>
       </section>
+
+
+
     </div>
   );
 }
