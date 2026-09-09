@@ -1,4 +1,5 @@
 import * as motion from 'motion/react-client';
+import { CulturalGateMotif } from './CulturalGateMotif';
 
 export function CultureHero() {
   return (
@@ -93,30 +94,24 @@ export function CultureHero() {
           </a>
         </div>
 
-        {/* ── RIGHT ZONE: SWIRLA Placeholder (40-45%) ── */}
-        <div className="w-full lg:w-5/12 order-2 relative lg:self-end">
-          {/* TODO: Culture mascot (SWIRLA) asset goes here — full-bleed off right edge, rising from bottom */}
-          <div
-            className="relative lg:absolute lg:right-[-8vw] lg:bottom-0 w-full max-w-md lg:max-w-none lg:w-[45vw] aspect-[3/4]"
-          >
-            {/* Placeholder silhouette — bounding outline in Soft Lilac at low opacity */}
-            <div
-              className="w-full h-full rounded-t-[40%] border-2 border-dashed border-soft-lilac/20
-                flex flex-col items-center justify-center
-                bg-gradient-to-t from-soft-lilac/[0.04] to-transparent"
-            >
-              {/* Placeholder label */}
-              <div className="text-center px-8">
-                <p className="font-accent font-bold text-soft-lilac/30 text-2xl uppercase tracking-widest">
-                  SWIRLA
-                </p>
-                <p className="font-sans text-soft-lilac/20 text-sm mt-2 leading-relaxed">
-                  Mascot asset placeholder
-                  <br />
-                  Full-bleed off right edge, rising from bottom
-                </p>
-              </div>
-            </div>
+        {/* ── RIGHT ZONE: SWIRLA Mascot ── */}
+        <div className="w-full lg:w-5/12 order-2 relative lg:self-end flex justify-center mt-16 lg:mt-0">
+          <div className="relative flex justify-center items-end w-full max-w-sm lg:max-w-md lg:absolute lg:right-[-4vw] lg:bottom-0">
+            
+            {/* The Gate Motif (Behind) */}
+            <CulturalGateMotif className="absolute bottom-0 w-full z-0" />
+
+            {/* The Character (In Front) - scaled to fit gate proportions, centered, emerging through gate */}
+            <img 
+              src="/assets/culturalAssets/CulturalCharacter.png" 
+              alt="SWIRLA Cultural Mascot"
+              className="relative z-10 w-[85%] h-auto object-contain drop-shadow-[0_15px_35px_rgba(28,11,70,0.8)]"
+              style={{
+                 // Pulling character slightly down to ensure feet rest at/below the gate base line
+                 marginBottom: '-2%'
+              }}
+            />
+            
           </div>
         </div>
 
